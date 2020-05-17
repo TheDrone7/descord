@@ -56,19 +56,25 @@ export default class Shard {
     });
   }
 
+  get ws() {
+    return this.#ws;
+  }
+
   on(event: string, handler: (...params: any[]) => void) {
     if (!this.#eventManager.get(event)) this.#eventManager.set(event, handler);
-    else
+    else {
       throw new Error(
         "An event handler is already set for the event '" +
           event +
           "'. You can only set 1 handler per event."
       ).stack;
+    }
   }
 
   emit(event: string, ...params: any[]) {
-    if (this.#eventManager.get(event))
+    if (this.#eventManager.get(event)) {
       this.#eventManager.get(event)!(...params);
+    }
   }
 
   private identify(presence: Presence) {
