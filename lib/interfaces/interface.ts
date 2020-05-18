@@ -1,3 +1,14 @@
 import Presence from './presence.ts';
-
-export { Presence };
+import Activity from './activity.ts';
+import {
+  HTTPClientConfig,
+  HTTPRequestOptions,
+  HTTPRequestHeaders
+} from './http.ts';
+export {
+  Presence,
+  Activity,
+  HTTPClientConfig,
+  HTTPRequestHeaders,
+  HTTPRequestOptions
+};

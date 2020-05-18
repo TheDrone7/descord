@@ -1,10 +1,6 @@
-import {
-  connectWebSocket,
-  isWebSocketCloseEvent
-} from 'https://deno.land/std/ws/mod.ts';
-import { green, red, yellow } from 'https://deno.land/std/fmt/colors.ts';
+import { green, yellow } from 'https://deno.land/std/fmt/colors.ts';
 import { HTTPError } from './errors/error.ts';
-import { Collection } from './utils/util.ts';
+import { Collection, HTTPClient } from './utils/util.ts';
 import { Guild, ClientUser, Shard } from './models/model.ts';
 import { Presence } from './interfaces/interface.ts';
 
@@ -17,21 +13,21 @@ class Client {
   #user?: ClientUser;
   #clientId?: string;
   #shardCount: number;
-  #retries: number;
 
   shardManager: Collection<number, Shard>;
   owners: string[];
+  http: HTTPClient;
 
   constructor() {
     this.#eventHandler = new Map();
     this.#httpBase = 'https://discord.com/api/v6';
     this.#wsBase = '';
     this.#shardCount = 1;
-    this.#retries = 3;
     this.#guilds = new Collection();
 
     this.shardManager = new Collection();
     this.owners = [];
+    this.http = new HTTPClient(this, { apiVersion: 6 });
   }
 
   addEventListener(event: string, handler: (...params: any[]) => void) {
@@ -59,6 +55,33 @@ class Client {
   get guilds() {
     return this.#guilds;
   }
+
+  wsSend(data: { op: number; d: any }, shardId?: number) {
+    if (!data) throw new Error('No data to send.').stack;
+    else {
+      if (!shardId) this.shardManager.each((shard) => shard.ws.send(data));
+      else {
+        if (this.shardManager.get(shardId))
+          this.shardManager.get(shardId).ws.send(data);
+        else throw new Error('Invalid shard ID.').stack;
+      }
+    }
+  }
+
+  wsClose(shardId?: number) {
+    if (shardId) {
+      if (this.shardManager.get(shardId)) {
+        this.shardManager.get(shardId).ws.close();
+        this.shardManager.delete(shardId);
+        this.emit('shardDisconnected', shardId);
+      } else throw new Error('Invalid shard ID.').stack;
+    } else {
+      this.shardManager.each((shard) => shard.ws.close());
+      this.emit('disconnected');
+    }
+  }
+
+  async httpRequest(path: string, config: any) {}
 
   emit(event: string, ...params: any[]) {
     if (this.#eventHandler.get(event))

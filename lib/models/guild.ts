@@ -12,7 +12,6 @@ export default class {
   ownerId?: string;
   AFKChannel?: string;
 
-
   constructor(client: Client, data: any) {
     this.#client = client;
     this.#id = data.id;
