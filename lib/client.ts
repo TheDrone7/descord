@@ -59,10 +59,10 @@ class Client {
   wsSend(data: { op: number; d: any }, shardId?: number) {
     if (!data) throw new Error('No data to send.').stack;
     else {
-      if (!shardId) this.shardManager.each((shard) => shard.ws.send(data));
+      if (!shardId) this.shardManager.each((shard) => shard.ws.send(JSON.stringify(data)));
       else {
         if (this.shardManager.get(shardId))
-          this.shardManager.get(shardId).ws.send(data);
+          this.shardManager.get(shardId).ws.send(JSON.stringify(data));
         else throw new Error('Invalid shard ID.').stack;
       }
     }

@@ -15,13 +15,13 @@ class HTTPClient {
     this.apiVersion = config.apiVersion || 6;
   }
 
-  async get(path: string, config: HTTPRequestOptions) {
+  async get(path: string, config?: HTTPRequestOptions) {
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'GET',
       headers: {
-        'Content-Type': config.headers.contentType || 'application/json',
+        'Content-Type': config?.headers?.contentType || 'application/json',
         Authorization:
-          config.headers.authorization || `Bot ${this.client.token}`
+          config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
@@ -39,14 +39,14 @@ class HTTPClient {
     }
   }
 
-  async post(path: string, config: HTTPRequestOptions) {
+  async post(path: string, config?: HTTPRequestOptions) {
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'POST',
-      body: config.body || {},
+      body: config?.body || {},
       headers: {
-        'Content-Type': config.headers.contentType || 'application/json',
+        'Content-Type': config?.headers?.contentType || 'application/json',
         Authorization:
-          config.headers.authorization || `Bot ${this.client.token}`
+          config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
@@ -64,14 +64,14 @@ class HTTPClient {
     }
   }
 
-  async patch(path: string, config: HTTPRequestOptions) {
+  async patch(path: string, config?: HTTPRequestOptions) {
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'PATCH',
-      body: config.body || {},
+      body: config?.body || {},
       headers: {
-        'Content-Type': config.headers.contentType || 'application/json',
+        'Content-Type': config?.headers?.contentType || 'application/json',
         Authorization:
-          config.headers.authorization || `Bot ${this.client.token}`
+          config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
@@ -89,14 +89,14 @@ class HTTPClient {
     }
   }
 
-  async put(path: string, config: HTTPRequestOptions) {
+  async put(path: string, config?: HTTPRequestOptions) {
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'PUT',
-      body: config.body || {},
+      body: config?.body || {},
       headers: {
-        'Content-Type': config.headers.contentType || 'application/json',
+        'Content-Type': config?.headers?.contentType || 'application/json',
         Authorization:
-          config.headers.authorization || `Bot ${this.client.token}`
+          config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
@@ -114,14 +114,14 @@ class HTTPClient {
     }
   }
 
-  async delete(path: string, config: HTTPRequestOptions) {
+  async delete(path: string, config?: HTTPRequestOptions) {
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'DELETE',
-      body: config.body || {},
+      body: config?.body || {},
       headers: {
-        'Content-Type': config.headers.contentType || 'application/json',
+        'Content-Type': config?.headers?.contentType || 'application/json',
         Authorization:
-          config.headers.authorization || `Bot ${this.client.token}`
+          config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {

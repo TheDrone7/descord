@@ -90,7 +90,7 @@ export default class Shard {
         shard: [this.#id, this.#total],
         presence: {
           status: presence?.status || 'online',
-          since: presence?.status === 'idle' ? Date.now() : null,
+          since: Date.now(),
           game: presence?.game,
           afk: presence?.afk
         }
