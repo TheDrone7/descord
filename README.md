@@ -5,7 +5,7 @@ This library is in its pre-alpha state. For now, you can connect the discord bot
 
 ```typescript
 // Import the client from github.
-import { Client } from 'https://raw.githubusercontent.com/TheDrone7/descord/master/mod.ts';
+import { Client } from 'https://raw.githubusercontent.com/TheDrone7/descord/pre-alpha/mod.ts';
 
 // Instantiate a new client.
 const client = new Client();
