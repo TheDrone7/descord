@@ -1,7 +1,7 @@
 import { green, yellow } from 'https://deno.land/std/fmt/colors.ts';
 import { HTTPError } from './errors/error.ts';
 import { Collection, HTTPClient } from './utils/util.ts';
-import { Guild, ClientUser, Shard } from './models/model.ts';
+import { ClientUser, Shard } from './models/model.ts';
 import { Presence } from './interfaces/interface.ts';
 
 class Client {
@@ -9,7 +9,7 @@ class Client {
   #httpBase: string;
   #wsBase: string;
   #token?: string;
-  #guilds: Collection<string, Guild>;
+  #guilds: Collection<string, any>;
   #user?: ClientUser;
   #clientId?: string;
   #shardCount: number;
@@ -121,7 +121,7 @@ class Client {
         newShard.on('ready', (rawData) => {
           this.#user = new ClientUser(this, rawData['user']);
           rawData.guilds.forEach((guild: any) => {
-            this.guilds.set(guild.id, new Guild(this, guild));
+            this.guilds.set(guild.id, guild);
           });
           if (newShard.id === 0) this.emit('ready');
         });
