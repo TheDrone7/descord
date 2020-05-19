@@ -1,4 +1,4 @@
-import { green, yellow } from 'https://deno.land/std/fmt/colors.ts';
+import { green, red, yellow } from 'https://deno.land/std/fmt/colors.ts';
 import { HTTPError } from './errors/error.ts';
 import { Collection, HTTPClient } from './utils/util.ts';
 import { ClientUser, Shard } from './models/model.ts';
@@ -86,7 +86,7 @@ class Client {
 
   /**
    * Sends a websocket payload to the discord server as a specific shard or all shards.
-   * 
+   *
    * @param data The data to be sent.
    * @param shardId The shard which has to send the data (if only a specific shard needs to send this data).
    */
@@ -95,8 +95,7 @@ class Client {
     else {
       if (!shardId) this.shardManager.each((shard) => shard.ws.send(JSON.stringify(data)));
       else {
-        if (this.shardManager.get(shardId))
-          this.shardManager.get(shardId).ws.send(JSON.stringify(data));
+        if (this.shardManager.get(shardId)) this.shardManager.get(shardId).ws.send(JSON.stringify(data));
         else throw new Error('Invalid shard ID.').stack;
       }
     }
@@ -104,7 +103,7 @@ class Client {
 
   /**
    * Closes a specific shard's connection to discord.
-   * 
+   *
    * @param shardId The shard that needs to be closed.
    */
   wsClose(shardId?: number) {
@@ -123,18 +122,17 @@ class Client {
 
   /**
    * Emits one of the client's event for the handler to handle.
-   * 
+   *
    * @param event the event to be emitted.
    * @param params The parameters to be passed onto the event handler.
    */
   emit(event: string, ...params: any[]) {
-    if (this.#eventHandler.get(event))
-      this.#eventHandler.get(event)!(...params);
+    if (this.#eventHandler.get(event)) this.#eventHandler.get(event)!(...params);
   }
 
   /**
    * Connects to the discord servers and logs in as the bot.
-   * 
+   *
    * @param token The discord bot token.
    * @param options Additional login options.
    */
@@ -156,6 +154,16 @@ class Client {
         throw new HTTPError(gatewayResponse).stack;
       }
       let gateway = await gatewayResponse.json();
+      if (gateway['session_start_limit'].remaining < 1) {
+        console.error(
+          red(
+            `You've hit your connection limit. The limit will reset on ${new Date(
+              Date.now() + gateway['session_start_limit'].reset_after
+            )}`
+          )
+        );
+        Deno.exit(-1);
+      }
       this.emit('debug', green('Gateway info successfully fetched.'));
       this.#token = token;
       this.#wsBase = gateway.url + '?v=6&encoding=6';
@@ -163,20 +171,21 @@ class Client {
 
       this.emit('debug', yellow('Trying to connect to discord ws servers.'));
       for (let i = 0; i < this.#shardCount; i++) {
-        let newShard = new Shard(
-          this,
-          { shardId: i, total: this.#shardCount },
-          this.#wsBase,
-          options.presence
-        );
-        newShard.on('ready', (rawData) => {
-          this.#user = new ClientUser(this, rawData['user']);
-          rawData.guilds.forEach((guild: any) => {
-            this.guilds.set(guild.id, guild);
+        setTimeout(() => {
+          let newShard = new Shard(this, { shardId: i, total: this.#shardCount }, this.#wsBase, options.presence);
+          newShard.on('ready', (rawData) => {
+            rawData.guilds.forEach((guild: any) => {
+              this.guilds.set(guild.id, guild);
+            });
+            this.emit('shardReady', newShard.id);
+            if (this.shardManager.size === this.#shardCount && this.shardManager.every((shard) => shard.isReady)) {
+              this.#user = new ClientUser(this, rawData['user'], options.presence);
+              console.log(this.#user.presence);
+              this.emit('ready');
+            }
           });
-          if (newShard.id === 0) this.emit('ready');
-        });
-        this.shardManager.set(i, newShard);
+          this.shardManager.set(i, newShard);
+        }, 5000 * i);
       }
     } catch (err) {
       console.error(err);

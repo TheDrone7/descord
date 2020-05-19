@@ -1,8 +1,5 @@
 import Client from '../client.ts';
-import {
-  HTTPClientConfig,
-  HTTPRequestOptions
-} from '../interfaces/interface.ts';
+import { HTTPClientConfig, HTTPRequestOptions } from '../interfaces/interface.ts';
 import { HTTPError } from '../errors/error.ts';
 
 /**
@@ -26,7 +23,7 @@ class HTTPClient {
 
   /**
    * Makes an HTTP GET request to the discord REST API.
-   * 
+   *
    * @param path The path to make the request to (does not include base URL)
    * @param config The HTTP Request options.
    */
@@ -35,24 +32,27 @@ class HTTPClient {
       method: 'GET',
       headers: {
         'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization:
-          config?.headers?.authorization || `Bot ${this.client.token}`
+        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2')) {
       return {
         status: response.status,
         statusText: response.statusText,
-        body: await response.json() || {}
+        body: (await response.json()) || {}
       };
     } else {
-      throw new HTTPError({ url: `${this.baseUrl}${this.apiVersion}/${path}`, status: response.status, statusText: response.statusText });
+      throw new HTTPError({
+        url: `${this.baseUrl}${this.apiVersion}/${path}`,
+        status: response.status,
+        statusText: response.statusText
+      });
     }
   }
 
   /**
    * Makes an HTTP POST request to the discord REST API.
-   * 
+   *
    * @param path The path to make the request to.
    * @param config The HTTP Request options.
    */
@@ -62,24 +62,27 @@ class HTTPClient {
       body: config?.body || {},
       headers: {
         'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization:
-          config?.headers?.authorization || `Bot ${this.client.token}`
+        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2')) {
       return {
         status: response.status,
         statusText: response.statusText,
-        body: await response.json() || {}
+        body: (await response.json()) || {}
       };
     } else {
-      throw new HTTPError({ url: `${this.baseUrl}${this.apiVersion}/${path}`, status: response.status, statusText: response.statusText });
+      throw new HTTPError({
+        url: `${this.baseUrl}${this.apiVersion}/${path}`,
+        status: response.status,
+        statusText: response.statusText
+      });
     }
   }
 
   /**
    * Makes an HTTP PATCH request to the discord REST API.
-   * 
+   *
    * @param path The path to make the request to.
    * @param config The HTTP Request options.
    */
@@ -89,24 +92,27 @@ class HTTPClient {
       body: config?.body || {},
       headers: {
         'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization:
-          config?.headers?.authorization || `Bot ${this.client.token}`
+        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
       return {
         status: response.status,
         statusText: response.statusText,
-        body: await response.json() || {}
+        body: (await response.json()) || {}
       };
     } else {
-      throw new HTTPError({ url: `${this.baseUrl}${this.apiVersion}/${path}`, status: response.status, statusText: response.statusText });
+      throw new HTTPError({
+        url: `${this.baseUrl}${this.apiVersion}/${path}`,
+        status: response.status,
+        statusText: response.statusText
+      });
     }
   }
 
   /**
    * Makes an HTTP PUT request to the discord REST API.
-   * 
+   *
    * @param path The path to make the request to.
    * @param config The HTTP Request options.
    */
@@ -116,24 +122,27 @@ class HTTPClient {
       body: config?.body || {},
       headers: {
         'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization:
-          config?.headers?.authorization || `Bot ${this.client.token}`
+        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2')) {
       return {
         status: response.status,
         statusText: response.statusText,
-        body: await response.json() || {}
+        body: (await response.json()) || {}
       };
     } else {
-      throw new HTTPError({ url: `${this.baseUrl}${this.apiVersion}/${path}`, status: response.status, statusText: response.statusText });
+      throw new HTTPError({
+        url: `${this.baseUrl}${this.apiVersion}/${path}`,
+        status: response.status,
+        statusText: response.statusText
+      });
     }
   }
 
   /**
    * Makes an HTTP DELETE request to the discord REST API.
-   * 
+   *
    * @param path The path to make the requets to.
    * @param config The HTTP Request options.
    */
@@ -143,18 +152,21 @@ class HTTPClient {
       body: config?.body || {},
       headers: {
         'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization:
-          config?.headers?.authorization || `Bot ${this.client.token}`
+        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
       }
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
       return {
         status: response.status,
         statusText: response.statusText,
-        body: await response.json() || {}
+        body: (await response.json()) || {}
       };
     } else {
-      throw new HTTPError({ url: `${this.baseUrl}${this.apiVersion}/${path}`, status: response.status, statusText: response.statusText });
+      throw new HTTPError({
+        url: `${this.baseUrl}${this.apiVersion}/${path}`,
+        status: response.status,
+        statusText: response.statusText
+      });
     }
   }
 }

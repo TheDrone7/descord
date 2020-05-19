@@ -58,7 +58,7 @@ class Collection<T, V> extends Map {
 
   /**
    * Runs a given function for each value inside the collection.
-   * 
+   *
    * @param fn The function to be run for each of the values.
    * @param thisArg The value for "this" inside the function.
    */
@@ -69,20 +69,18 @@ class Collection<T, V> extends Map {
 
   /**
    * Checks whether the two collections are equal or not.
-   * 
+   *
    * @param other The other collection to compare with.
    */
   equals(other: Collection<T, V>) {
-    let temp = this.array().filter((g) =>
-      other.has(this.findKey((v: V) => v === g))
-    );
+    let temp = this.array().filter((g) => other.has(this.findKey((v: V) => v === g)));
     if (temp.length === this.size) return true;
     else return false;
   }
 
   /**
    * Checks if each of the value satisfies a specific condition.
-   * 
+   *
    * @param fn The function that checks for the satisfaction of the condition (must return a boolean).
    * @param thisArg The value for "this" to be passed into the function.
    */
@@ -101,7 +99,7 @@ class Collection<T, V> extends Map {
 
   /**
    * Returns the value that satisfies a given condition.
-   * 
+   *
    * @param fn The function that checks for the satisfaction of the condition.
    * @param thisArg The value for "this" to be passed into the function.
    */
@@ -113,7 +111,7 @@ class Collection<T, V> extends Map {
 
   /**
    * Finds the key for the value that satisfies a given condition.
-   * 
+   *
    * @param fn The function to find the object whose key is to be found.
    * @param thisArg The value for "this" to be passed into the function.
    */
@@ -127,7 +125,7 @@ class Collection<T, V> extends Map {
 
   /**
    * Returns a new collection containing only the items shard between the two collections.
-   * 
+   *
    * @param other The other collection to intersect with.
    */
   intersect(other: Collection<T, V>) {
@@ -152,7 +150,7 @@ class Collection<T, V> extends Map {
 
   /**
    * Maps the collection to specific values and returns the array of calculated values.
-   * 
+   *
    * @param fn The mapping function.
    * @param thisArg The value for "this" to be passed into the function.
    */
@@ -162,7 +160,7 @@ class Collection<T, V> extends Map {
 
   /**
    * Same as map except returns a collection instead of an array.
-   * 
+   *
    * @param fn The mapping function.
    * @param thisArg The value for "this" to be passed into the function.
    */
@@ -172,7 +170,7 @@ class Collection<T, V> extends Map {
 
   /**
    * Reduces the collection into a single value.
-   * 
+   *
    * @param fn The reducing function
    * @param initial The initial value.
    */
@@ -182,7 +180,7 @@ class Collection<T, V> extends Map {
 
   /**
    * Checks whether any of the values satisfy a condition.
-   * 
+   *
    * @param fn The function to check for the satisfaction of the condition.
    * @param thisArg The value for "this" to be passed into the function.
    */

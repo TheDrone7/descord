@@ -1,7 +1,4 @@
-import {
-  connectWebSocket,
-  isWebSocketCloseEvent
-} from 'https://deno.land/std/ws/mod.ts';
+import { connectWebSocket, isWebSocketCloseEvent } from 'https://deno.land/std/ws/mod.ts';
 import Client from '../client.ts';
 import { Presence } from '../interfaces/interface.ts';
 import { green, red, yellow } from 'https://deno.land/std/fmt/colors.ts';
@@ -31,12 +28,12 @@ export default class Shard {
   }
 
   /**
-   * The shard ID/
+   * The shard ID.
    */
   get id() {
     return this.#id;
   }
-  
+
   /**
    * Whether the shard is connected or not.
    */
@@ -91,9 +88,7 @@ export default class Shard {
     if (!this.#eventManager.get(event)) this.#eventManager.set(event, handler);
     else {
       throw new Error(
-        "An event handler is already set for the event '" +
-          event +
-          "'. You can only set 1 handler per event."
+        "An event handler is already set for the event '" + event + "'. You can only set 1 handler per event."
       ).stack;
     }
   }
@@ -171,19 +166,48 @@ export default class Shard {
               this.emit('guildCreate', raw.d);
               break;
           }
+        } else if (raw.op === 9) {
+          this.#retries -= 1;
+          if (this.#retries > -1) {
+            console.error(
+              red(`INVALID SESSION.\nResumable? ${raw.d}.${!raw.d ? '\nRetrying to connect in 5 seconds.' : ''}`)
+            );
+            if (raw.d) this.resume();
+            else this.reconnect();
+          } else this.client.wsClose(this.id);
         }
       } else if (isWebSocketCloseEvent(msg)) {
         this.client.emit(
           'debug',
           red(
-            `Connection closed by discord.\nError code:\t${
-              msg.code
-            }.\nError reason:\t${msg.reason}.\nShard ID:\t${this.#id + 1} of ${
-              this.#total
-            }.`
+            `Connection closed by discord.\nError code:\t${msg.code}.\nError reason:\t${msg.reason}.\nShard ID:\t${
+              this.#id + 1
+            } of ${this.#total}.`
           )
         );
       }
     }
+  }
+
+  /**
+   * Resumes the websocket session with the discord servers.
+   */
+  resume() {
+    this.ws.send(
+      JSON.stringify({
+        op: 6,
+        d: {
+          token: this.client.token,
+          session_id: this.#session || null,
+          seq: this.#sequence || 0
+        }
+      })
+    );
+  }
+
+  reconnect() {
+    setTimeout(() => {
+      this.ws.send(JSON.stringify(this.indentify(this.client.user.presence || { status: 'online' })));
+    }, 5000);
   }
 }
