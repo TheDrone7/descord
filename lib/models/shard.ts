@@ -6,6 +6,9 @@ import Client from '../client.ts';
 import { Presence } from '../interfaces/interface.ts';
 import { green, red, yellow } from 'https://deno.land/std/fmt/colors.ts';
 
+/**
+ * A descord shard for sharded bots.
+ */
 export default class Shard {
   #eventManager: Map<string, (...params: any[]) => void>;
   #client: Client;
@@ -20,19 +23,37 @@ export default class Shard {
 
   #ws: any;
 
+  /**
+   * The descord client that this shard is for.
+   */
   get client() {
     return this.#client;
   }
+
+  /**
+   * The shard ID/
+   */
   get id() {
     return this.#id;
   }
+  
+  /**
+   * Whether the shard is connected or not.
+   */
   get isReady() {
     return this.#isReady;
   }
+
+  /**
+   * The heartbeat interval for the shard.
+   */
   get interval() {
     return this.#interval;
   }
 
+  /**
+   * Create a new shard (instantly connects to the discord ws server).
+   */
   constructor(
     client: Client,
     shardInfo: { shardId: number; total: number } = { shardId: 0, total: 1 },
@@ -56,10 +77,16 @@ export default class Shard {
     });
   }
 
+  /**
+   * The websocket representation of the shard.
+   */
   get ws() {
     return this.#ws;
   }
 
+  /**
+   * Add an event handler for the shard's events.
+   */
   on(event: string, handler: (...params: any[]) => void) {
     if (!this.#eventManager.get(event)) this.#eventManager.set(event, handler);
     else {
@@ -71,12 +98,18 @@ export default class Shard {
     }
   }
 
+  /**
+   * Fires the shard's events.
+   */
   emit(event: string, ...params: any[]) {
     if (this.#eventManager.get(event)) {
       this.#eventManager.get(event)!(...params);
     }
   }
 
+  /**
+   * generates an identify payload for the shard.
+   */
   private identify(presence: Presence) {
     return {
       op: 2,
@@ -98,6 +131,9 @@ export default class Shard {
     };
   }
 
+  /**
+   * Handles raw discord events.
+   */
   async handleEvents(identify: any) {
     for await (const msg of this.#ws) {
       if (typeof msg === 'string') {

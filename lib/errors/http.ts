@@ -1,3 +1,6 @@
+/**
+ * A HTTP request error.
+ */
 class HTTPError extends Error {
   constructor(response: any) {
     super(
