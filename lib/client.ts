@@ -77,11 +77,10 @@ class Client {
       } else throw new Error('Invalid shard ID.').stack;
     } else {
       this.shardManager.each((shard) => shard.ws.close());
+      this.shardManager.clear();
       this.emit('disconnected');
     }
   }
-
-  async httpRequest(path: string, config: any) {}
 
   emit(event: string, ...params: any[]) {
     if (this.#eventHandler.get(event))
