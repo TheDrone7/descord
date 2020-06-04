@@ -197,7 +197,7 @@ class Client {
               this.emit('ready');
             }
           });
-          
+
           newShard.on('channelCreate', (data: any) => {
             this.channels.set(data.id, data);
             if (data.guild_id) {

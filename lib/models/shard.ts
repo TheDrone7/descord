@@ -48,7 +48,7 @@ export default class Shard {
     });
   }
 
-    /**
+  /**
    * The descord client that this shard is for.
    */
   get client() {
