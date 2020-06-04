@@ -9,13 +9,17 @@ import { Presence } from './interfaces/interface.ts';
  */
 class Client {
   #eventHandler: Map<string, (...params: any[]) => void>;
-  #httpBase: string;
+  readonly httpBase: string;
   #wsBase: string;
   #token?: string;
-  #guilds: Collection<string, any>;
+  readonly guilds: Collection<string, any>;
+  readonly channels: Collection<string, any>;
+  readonly messages: Collection<string, any>;
+  readonly users: Collection<string, any>;
   #user?: ClientUser;
   #clientId?: string;
   #shardCount: number;
+  #ready: boolean;
 
   shardManager: Collection<number, Shard>;
   owners: string[];
@@ -26,10 +30,14 @@ class Client {
    */
   constructor() {
     this.#eventHandler = new Map();
-    this.#httpBase = 'https://discord.com/api/v6';
+    this.httpBase = 'https://discord.com/api/v6';
     this.#wsBase = '';
     this.#shardCount = 1;
-    this.#guilds = new Collection();
+    this.guilds = new Collection();
+    this.channels = new Collection();
+    this.messages = new Collection();
+    this.users = new Collection();
+    this.#ready = false;
 
     this.shardManager = new Collection();
     this.owners = [];
@@ -78,10 +86,10 @@ class Client {
   }
 
   /**
-   * The collection of the discord guilds to which the logged in bot has been added.
+   * Whether the bot is logged in or not.
    */
-  get guilds() {
-    return this.#guilds;
+  get isReady() {
+    return this.#ready;
   }
 
   /**
@@ -146,7 +154,7 @@ class Client {
       this.#clientId = atob(token.split('.')[0]);
 
       this.emit('debug', yellow('Getting gateway info.'));
-      let gatewayResponse = await fetch(`${this.#httpBase}/gateway/bot`, {
+      let gatewayResponse = await fetch(`${this.httpBase}/gateway/bot`, {
         method: 'GET',
         headers: { Authorization: `Bot ${token}` }
       });
@@ -180,10 +188,55 @@ class Client {
             this.emit('shardReady', newShard.id);
             if (this.shardManager.size === this.#shardCount && this.shardManager.every((shard) => shard.isReady)) {
               this.#user = new ClientUser(this, rawData['user'], options.presence);
-              console.log(this.#user.presence);
+            }
+          });
+          newShard.on('guildCreate', (guild: any) => {
+            this.guilds.set(guild.id, guild);
+            if (this.guilds.every((g: any) => !g.unavailable) && !this.#ready) {
+              this.#ready = true;
               this.emit('ready');
             }
           });
+          
+          newShard.on('channelCreate', (data: any) => {
+            this.channels.set(data.id, data);
+            if (data.guild_id) {
+              let g = this.guilds.get(data.guild_id);
+              g.channels[data.id] = data;
+              this.guilds.set(g.id, g);
+            }
+            this.emit('channelCreate', data);
+          });
+
+          newShard.on('channelUpdate', (data: any) => {
+            this.channels.set(data.id, data);
+            if (data.guild_id) {
+              let g = this.guilds.get(data.guild_id);
+              g.channels[data.id] = data;
+              this.guilds.set(g.id, g);
+            }
+            this.emit('channelCreate', data);
+          });
+
+          newShard.on('channelDelete', (data: any) => {
+            this.channels.delete(data.id);
+            if (data.guild_id) {
+              let g = this.guilds.get(data.guild_id);
+              delete g.channels[data.id];
+              this.guilds.set(g.id, g);
+            }
+            this.emit('channelDelete', data);
+          });
+
+          newShard.on('channelPinsUpdate', (data: any) => {
+            let c = this.channels.get(data.channel_id);
+            if (c) c.lastPinnedTimestamp = new Date(data.last_pin_timestamp).getTime();
+            if (data.guild_id) {
+              if (c) this.guilds.get(data.guild_id).channels[data.channel_id] = c;
+            }
+            this.emit('channelPinsUpdate', data);
+          });
+
           this.shardManager.set(i, newShard);
         }, 5000 * i);
       }
