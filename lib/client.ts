@@ -146,7 +146,7 @@ class Client {
    */
   async login(
     token: string,
-    options: { presence: Presence } = {
+    options: { presence: Presence, sharding?: { shardId: number, totalShards: number }, shardCount?: number } = {
       presence: { status: 'online', afk: false }
     }
   ) {
@@ -175,74 +175,84 @@ class Client {
       this.emit('debug', green('Gateway info successfully fetched.'));
       this.#token = token;
       this.#wsBase = gateway.url + '?v=6&encoding=6';
-      this.#shardCount = gateway.shards;
+      this.#shardCount = options.shardCount || gateway.shards;
 
       this.emit('debug', yellow('Trying to connect to discord ws servers.'));
-      for (let i = 0; i < this.#shardCount; i++) {
-        setTimeout(() => {
-          let newShard = new Shard(this, { shardId: i, total: this.#shardCount }, this.#wsBase, options.presence);
-          newShard.on('ready', (rawData) => {
-            rawData.guilds.forEach((guild: any) => {
-              this.guilds.set(guild.id, guild);
-            });
-            this.emit('shardReady', newShard.id);
-            if (this.shardManager.size === this.#shardCount && this.shardManager.every((shard) => shard.isReady)) {
-              this.#user = new ClientUser(this, rawData['user'], options.presence);
-            }
-          });
-          newShard.on('guildCreate', (guild: any) => {
-            this.guilds.set(guild.id, guild);
-            if (this.guilds.every((g: any) => !g.unavailable) && !this.#ready) {
-              this.#ready = true;
-              this.emit('ready');
-            }
-          });
-
-          newShard.on('channelCreate', (data: any) => {
-            this.channels.set(data.id, data);
-            if (data.guild_id) {
-              let g = this.guilds.get(data.guild_id);
-              g.channels[data.id] = data;
-              this.guilds.set(g.id, g);
-            }
-            this.emit('channelCreate', data);
-          });
-
-          newShard.on('channelUpdate', (data: any) => {
-            this.channels.set(data.id, data);
-            if (data.guild_id) {
-              let g = this.guilds.get(data.guild_id);
-              g.channels[data.id] = data;
-              this.guilds.set(g.id, g);
-            }
-            this.emit('channelCreate', data);
-          });
-
-          newShard.on('channelDelete', (data: any) => {
-            this.channels.delete(data.id);
-            if (data.guild_id) {
-              let g = this.guilds.get(data.guild_id);
-              delete g.channels[data.id];
-              this.guilds.set(g.id, g);
-            }
-            this.emit('channelDelete', data);
-          });
-
-          newShard.on('channelPinsUpdate', (data: any) => {
-            let c = this.channels.get(data.channel_id);
-            if (c) c.lastPinnedTimestamp = new Date(data.last_pin_timestamp).getTime();
-            if (data.guild_id) {
-              if (c) this.guilds.get(data.guild_id).channels[data.channel_id] = c;
-            }
-            this.emit('channelPinsUpdate', data);
-          });
-
-          this.shardManager.set(i, newShard);
-        }, 5000 * i);
+      if (options.sharding) {
+        this.#shardCount = options.sharding.totalShards;
+        this.instantiateShard(options.sharding.shardId, options.presence);
+      } else {
+        for (let i = 0; i < this.#shardCount; i++) {
+          this.instantiateShard(i, options.presence);
+        }
       }
     } catch (err) {
       console.error(err);
     }
+  }
+
+  private instantiateShard(shardId: number, presence: Presence) {
+    setTimeout(() => {
+      let newShard = new Shard(this, { shardId: shardId, total: this.#shardCount }, this.#wsBase, presence);
+      newShard.on('ready', (rawData) => {
+        rawData.guilds.forEach((guild: any) => {
+          this.guilds.set(guild.id, guild);
+        });
+        this.emit('shardReady', newShard.id);
+        if (this.shardManager.size === this.#shardCount && this.shardManager.every((shard) => shard.isReady)) {
+          this.#user = new ClientUser(this, rawData['user'], presence);
+        }
+      });
+      newShard.on('guildCreate', (guild: any) => {
+        this.guilds.set(guild.id, guild);
+        if (this.guilds.every((g: any) => !g.unavailable) && !this.#ready) {
+          this.#ready = true;
+          this.emit('ready');
+        }
+      });
+
+      newShard.on('channelCreate', (data: any) => {
+        this.channels.set(data.id, data);
+        if (data.guild_id) {
+          let g = this.guilds.get(data.guild_id);
+          g.channels[data.id] = data;
+          this.guilds.set(g.id, g);
+        }
+        this.emit('channelCreate', data);
+      });
+
+      newShard.on('channelUpdate', (data: any) => {
+        this.channels.set(data.id, data);
+        if (data.guild_id) {
+          let g = this.guilds.get(data.guild_id);
+          g.channels[data.id] = data;
+          this.guilds.set(g.id, g);
+        }
+        this.emit('channelCreate', data);
+      });
+
+      newShard.on('channelDelete', (data: any) => {
+        this.channels.delete(data.id);
+        if (data.guild_id) {
+          let g = this.guilds.get(data.guild_id);
+          delete g.channels[data.id];
+          this.guilds.set(g.id, g);
+        }
+        this.emit('channelDelete', data);
+      });
+
+      newShard.on('channelPinsUpdate', (data: any) => {
+        let c = this.channels.get(data.channel_id);
+        if (c) c.lastPinnedTimestamp = new Date(data.last_pin_timestamp).getTime();
+        if (data.guild_id) {
+          if (c) this.guilds.get(data.guild_id).channels[data.channel_id] = c;
+        }
+        this.emit('channelPinsUpdate', data);
+      });
+
+
+      this.shardManager.set(shardId, newShard);
+    }, 5000 * shardId);
   }
 }
 
