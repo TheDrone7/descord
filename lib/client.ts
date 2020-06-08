@@ -146,7 +146,7 @@ class Client {
    */
   async login(
     token: string,
-    options: { presence: Presence, sharding?: { shardId: number, totalShards: number }, shardCount?: number } = {
+    options: { presence: Presence; sharding?: { shardId: number; totalShards: number }; shardCount?: number } = {
       presence: { status: 'online', afk: false }
     }
   ) {
@@ -205,6 +205,12 @@ class Client {
       });
       newShard.on('guildCreate', (guild: any) => {
         this.guilds.set(guild.id, guild);
+        guild.members.map((x: any) => {
+          x.user.presence = guild.presences.find((p: any) => p.user.id === x.user.id);
+          return x;
+        });
+        delete guild.presences;
+        guild.members.forEach((member: any) => this.users.set(member.user.id, member.user));
         if (this.guilds.every((g: any) => !g.unavailable) && !this.#ready) {
           this.#ready = true;
           this.emit('ready');
@@ -250,6 +256,98 @@ class Client {
         this.emit('channelPinsUpdate', data);
       });
 
+      newShard.on('guildUpdate', (data: any) => {
+        let guild = this.guilds.get(data.id);
+        for (let key of Object.keys(data)) if (guild[key] !== data[key]) guild[key] = data[key];
+        this.guilds.set(data.id, guild);
+        this.emit('guildUpdate', data);
+      });
+
+      newShard.on('guildDelete', (data: any) => {
+        let guild = this.guilds.get(data.id);
+        this.guilds.delete(guild.id);
+        this.emit('guildDelete', guild);
+      });
+
+      newShard.on('guildBanAdd', (data: any) => {
+        this.emit('guildBanAdd', this.guilds.get(data.guild_id), data.user);
+      });
+
+      newShard.on('guildBanRemove', (data: any) => {
+        this.emit('guildBanRemove', this.guilds.get(data.guild_id), data.user);
+      });
+
+      newShard.on('guildEmojisUpdate', (data: any) => {
+        this.emit('guildEmojisUpdate', this.guilds.get(data.guild_id), data.emojis);
+      });
+
+      newShard.on('guildIntegrationsUpdate', (data: any) => {
+        this.emit('guildIntegrationsUpdate', this.guilds.get(data.guild_id));
+      });
+
+      newShard.on('guildMemberAdd', (data: any) => {
+        let member = data,
+          guild = this.guilds.get(data.guild_id);
+        delete member.guild_id;
+        guild.members = guild.members.filter((m: any) => m.user.id !== member.user.id);
+        guild.members.push(member);
+        this.guilds.set(guild.id, guild);
+        this.users.set(member.user.id, member.user);
+        this.emit('guildMemberAdd', guild, member);
+      });
+
+      newShard.on('guildMemberRemove', (data: any) => {
+        let guild = this.guilds.get(data.guild_id);
+        guild.members = guild.members.filter((m: any) => m.user.id !== data.user.id);
+        this.guilds.set(guild.id, guild);
+        this.emit('guildMemberRemove', guild, data.user);
+      });
+
+      newShard.on('guildMemberUpdate', (data: any) => {
+        let guild = this.guilds.get(data.guild_id);
+        let member = guild.members.filter((m: any) => m.user.id === data.user.id)[0];
+        let oldMember = { ...member };
+        for (let k of Object.keys(data)) if (member.k && member.k !== data.k) member.k = data.k;
+        guild.members = guild.members.filter((m: any) => m.user.id !== member.user.id);
+        guild.members.push(member);
+        this.guilds.set(guild.id, guild);
+        this.users.set(member.user.id, member.user);
+        this.emit('guildMemberUpdate', guild, oldMember, member);
+      });
+
+      newShard.on('guildMembersChunk', (data: any) => {
+        let guild = this.guilds.get(data.guild_id);
+        guild.members.filter((m: any) => !data.members.map((x: any) => x.user.id).includes(m.user.id));
+        guild.members.push(...data.members);
+        data.members.map((x: any) => {
+          x.user.presence = guild.presences.find((p: any) => p.user.id === x.user.id);
+          return x;
+        });
+        data.members.forEach((member: any) => this.users.set(member.user.id, member.user));
+        this.guilds.set(guild.id, guild);
+      });
+
+      newShard.on('guildRoleCreate', (data: any) => {
+        let guild = this.guilds.get(data.guild_id);
+        guild.roles = guild.roles.filter((r: any) => r.id !== data.role.id);
+        guild.roles.push(data.role);
+        this.emit('guildRoleCreate', guild, data.role);
+      });
+
+      newShard.on('guildRoleUpdate', (data: any) => {
+        let guild = this.guilds.get(data.guild_id);
+        let role = guild.roles.filter((r: any) => r.id === data.role.id)[0];
+        guild.roles = guild.roles.filter((r: any) => r.id !== data.role.id);
+        guild.roles.push(data.role);
+        this.emit('guildRoleUpdate', guild, role, data.role);
+      });
+
+      newShard.on('guildRoleDelete', (data: any) => {
+        let guild = this.guilds.get(data.guild_id);
+        let role = guild.roles.filter((r: any) => r.id === data.role.id)[0];
+        guild.roles = guild.roles.filter((r: any) => r.id !== data.role.id);
+        this.emit('guildRoleDelete', guild, role);
+      });
 
       this.shardManager.set(shardId, newShard);
     }, 5000 * shardId);

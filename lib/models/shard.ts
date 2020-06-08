@@ -1,7 +1,7 @@
 import { connectWebSocket, isWebSocketCloseEvent } from 'https://deno.land/std/ws/mod.ts';
 import Client from '../client.ts';
 import { Presence } from '../interfaces/interface.ts';
-import { green, red, yellow } from 'https://deno.land/std/fmt/colors.ts';
+import { red } from 'https://deno.land/std/fmt/colors.ts';
 
 /**
  * A descord shard for sharded bots.
@@ -9,9 +9,9 @@ import { green, red, yellow } from 'https://deno.land/std/fmt/colors.ts';
 export default class Shard {
   readonly wsUrl: string;
   #eventManager: Map<string, (...params: any[]) => void>;
-  #client: Client;
-  #id: number;
-  #total: number;
+  readonly client: Client;
+  readonly id: number;
+  readonly total: number;
   #isReady: boolean;
   #sequence: number;
   #heartbeat: number;
@@ -30,14 +30,14 @@ export default class Shard {
     wsBase: string,
     presence: Presence
   ) {
-    this.#client = client;
+    this.client = client;
     this.#isReady = false;
     this.#sequence = -1;
     this.#interval = -1;
     this.#heartbeat = -1;
     this.#session = '';
-    this.#id = shardInfo.shardId;
-    this.#total = shardInfo.total;
+    this.id = shardInfo.shardId;
+    this.total = shardInfo.total;
     this.#retries = 3;
     this.#eventManager = new Map();
     this.wsUrl = wsBase;
@@ -46,20 +46,6 @@ export default class Shard {
       this.#ws = ws;
       this.handleEvents(this.identify(presence));
     });
-  }
-
-  /**
-   * The descord client that this shard is for.
-   */
-  get client() {
-    return this.#client;
-  }
-
-  /**
-   * The shard ID.
-   */
-  get id() {
-    return this.#id;
   }
 
   /**
@@ -117,7 +103,7 @@ export default class Shard {
           $browser: 'descord',
           $device: 'descord'
         },
-        shard: [this.#id, this.#total],
+        shard: [this.id, this.total],
         presence: {
           status: presence?.status || 'online',
           since: Date.now(),
@@ -136,7 +122,7 @@ export default class Shard {
       if (typeof msg === 'string') {
         let raw = JSON.parse(msg);
         if (raw.s !== null && raw.s > -1) this.#sequence = raw.s;
-        this.#client.emit('raw', raw);
+        this.client.emit('raw', raw);
         if (raw.op === 10) {
           this.#heartbeat = raw.d['heartbeat_interval'];
           this.#ws.send(
@@ -145,7 +131,7 @@ export default class Shard {
               d: this.#sequence === -1 ? null : this.#sequence
             })
           );
-          setInterval(() => {
+          this.#interval = setInterval(() => {
             this.#ws.send(
               JSON.stringify({
                 op: 1,
@@ -205,6 +191,9 @@ export default class Shard {
               break;
             case 'guild_member_update':
               this.emit('guildMemberUpdate', raw.d);
+              break;
+            case 'guild_members_chunk':
+              this.emit('guildMembersChunk', raw.d);
               break;
             case 'guild_role_create':
               this.emit('guildRoleCreate', raw.d);
@@ -282,8 +271,8 @@ export default class Shard {
           'debug',
           red(
             `Connection closed by discord.\nError code:\t${msg.code}.\nError reason:\t${msg.reason}.\nShard ID:\t${
-              this.#id + 1
-            } of ${this.#total}.`
+              this.id + 1
+            } of ${this.total}.`
           )
         );
       }
