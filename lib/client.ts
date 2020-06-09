@@ -211,6 +211,7 @@ class Client {
         });
         delete guild.presences;
         guild.members.forEach((member: any) => this.users.set(member.user.id, member.user));
+        guild.channels.forEach((channel: any) => this.channels.set(channel.id, channel));
         if (this.guilds.every((g: any) => !g.unavailable) && !this.#ready) {
           this.#ready = true;
           this.emit('ready');
@@ -306,8 +307,8 @@ class Client {
       newShard.on('guildMemberUpdate', (data: any) => {
         let guild = this.guilds.get(data.guild_id);
         let member = guild.members.filter((m: any) => m.user.id === data.user.id)[0];
-        let oldMember = { ...member };
-        for (let k of Object.keys(data)) if (member.k && member.k !== data.k) member.k = data.k;
+        let oldMember = member !== undefined ? { ...member } : {};
+        for (let k of Object.keys(data)) if (member[k] && member[k] !== data[k]) member[k] = data[k];
         guild.members = guild.members.filter((m: any) => m.user.id !== member.user.id);
         guild.members.push(member);
         this.guilds.set(guild.id, guild);
@@ -347,6 +348,82 @@ class Client {
         let role = guild.roles.filter((r: any) => r.id === data.role.id)[0];
         guild.roles = guild.roles.filter((r: any) => r.id !== data.role.id);
         this.emit('guildRoleDelete', guild, role);
+      });
+
+      newShard.on('inviteCreate', (data: any) => {
+        this.emit('inviteCreate', this.guilds.get(data.guild_id), data);
+      });
+
+      newShard.on('inviteDelete', (data: any) => {
+        this.emit('inviteDelete', this.guilds.get(data.guild_id), data);
+      });
+
+      newShard.on('messageCreate', (data: any) => {
+        this.messages.set(data.id, data);
+        let channel = this.channels.get(data.channel_id);
+        channel.last_message_id = data.id;
+        if (data.guild_id) {
+          let g = this.guilds.get(data.guild_id);
+          g.channels = g.channels.filter((c: any) => c.id !== channel.id);
+          g.channels.push(channel);
+          this.guilds.set(g.id, g);
+        }
+        this.emit('message', data);
+      });
+
+      newShard.on('messageUpdate', (data: any) => {
+        let oldMessage = this.messages.get(data.id);
+        let newMessage = oldMessage !== undefined ? {...oldMessage} : {};
+        for (let k of Object.keys(data)) newMessage[k] = data[k];
+        this.emit('messageUpdate', oldMessage, newMessage);
+      });
+
+      newShard.on('messageDelete', (data: any) => {
+        this.emit('messageDelete', this.messages.get(data.id) || data);
+      });
+
+      newShard.on('messageDeleteBulk', (data: any) => {
+        let deleted = new Collection();
+        data.ids.forEach((id: string) => deleted.set(id, this.messages.get(id)));
+        this.emit('messageDeleteBulk', deleted, this.channels.get(data.channel_id));
+      });
+
+      newShard.on('messageReactionAdd', (data: any) => {
+        this.emit('messageReactionAdd', {
+          user: this.users.get(data.user_id) || { id: data.user_id },
+          channel: this.channels.get(data.channel_id) || { id: data.channel_id },
+          message: this.messages.get(data.message_id) || { id: data.message_id },
+          emoji: data.emoji,
+          guild: data.guild_id !== undefined ? this.guilds.get(data.guild_id) || { id: data.guild_id } : undefined,
+          member: data.member
+        });
+      });
+
+      newShard.on('messageReactionRemove', (data: any) => {
+        this.emit('messageReactionRemove', {
+          user: this.users.get(data.user_id) || { id: data.user_id },
+          channel: this.channels.get(data.channel_id) || { id: data.channel_id },
+          message: this.messages.get(data.message_id) || { id: data.message_id },
+          emoji: data.emoji,
+          guild: data.guild_id !== undefined ? this.guilds.get(data.guild_id) || { id: data.guild_id } : undefined
+        });
+      });
+
+      newShard.on('messageReactionRemoveAll', (data: any) => {
+        this.emit('messageReactionRemoveAll', {
+          channel: this.channels.get(data.channel_id) || { id: data.channel_id },
+          message: this.messages.get(data.message_id) || { id: data.message_id },
+          guild: data.guild_id !== undefined ? this.guilds.get(data.guild_id) || { id: data.guild_id } : undefined
+        });
+      });
+
+      newShard.on('messageReactionRemoveAll', (data: any) => {
+        this.emit('messageReactionRemoveAll', {
+          channel: this.channels.get(data.channel_id) || { id: data.channel_id },
+          message: this.messages.get(data.message_id) || { id: data.message_id },
+          guild: data.guild_id !== undefined ? this.guilds.get(data.guild_id) || { id: data.guild_id } : undefined,
+          emoji: data.emoji
+        });
       });
 
       this.shardManager.set(shardId, newShard);
