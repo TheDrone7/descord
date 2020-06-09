@@ -373,7 +373,7 @@ class Client {
 
       newShard.on('messageUpdate', (data: any) => {
         let oldMessage = this.messages.get(data.id);
-        let newMessage = oldMessage !== undefined ? {...oldMessage} : {};
+        let newMessage = oldMessage !== undefined ? { ...oldMessage } : {};
         for (let k of Object.keys(data)) newMessage[k] = data[k];
         this.emit('messageUpdate', oldMessage, newMessage);
       });
