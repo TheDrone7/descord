@@ -417,8 +417,8 @@ class Client {
         });
       });
 
-      newShard.on('messageReactionRemoveAll', (data: any) => {
-        this.emit('messageReactionRemoveAll', {
+      newShard.on('messageReactionRemoveEmoji', (data: any) => {
+        this.emit('messageReactionRemoveEmoji', {
           channel: this.channels.get(data.channel_id) || { id: data.channel_id },
           message: this.messages.get(data.message_id) || { id: data.message_id },
           guild: data.guild_id !== undefined ? this.guilds.get(data.guild_id) || { id: data.guild_id } : undefined,
