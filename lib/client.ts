@@ -51,7 +51,7 @@ class Client {
    */
   addEventListener(event: string, handler: (...params: any[]) => void) {
     if (this.#eventHandler.get(event))
-      throw `Event handler already set for event: ${event}. Only one handler per event is allowed`;
+      throw new Error(`Event handler already set for event: ${event}. Only one handler per event is allowed`).stack;
     else this.#eventHandler.set(event, handler);
   }
 
@@ -62,6 +62,14 @@ class Client {
    */
   on(event: string, handler: (...params: any[]) => void) {
     this.addEventListener(event, handler);
+  }
+
+  /**
+   * Remove an already set event listener or do nothing.
+   * @param event
+   */
+  removeListener(event: string) {
+    this.#eventHandler.delete(event);
   }
 
   /**
@@ -423,6 +431,59 @@ class Client {
           message: this.messages.get(data.message_id) || { id: data.message_id },
           guild: data.guild_id !== undefined ? this.guilds.get(data.guild_id) || { id: data.guild_id } : undefined,
           emoji: data.emoji
+        });
+      });
+
+      newShard.on('presenceUpdate', (data: any) => {
+        let guild = this.guilds.get(data.guild_id);
+        let member = {
+          user: this.users.get(data.user.id) || {},
+          roles: guild.roles.filter((r: any) => data.roles.includes(r.id)),
+          presence: {
+            game: data.game,
+            activities: data.activities,
+            client: data.client_status,
+            status: data.status
+          },
+          guild,
+          nickname: data.nick,
+          premiumSince: data.premium_since
+        };
+        for (let k of Object.keys(data.user)) if (data.user[k] !== member.user[k]) member.user[k] = data.user[k];
+        this.users.set(member.user.id, member.user);
+
+        this.emit('presenceUpdate', member);
+      });
+
+      newShard.on('typingStart', (data: any) => {
+        let user = this.users.get(data.user_id) || { id: data.user_id };
+        let channel = this.channels.get(data.channel_id) || { id: data.channel_id };
+        let guild = undefined;
+        let member = undefined;
+        if (data.guild_id) {
+          guild = this.guilds.get(data.guild_id) || { id: data.guild_id };
+          member = data.member;
+        }
+        this.emit('typingStart', member || user, channel, guild);
+      });
+
+      newShard.on('userUpdate', (data: any) => {
+        this.#user = new ClientUser(this, data, this.user.presence);
+        this.emit('userUpdate', this.user);
+      });
+
+      newShard.on('voiceStateUpdate', (data: any) => {
+        this.emit('voiceStateUpdate', data);
+      });
+
+      newShard.on('voiceServerUpdate', (data: any) => {
+        this.emit('voiceServerUpdate', data);
+      });
+
+      newShard.on('webhooksUpdate', (data: any) => {
+        this.emit('webhooksUpdate', {
+          channel: this.channels.get(data.channel_id) || { id: data.channel_id },
+          guild: this.guilds.get(data.guild_id) || { id: data.guild_id }
         });
       });
 
