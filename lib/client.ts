@@ -490,6 +490,15 @@ class Client {
       this.shardManager.set(shardId, newShard);
     }, 5000 * shardId);
   }
+
+  async getAuditLogs(guildId: string) {
+    try {
+      let audit = await this.http.get(`/guilds/${guildId}/audit-logs`);
+      console.log(JSON.stringify(audit.body));
+    } catch (e) {
+      throw Error(`Error requesting audit logs for guild ID '${guildId}'.\n${e}.`).stack;
+    }
+  }
 }
 
 export default Client;
