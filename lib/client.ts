@@ -491,6 +491,10 @@ class Client {
     }, 5000 * shardId);
   }
 
+  /**
+   * Fetches Audit Logs for the specified guild. The bot must have VIEW_AUDIT_LOGS permission.
+   * @param guildId The ID of the guild whose logs are to be fetched.
+   */
   async getAuditLogs(guildId: string) {
     try {
       let audit = await this.http.get(`/guilds/${guildId}/audit-logs`);
