@@ -80,7 +80,9 @@ class ClientUser {
   }
 
   avatarURL(size?: number) {
-    return `https://cdn.discordapp.com/avatars/${this.id}/${this.avatarHash}.${this.avatarHash?.startsWith('a_') ? 'gif' : 'png'}${size ? `?size=${size}` : ''}`;
+    return `https://cdn.discordapp.com/avatars/${this.id}/${this.avatarHash}.${
+      this.avatarHash?.startsWith('a_') ? 'gif' : 'png'
+    }${size ? `?size=${size}` : ''}`;
   }
 
   /**
