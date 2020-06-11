@@ -534,7 +534,6 @@ class Client {
     }
   }
 
-
   /* Webhooks */
 
   /**
