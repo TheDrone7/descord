@@ -491,6 +491,8 @@ class Client {
     }, 5000 * shardId);
   }
 
+  /* Audit Logs */
+
   /**
    * Fetches Audit Logs for the specified guild. The bot must have VIEW_AUDIT_LOGS permission.
    * @param guildId The ID of the guild whose logs are to be fetched.
@@ -503,6 +505,33 @@ class Client {
       throw Error(`Error requesting audit logs for guild ID '${guildId}'.\n${e}.`).stack;
     }
   }
+
+  /* Invites */
+
+  /**
+   * Get information regarding an invite code.
+   * @param code The invite code whose information is to be fetched.
+   */
+  async getInviteInfo(code: string) {
+    try {
+      let invite = await this.http.get(`/invites/${code}?with_counts=true`);
+      return invite.body;
+    } catch (e) {
+      throw Error(`Error requesting invite info for invite code '${code}'.\n${e}.`).stack;
+    }
+  }
+
+  async deleteInvite(code: string) {
+    try {
+      let invite = await this.http.delete(`/invites/${code}`);
+      return invite.body;
+    } catch (e) {
+      throw Error(`Error deleting invite for invite code '${code}'.\n${e}.`).stack;
+    }
+  }
+
+
+  /* Webhooks */
 
   /**
    * Get webhooks that belong to a specific channel.

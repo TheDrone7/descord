@@ -68,7 +68,7 @@ class HTTPClient {
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'POST',
-      body: config?.body || {},
+      body: config?.body,
       headers: config?.headers
     });
     if (response.status.toString().startsWith('2')) {
@@ -101,7 +101,7 @@ class HTTPClient {
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'PATCH',
-      body: config?.body || {},
+      body: config?.body,
       headers: config?.headers
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
@@ -134,7 +134,7 @@ class HTTPClient {
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'PUT',
-      body: config?.body || {},
+      body: config?.body,
       headers: config?.headers
     });
     if (response.status.toString().startsWith('2')) {
@@ -160,14 +160,12 @@ class HTTPClient {
    */
   async delete(path: string, config?: HTTPRequestOptions) {
     if (!config)
-      config = {
-        headers: new Headers()
-      };
+      config = { headers: new Headers() };
     else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'DELETE',
-      body: config?.body || {},
+      body: config?.body,
       headers: config?.headers
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
