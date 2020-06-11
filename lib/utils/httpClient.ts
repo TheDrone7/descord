@@ -28,10 +28,7 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async get(path: string, config?: HTTPRequestOptions) {
-    if (!config)
-      config = {
-        headers: new Headers()
-      };
+    if (!config) config = { headers: new Headers() };
     else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
@@ -60,10 +57,7 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async post(path: string, config?: HTTPRequestOptions) {
-    if (!config)
-      config = {
-        headers: new Headers()
-      };
+    if (!config) config = { headers: new Headers() };
     else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
@@ -93,10 +87,7 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async patch(path: string, config?: HTTPRequestOptions) {
-    if (!config)
-      config = {
-        headers: new Headers()
-      };
+    if (!config) config = { headers: new Headers() };
     else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
@@ -126,10 +117,7 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async put(path: string, config?: HTTPRequestOptions) {
-    if (!config)
-      config = {
-        headers: new Headers()
-      };
+    if (!config) config = { headers: new Headers() };
     else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
@@ -159,8 +147,7 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async delete(path: string, config?: HTTPRequestOptions) {
-    if (!config)
-      config = { headers: new Headers() };
+    if (!config) config = { headers: new Headers() };
     else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
