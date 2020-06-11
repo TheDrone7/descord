@@ -4,8 +4,7 @@ import {
   Presence,
   Activity,
   HTTPClientConfig,
-  HTTPRequestOptions,
-  HTTPRequestHeaders
+  HTTPRequestOptions
 } from './lib/interfaces/interface.ts';
 import { ClientUser, Shard } from './lib/models/model.ts';
 import { Collection, HTTPClient } from './lib/utils/util.ts';
@@ -21,7 +20,6 @@ export {
   ActivityType,
   Activity,
   HTTPClientConfig,
-  HTTPRequestHeaders,
   HTTPRequestOptions,
   Shard,
   HTTPClient

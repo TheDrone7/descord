@@ -498,11 +498,99 @@ class Client {
   async getAuditLogs(guildId: string) {
     try {
       let audit = await this.http.get(`/guilds/${guildId}/audit-logs`);
-      console.log(JSON.stringify(audit.body));
+      return audit.body;
     } catch (e) {
       throw Error(`Error requesting audit logs for guild ID '${guildId}'.\n${e}.`).stack;
     }
   }
+
+  async getChannelWebhooks(channelId: string) {
+    try {
+      let webhooks = await this.http.get(`/channels/${channelId}/webhooks`);
+      return webhooks.body;
+    } catch (e) {
+      throw Error(`Error requesting webhooks for channel ID '${channelId}'.\n${e}.`).stack;
+    }
+  }
+
+  async getGuildWebhooks(guildId: string) {
+    try {
+      let webhooks = await this.http.get(`/guilds/${guildId}/webhooks`);
+      return webhooks.body;
+    } catch (e) {
+      throw Error(`Error requesting webhooks for guild ID '${guildId}'.\n${e}.`).stack;
+    }
+  }
+
+  async getWebhook(webhookId: string) {
+    try {
+      let webhooks = await this.http.get(`/webhooks/${webhookId}`);
+      return webhooks.body;
+    } catch (e) {
+      throw Error(`Error requesting webhook by ID '${webhookId}'.\n${e}.`).stack;
+    }
+  }
+
+  async modifyWebhook(webhookId: string, data: { name?: string, imageData?: string, channelId?: string}) {
+    try {
+      let webhooks = await this.http.patch(`/webhooks/${webhookId}`, {
+        body: JSON.stringify(data)
+      });
+      return webhooks.body;
+    } catch (e) {
+      throw Error(`Error modifying webhook by ID '${webhookId}'.\n${e}.`).stack;
+    }
+  }
+
+  async deleteWebhook(webhookId: string) {
+    try {
+      let webhooks = await this.http.delete(`/webhooks/${webhookId}`);
+      return webhooks.body || {};
+    } catch (e) {
+      throw Error(`Error deleting webhook by ID '${webhookId}'.\n${e}.`).stack;
+    }
+  }
+
+  async executeWebhook(webhookId: string, webhookToken: string, data: {
+    content?: string,
+    username?: string,
+    avatar?: string,
+    tts?: boolean,
+    file?: {
+      name: string,
+      content: Blob
+    },
+    embeds?: any[],
+    allowMentions?: boolean
+  }) {
+    let formData = new FormData();
+    let headers = new Headers();
+
+    let jsonData = {
+      content: data.content,
+      username: data.username,
+      avatar_url: data.avatar,
+      tts: data.tts,
+      embeds: data.embeds,
+      allowed_mentions: data.allowMentions ? { parse: ['users', 'roles', 'everyone'] } : { parse: [] }
+    };
+    let payloadJson = JSON.stringify(jsonData);
+    formData.append('payload_json', payloadJson);
+    if (data.file) {
+      formData.append('file', data.file.content, data.file.name);
+      headers.append('content-disposition', `form-data;name="file";filename="${data.file.name}";`);
+    }
+    try {
+      let message = await this.http.post(`/webhooks/${webhookId}/${webhookToken}`, {
+        headers,
+        body: formData
+      });
+      return message.body;
+    } catch (e) {
+      throw Error(`Error executing webhook '${webhookId}'.\n${e}.`).stack;
+    }
+  }
+
 }
 
 export default Client;

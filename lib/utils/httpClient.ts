@@ -28,12 +28,16 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async get(path: string, config?: HTTPRequestOptions) {
+    if (!config)
+      config = {
+        headers: new Headers()
+      }
+    else if (!config.headers)
+      config.headers = new Headers();
+    config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
-      }
+      headers: config?.headers
     });
     if (response.status.toString().startsWith('2')) {
       return {
@@ -57,13 +61,17 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async post(path: string, config?: HTTPRequestOptions) {
+    if (!config)
+      config = {
+        headers: new Headers()
+      }
+    else if (!config.headers)
+      config.headers = new Headers();
+    config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'POST',
       body: config?.body || {},
-      headers: {
-        'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
-      }
+      headers: config?.headers
     });
     if (response.status.toString().startsWith('2')) {
       return {
@@ -87,13 +95,17 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async patch(path: string, config?: HTTPRequestOptions) {
+    if (!config)
+      config = {
+        headers: new Headers()
+      }
+    else if (!config.headers)
+      config.headers = new Headers();
+    config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'PATCH',
       body: config?.body || {},
-      headers: {
-        'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
-      }
+      headers: config?.headers
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
       return {
@@ -117,13 +129,17 @@ class HTTPClient {
    * @param config The HTTP Request options.
    */
   async put(path: string, config?: HTTPRequestOptions) {
+    if (!config)
+      config = {
+        headers: new Headers()
+      }
+    else if (!config.headers)
+      config.headers = new Headers();
+    config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'PUT',
       body: config?.body || {},
-      headers: {
-        'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
-      }
+      headers: config?.headers
     });
     if (response.status.toString().startsWith('2')) {
       return {
@@ -143,17 +159,21 @@ class HTTPClient {
   /**
    * Makes an HTTP DELETE request to the discord REST API.
    *
-   * @param path The path to make the requets to.
+   * @param path The path to make the request to.
    * @param config The HTTP Request options.
    */
   async delete(path: string, config?: HTTPRequestOptions) {
+    if (!config)
+      config = {
+        headers: new Headers()
+      }
+    else if (!config.headers)
+      config.headers = new Headers();
+    config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'DELETE',
       body: config?.body || {},
-      headers: {
-        'Content-Type': config?.headers?.contentType || 'application/json',
-        Authorization: config?.headers?.authorization || `Bot ${this.client.token}`
-      }
+      headers: config?.headers
     });
     if (response.status.toString().startsWith('2') && response.status !== 204) {
       return {
