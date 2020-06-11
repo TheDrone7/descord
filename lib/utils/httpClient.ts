@@ -31,9 +31,8 @@ class HTTPClient {
     if (!config)
       config = {
         headers: new Headers()
-      }
-    else if (!config.headers)
-      config.headers = new Headers();
+      };
+    else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'GET',
@@ -64,9 +63,8 @@ class HTTPClient {
     if (!config)
       config = {
         headers: new Headers()
-      }
-    else if (!config.headers)
-      config.headers = new Headers();
+      };
+    else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'POST',
@@ -98,9 +96,8 @@ class HTTPClient {
     if (!config)
       config = {
         headers: new Headers()
-      }
-    else if (!config.headers)
-      config.headers = new Headers();
+      };
+    else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'PATCH',
@@ -132,9 +129,8 @@ class HTTPClient {
     if (!config)
       config = {
         headers: new Headers()
-      }
-    else if (!config.headers)
-      config.headers = new Headers();
+      };
+    else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'PUT',
@@ -166,9 +162,8 @@ class HTTPClient {
     if (!config)
       config = {
         headers: new Headers()
-      }
-    else if (!config.headers)
-      config.headers = new Headers();
+      };
+    else if (!config.headers) config.headers = new Headers();
     config?.headers?.append('Authorization', `Bot ${this.client.token}`);
     let response = await fetch(`${this.baseUrl}${this.apiVersion}/${path}`, {
       method: 'DELETE',

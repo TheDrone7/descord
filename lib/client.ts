@@ -548,7 +548,7 @@ class Client {
    * @param webhookId The ID of the webhook that needs to be edited.
    * @param data The new settings.
    */
-  async modifyWebhook(webhookId: string, data: { name?: string, imageData?: string, channelId?: string}) {
+  async modifyWebhook(webhookId: string, data: { name?: string; imageData?: string; channelId?: string }) {
     try {
       let webhooks = await this.http.patch(`/webhooks/${webhookId}`, {
         body: JSON.stringify(data)
@@ -578,18 +578,22 @@ class Client {
    * @param webhookToken The token of the webhook that needs to be executed.
    * @param data The message data that needs to be sent.
    */
-  async executeWebhook(webhookId: string, webhookToken: string, data: {
-    content?: string,
-    username?: string,
-    avatar?: string,
-    tts?: boolean,
-    file?: {
-      name: string,
-      content: Blob
-    },
-    embeds?: any[],
-    allowMentions?: boolean
-  }) {
+  async executeWebhook(
+    webhookId: string,
+    webhookToken: string,
+    data: {
+      content?: string;
+      username?: string;
+      avatar?: string;
+      tts?: boolean;
+      file?: {
+        name: string;
+        content: Blob;
+      };
+      embeds?: any[];
+      allowMentions?: boolean;
+    }
+  ) {
     let formData = new FormData();
     let headers = new Headers();
 
@@ -617,7 +621,6 @@ class Client {
       throw Error(`Error executing webhook '${webhookId}'.\n${e}.`).stack;
     }
   }
-
 }
 
 export default Client;
