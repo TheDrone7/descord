@@ -504,6 +504,10 @@ class Client {
     }
   }
 
+  /**
+   * Get webhooks that belong to a specific channel.
+   * @param channelId The ID of the channel whose webhooks are to be fetched.
+   */
   async getChannelWebhooks(channelId: string) {
     try {
       let webhooks = await this.http.get(`/channels/${channelId}/webhooks`);
@@ -513,6 +517,10 @@ class Client {
     }
   }
 
+  /**
+   * Get webhooks that belong to a specific guild.
+   * @param guildId The ID of the guild whose webhooks are to be fetched.
+   */
   async getGuildWebhooks(guildId: string) {
     try {
       let webhooks = await this.http.get(`/guilds/${guildId}/webhooks`);
@@ -522,6 +530,10 @@ class Client {
     }
   }
 
+  /**
+   * Get a webhook by it's ID
+   * @param webhookId The webhook's ID.
+   */
   async getWebhook(webhookId: string) {
     try {
       let webhooks = await this.http.get(`/webhooks/${webhookId}`);
@@ -531,6 +543,11 @@ class Client {
     }
   }
 
+  /**
+   * Modifies a specified webhook's settings.
+   * @param webhookId The ID of the webhook that needs to be edited.
+   * @param data The new settings.
+   */
   async modifyWebhook(webhookId: string, data: { name?: string, imageData?: string, channelId?: string}) {
     try {
       let webhooks = await this.http.patch(`/webhooks/${webhookId}`, {
@@ -542,6 +559,10 @@ class Client {
     }
   }
 
+  /**
+   * Delete an existing webhook by it's ID.
+   * @param webhookId The ID of the webhook that needs to be deleted.
+   */
   async deleteWebhook(webhookId: string) {
     try {
       let webhooks = await this.http.delete(`/webhooks/${webhookId}`);
@@ -551,6 +572,12 @@ class Client {
     }
   }
 
+  /**
+   * Executes a webhook/sends a message from the webhook.
+   * @param webhookId The ID of the webhook that needs to be executed.
+   * @param webhookToken The token of the webhook that needs to be executed.
+   * @param data The message data that needs to be sent.
+   */
   async executeWebhook(webhookId: string, webhookToken: string, data: {
     content?: string,
     username?: string,
