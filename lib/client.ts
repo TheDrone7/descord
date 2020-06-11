@@ -521,6 +521,10 @@ class Client {
     }
   }
 
+  /**
+   * Delete a discord invite.
+   * @param code The invite code which is to be deleted.
+   */
   async deleteInvite(code: string) {
     try {
       let invite = await this.http.delete(`/invites/${code}`);
