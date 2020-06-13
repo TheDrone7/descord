@@ -555,18 +555,21 @@ class Client {
    * @param channelId The ID of the channel to be modified.
    * @param data The data that needs modification.
    */
-  async modifyChannel(channelId: string, data: {
-    name?: string;
-    type?: number;
-    position?: number;
-    topic?: string;
-    nsfw?: boolean;
-    slowmodeInterval?: number;
-    bitrate?: number;
-    user_limit?: number;
-    permission_overwrites: {}[];
-    parent_id: string;
-  }) {
+  async modifyChannel(
+    channelId: string,
+    data: {
+      name?: string;
+      type?: number;
+      position?: number;
+      topic?: string;
+      nsfw?: boolean;
+      slowmodeInterval?: number;
+      bitrate?: number;
+      user_limit?: number;
+      permission_overwrites: {}[];
+      parent_id: string;
+    }
+  ) {
     try {
       let channel = await this.http.patch(`/channels/${channelId}`, {
         body: data
@@ -586,7 +589,7 @@ class Client {
       let channel = await this.http.delete(`/channels/${channelId}`);
       return channel.body;
     } catch (e) {
-      throw Error(`Error deleting channel with channel ID ${channelId}.\n${e}`)
+      throw Error(`Error deleting channel with channel ID ${channelId}.\n${e}`);
     }
   }
 
