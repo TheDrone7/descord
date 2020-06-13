@@ -77,7 +77,7 @@ export default class Shard {
     else {
       throw new Error(
         "An event handler is already set for the event '" + event + "'. You can only set 1 handler per event."
-      ).stack;
+      );
     }
   }
 

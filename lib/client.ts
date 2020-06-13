@@ -51,7 +51,7 @@ class Client {
    */
   addEventListener(event: string, handler: (...params: any[]) => void) {
     if (this.#eventHandler.get(event))
-      throw new Error(`Event handler already set for event: ${event}. Only one handler per event is allowed`).stack;
+      throw new Error(`Event handler already set for event: ${event}. Only one handler per event is allowed`);
     else this.#eventHandler.set(event, handler);
   }
 
@@ -107,12 +107,12 @@ class Client {
    * @param shardId The shard which has to send the data (if only a specific shard needs to send this data).
    */
   wsSend(data: { op: number; d: any }, shardId?: number) {
-    if (!data) throw new Error('No data to send.').stack;
+    if (!data) throw new Error('No data to send.');
     else {
       if (!shardId) this.shardManager.each((shard) => shard.ws.send(JSON.stringify(data)));
       else {
         if (this.shardManager.get(shardId)) this.shardManager.get(shardId).ws.send(JSON.stringify(data));
-        else throw new Error('Invalid shard ID.').stack;
+        else throw new Error('Invalid shard ID.');
       }
     }
   }
@@ -128,7 +128,7 @@ class Client {
         this.shardManager.get(shardId).ws.close();
         this.shardManager.delete(shardId);
         this.emit('shardDisconnected', shardId);
-      } else throw new Error('Invalid shard ID.').stack;
+      } else throw new Error('Invalid shard ID.');
     } else {
       this.shardManager.each((shard) => shard.ws.close());
       this.shardManager.clear();
@@ -167,7 +167,7 @@ class Client {
         headers: { Authorization: `Bot ${token}` }
       });
       if (gatewayResponse.status !== 200) {
-        throw new HTTPError(gatewayResponse).stack;
+        throw new HTTPError(gatewayResponse);
       }
       let gateway = await gatewayResponse.json();
       if (gateway['session_start_limit'].remaining < 1) {
@@ -502,7 +502,7 @@ class Client {
       let audit = await this.http.get(`/guilds/${guildId}/audit-logs`);
       return audit.body;
     } catch (e) {
-      throw Error(`Error requesting audit logs for guild ID '${guildId}'.\n${e}.`).stack;
+      throw Error(`Error requesting audit logs for guild ID '${guildId}'.\n${e}`);
     }
   }
 
@@ -517,7 +517,7 @@ class Client {
       let invite = await this.http.get(`/invites/${code}?with_counts=true`);
       return invite.body;
     } catch (e) {
-      throw Error(`Error requesting invite info for invite code '${code}'.\n${e}.`).stack;
+      throw Error(`Error requesting invite info for invite code '${code}'.\n${e}`);
     }
   }
 
@@ -530,7 +530,50 @@ class Client {
       let invite = await this.http.delete(`/invites/${code}`);
       return invite.body;
     } catch (e) {
-      throw Error(`Error deleting invite for invite code '${code}'.\n${e}.`).stack;
+      throw Error(`Error deleting invite for invite code '${code}'.\n${e}`);
+    }
+  }
+
+  /* Channels */
+
+  async getChannel(channelId: string) {
+    try {
+      let channel = await this.http.get(`/channels/${channelId}`);
+      this.channels.set(channelId, channel.body);
+      return channel.body;
+    } catch (e) {
+      throw Error(`Error fetching channel with channel ID '${channelId}'.\n${e}`);
+    }
+  }
+
+  async modifyChannel(channelId: string, data: {
+    name?: string;
+    type?: number;
+    position?: number;
+    topic?: string;
+    nsfw?: boolean;
+    slowmodeInterval?: number;
+    bitrate?: number;
+    user_limit?: number;
+    permission_overwrites: {}[];
+    parent_id: string;
+  }) {
+    try {
+      let channel = await this.http.patch(`/channels/${channelId}`, {
+        body: data
+      });
+      return channel.body;
+    } catch (e) {
+      throw Error(`Error modifying channel with channel ID '${channelId}'.\n${e}`);
+    }
+  }
+
+  async deleteChannel(channelId: string) {
+    try {
+      let channel = await this.http.delete(`/channels/${channelId}`);
+      return channel.body;
+    } catch (e) {
+      throw Error(`Error deleting channel with channel ID ${channelId}.\n${e}`)
     }
   }
 
@@ -545,7 +588,7 @@ class Client {
       let webhooks = await this.http.get(`/channels/${channelId}/webhooks`);
       return webhooks.body;
     } catch (e) {
-      throw Error(`Error requesting webhooks for channel ID '${channelId}'.\n${e}.`).stack;
+      throw Error(`Error requesting webhooks for channel ID '${channelId}'.\n${e}`);
     }
   }
 
@@ -558,7 +601,7 @@ class Client {
       let webhooks = await this.http.get(`/guilds/${guildId}/webhooks`);
       return webhooks.body;
     } catch (e) {
-      throw Error(`Error requesting webhooks for guild ID '${guildId}'.\n${e}.`).stack;
+      throw Error(`Error requesting webhooks for guild ID '${guildId}'.\n${e}`);
     }
   }
 
@@ -571,7 +614,7 @@ class Client {
       let webhooks = await this.http.get(`/webhooks/${webhookId}`);
       return webhooks.body;
     } catch (e) {
-      throw Error(`Error requesting webhook by ID '${webhookId}'.\n${e}.`).stack;
+      throw Error(`Error requesting webhook by ID '${webhookId}'.\n${e}`);
     }
   }
 
@@ -587,7 +630,7 @@ class Client {
       });
       return webhooks.body;
     } catch (e) {
-      throw Error(`Error modifying webhook by ID '${webhookId}'.\n${e}.`).stack;
+      throw Error(`Error modifying webhook by ID '${webhookId}'.\n${e}`);
     }
   }
 
@@ -600,7 +643,7 @@ class Client {
       let webhooks = await this.http.delete(`/webhooks/${webhookId}`);
       return webhooks.body || {};
     } catch (e) {
-      throw Error(`Error deleting webhook by ID '${webhookId}'.\n${e}.`).stack;
+      throw Error(`Error deleting webhook by ID '${webhookId}'.\n${e}`);
     }
   }
 
@@ -650,7 +693,7 @@ class Client {
       });
       return message.body;
     } catch (e) {
-      throw Error(`Error executing webhook '${webhookId}'.\n${e}.`).stack;
+      throw Error(`Error executing webhook '${webhookId}'.\n${e}`);
     }
   }
 }
