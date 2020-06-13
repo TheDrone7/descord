@@ -536,6 +536,10 @@ class Client {
 
   /* Channels */
 
+  /**
+   * Get details about a specific channel using it's ID.
+   * @param channelId The ID of the channel whose details are to be fetched.
+   */
   async getChannel(channelId: string) {
     try {
       let channel = await this.http.get(`/channels/${channelId}`);
@@ -546,6 +550,11 @@ class Client {
     }
   }
 
+  /**
+   * Modify a channel according to the supplied data.
+   * @param channelId The ID of the channel to be modified.
+   * @param data The data that needs modification.
+   */
   async modifyChannel(channelId: string, data: {
     name?: string;
     type?: number;
@@ -568,6 +577,10 @@ class Client {
     }
   }
 
+  /**
+   * Delete a channel (if in a guild) or close the channel (if DM).
+   * @param channelId The ID of the channel to be deleted/closed.
+   */
   async deleteChannel(channelId: string) {
     try {
       let channel = await this.http.delete(`/channels/${channelId}`);
