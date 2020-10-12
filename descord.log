@@ -1,0 +1,3 @@
+[2020-10-12T15:18:40.403Z] DEBUG    :: Hello World!
+[2020-10-12T15:18:40.403Z] ERROR    :: Testing the error
+[2020-10-12T15:18:40.404Z] INFO     :: This is informational!
