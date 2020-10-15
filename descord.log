@@ -1,3 +1,5 @@
-[2020-10-12T15:18:40.403Z] DEBUG    :: Hello World!
-[2020-10-12T15:18:40.403Z] ERROR    :: Testing the error
-[2020-10-12T15:18:40.404Z] INFO     :: This is informational!
+[2020-10-14T05:08:29.223Z] CRITICAL :: HTTP Error while making a request to https://discord.com/api/v8/gateway/bot.
+[2020-10-14T05:08:29.226Z] CRITICAL :: Returned status: 401 - Unauthorized.
+[2020-10-14T05:08:29.227Z] CRITICAL :: Invalid Discord Bot Token Provided.
+[2020-10-14T05:08:29.227Z] CRITICAL ::     at Client.start (client.ts:48:39)
+[2020-10-14T05:08:29.228Z] CRITICAL ::     at async index.ts:11:1
