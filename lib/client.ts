@@ -17,7 +17,7 @@ export default class Client {
     #shardCount: number;
     #shardManger: ShardManager;
 
-    #eventManager: List<string, (...param: any[]) => void)
+    #eventManager: List<string, (...params: any[]) => void>;
 
     #loggerOptions: (DescordLoggerOptions|false);
     #logger?: DescordLogger;
