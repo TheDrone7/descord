@@ -48,7 +48,9 @@ export default class Client {
         else this.log(level, error.message);
     }
 
-    raw(rawHandler: (d: GatewayPayload) => void) { this.#eventManager.set('raw', rawHandler); }
+    raw(rawListener: (d: GatewayPayload) => void) { this.#eventManager.set('raw', rawListener); }
+    
+    call(event: string, ...params: any[]) { if (this.#eventManager.has(event)) this.#eventManager.get(event)(...params); }
 
     async start(token: string) {
         if (this.#loggerOptions !== false) {
@@ -65,6 +67,7 @@ export default class Client {
             this.logError('CRITICAL', new HttpError(gatewayResponse, 'Invalid Discord Bot Token Provided.'));
             Deno.exit(1);
         }
+
         this.log('DEBUG', 'Gateway data successfully fetched.');
         let gateway = await gatewayResponse.json() as Gateway;
 
