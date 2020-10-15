@@ -1,3 +1,2 @@
-import type { Gateway, SessionStartLimit, GatewayPayload } from './gateway.ts';
-
-export type { Gateway, SessionStartLimit, GatewayPayload };
+export type { Gateway, SessionStartLimit, GatewayPayload } from './gateway.ts';
+export type { Hello, Intent } from './data.ts';

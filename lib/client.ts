@@ -50,7 +50,7 @@ export default class Client {
 
     raw(rawListener: (d: GatewayPayload) => void) { this.#eventManager.set('raw', rawListener); }
     
-    call(event: string, ...params: any[]) { if (this.#eventManager.has(event)) this.#eventManager.get(event)(...params); }
+    execute(event: string, ...params: any[]) { if (this.#eventManager.has(event)) this.#eventManager.get(event)(...params); }
 
     async start(token: string) {
         if (this.#loggerOptions !== false) {

@@ -11,6 +11,6 @@ export default class ShardManager extends List<string, Shard> {
     }
 
     async initialize(url: string, id: number, total: number) {
-        let newShard = new Shard(this.#client, url, [id, total]);
+        let newShard = new Shard(this.#client, url, {shard: [id, total], intent: ['GUILDS']});
     }
 }
