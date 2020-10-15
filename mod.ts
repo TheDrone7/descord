@@ -1,21 +1,13 @@
 import Client from './lib/client.ts';
-import { HTTPError } from './lib/errors/error.ts';
-import { Presence, Activity, HTTPClientConfig, HTTPRequestOptions } from './lib/interfaces/interface.ts';
-import { ClientUser, Shard } from './lib/models/model.ts';
-import { Collection, HTTPClient } from './lib/utils/util.ts';
-import { Flags, ActivityType } from './lib/struct.ts';
+import * as errors from './lib/errors/errors.ts';
+import * as models from './lib/models/models.ts';
+import * as types from './lib/types/types.ts';
+import * as util from './lib/util/util.ts';
 
 export {
   Client,
-  HTTPError,
-  Presence,
-  ClientUser,
-  Collection,
-  Flags,
-  ActivityType,
-  Activity,
-  HTTPClientConfig,
-  HTTPRequestOptions,
-  Shard,
-  HTTPClient
+  errors,
+  models,
+  types,
+  util
 };
