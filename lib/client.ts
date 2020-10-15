@@ -1,7 +1,7 @@
 import type { LevelName } from "https://deno.land/std@0.74.0/log/mod.ts";
 import { DescordLogger, List, parseNum } from './util/util.ts';
 import type { DescordLoggerOptions } from './util/util.ts';
-import type { Gateway, GatewayPayload } from './types/types.ts';
+import type { ClientPresence, Gateway, GatewayPayload } from './types/types.ts';
 import { HttpError } from "./errors/errors.ts";
 import { ShardManager } from "./models/models.ts";
 
@@ -52,7 +52,7 @@ export default class Client {
     
     execute(event: string, ...params: any[]) { if (this.#eventManager.has(event)) this.#eventManager.get(event)(...params); }
 
-    async start(token: string) {
+    async start(token: string, options?: { presence?: ClientPresence }) {
         if (this.#loggerOptions !== false) {
             this.#logger = new DescordLogger();
             await this.#logger.init(this.#loggerOptions);
@@ -82,7 +82,7 @@ export default class Client {
 
         let shardId = 0;
         while (shardId < this.#shardCount) {
-            this.#shardManger.initialize(this.#wsBase, shardId, this.#shardCount);
+            this.#shardManger.initialize(this.#wsBase, shardId, this.#shardCount, options);
             shardId++;
         }
     }

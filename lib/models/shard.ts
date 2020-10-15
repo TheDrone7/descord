@@ -1,11 +1,14 @@
 import Client from '../client.ts';
-import { GatewayPayload, Hello, Intent } from '../types/types.ts';
+import { ClientPresence, GatewayPayload, Hello, Intent } from '../types/types.ts';
 
 
 const intents = ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS', 'GUILD_INVITES', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING'];
+const activityTypes = ['PLAYING', 'STREAMING', 'LISTENING', 'CUSTOM', 'COMPETING'];
+
 interface LoginOptions {
     intent: Intent[],
-    shard: [number, number]
+    shard: [number, number],
+    presence?: ClientPresence
 }
 
 export default class Shard {
@@ -59,6 +62,12 @@ export default class Shard {
             
             case 11:
                 if (!this.#ready) {
+                    console.log(this.#options.presence ? {
+                        status: this.#options.presence.status.toLowerCase(),
+                        activities: this.#options.presence.activities?.map(x => { return { name: x.name, type: activityTypes.indexOf(x.type), url: x.url }; }) || null,
+                        afk: this.#options.presence.afk || false,
+                        since: this.#options.presence.since || this.#options.presence.status === 'IDLE' ? Date.now() : null
+                    } : undefined);
                     this.#ws.send(JSON.stringify({
                         op: 2,
                         d: {
@@ -69,11 +78,23 @@ export default class Shard {
                                 $browser: 'descord',
                                 $device: 'descord'
                             },
-                            shard: this.#options.shard
+                            shard: this.#options.shard,
+                            presence: this.#options.presence ? {
+                                status: this.#options.presence.status.toLowerCase(),
+                                activities: this.#options.presence.activities?.map(x => { return { name: x.name, type: activityTypes.indexOf(x.type), url: x.url }; }) || null,
+                                afk: this.#options.presence.afk || false,
+                                since: this.#options.presence.since || Date.now()
+                            } : undefined
                         }
                     }));
                 }
                 break;
+            case 0:
+                switch (raw.t) {
+                    case 'READY':
+                        this.#ready = true;
+                        break;
+                }
         }
     }
 }
