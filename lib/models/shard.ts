@@ -13,7 +13,7 @@ interface LoginOptions {
 
 export default class Shard {
     #options: LoginOptions
-    #ws: WebSocket;
+    ws: WebSocket;
 
     #session: number;
     #heartbeat: number;
@@ -29,22 +29,22 @@ export default class Shard {
         this.#session = -1;
         this.#ready = false;
 
-        this.#ws = new WebSocket(url);
+        this.ws = new WebSocket(url);
 
-        this.#ws.onopen = async function () {
+        this.ws.onopen = async function () {
             client.log('DEBUG', `Connected shard ${options.shard[0] + 1} of ${options.shard[1]}.`);
         }
 
-        this.#ws.onclose = async function (event: CloseEvent) {
+        this.ws.onclose = async function (event: CloseEvent) {
             if (event.code === 1000) client.log('DEBUG', `Shard ${options.shard[0] + 1} of ${options.shard[1]} safely disconnected.`);
             else client.logError('ERROR', new Error(`Shard ${options.shard[0] + 1} of ${options.shard[1]} disconnected with code ${event.code} due to reason ${event.reason}.`));
         }
 
-        this.#ws.onerror = (error: Event) => {
+        this.ws.onerror = (error: Event) => {
             client.logError('ERROR', new Error(error.toString()));
         }
 
-        this.#ws.onmessage = async (event: MessageEvent) => {
+        this.ws.onmessage = async (event: MessageEvent) => {
             await this.handleEvent(JSON.parse(event.data) as GatewayPayload);
         }
     }
@@ -56,8 +56,8 @@ export default class Shard {
             case 10:
                 let data = raw.d as Hello;
                 this.#heartbeat = data.heartbeat_interval;
-                this.#ws.send(JSON.stringify({ op: 1, d: this.#session === -1 ? null : this.#session }));
-                setInterval(() => this.#ws.send(JSON.stringify({ op: 1, d: this.#session === -1 ? null : this.#session })), this.#heartbeat);
+                this.ws.send(JSON.stringify({ op: 1, d: this.#session === -1 ? null : this.#session }));
+                setInterval(() => this.ws.send(JSON.stringify({ op: 1, d: this.#session === -1 ? null : this.#session })), this.#heartbeat);
                 break;
             
             case 11:
@@ -68,7 +68,7 @@ export default class Shard {
                         afk: this.#options.presence.afk || false,
                         since: this.#options.presence.since || this.#options.presence.status === 'IDLE' ? Date.now() : null
                     } : undefined);
-                    this.#ws.send(JSON.stringify({
+                    this.ws.send(JSON.stringify({
                         op: 2,
                         d: {
                             token: this.client.token,

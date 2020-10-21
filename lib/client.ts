@@ -3,7 +3,7 @@ import { DescordLogger, List, parseNum } from './util/util.ts';
 import type { DescordLoggerOptions } from './util/util.ts';
 import type { ClientPresence, Gateway, GatewayPayload } from './types/types.ts';
 import { HttpError } from "./errors/errors.ts";
-import { ShardManager } from "./models/models.ts";
+import { Shard, ShardManager } from "./models/models.ts";
 
 interface ClientOptions {
     logging?: (DescordLoggerOptions|false)
@@ -12,6 +12,7 @@ interface ClientOptions {
 export default class Client {
     #httpBase: string;
     #wsBase: string;
+    #cdnBase: string;
     #token?: string;
 
     #shardCount: number;
@@ -30,6 +31,7 @@ export default class Client {
 
         this.#httpBase = 'https://discord.com/api/v8';
         this.#wsBase = 'wss://gateway.discord.gg/?v=8&encoding=json';
+        this.#cdnBase = 'https://cdn.discordapp.com/';
 
         this.#eventManager = new List();
 
@@ -38,6 +40,7 @@ export default class Client {
     }
 
     get token() { return this.#token!; }
+    get cdnBase() { return this.#cdnBase; }
 
     log(level: LevelName, ...args: any[]) {
         if (this.#logger instanceof DescordLogger) this.#logger.log(level, ...args);
@@ -51,6 +54,11 @@ export default class Client {
     raw(rawListener: (d: GatewayPayload) => void) { this.#eventManager.set('raw', rawListener); }
     
     execute(event: string, ...params: any[]) { if (this.#eventManager.has(event)) this.#eventManager.get(event)(...params); }
+
+    wsSend(data: any) {
+        for (const shard of this.#shardManger.array())
+            shard.ws.send(typeof data === 'string' ? data : JSON.stringify(data));
+    }
 
     async start(token: string, options?: { presence?: ClientPresence }) {
         if (this.#loggerOptions !== false) {
