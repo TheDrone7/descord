@@ -1,26 +1,29 @@
 import type { LevelName } from "https://deno.land/std@0.74.0/log/mod.ts";
 import { DescordLogger, List, parseNum } from './util/util.ts';
 import type { DescordLoggerOptions } from './util/util.ts';
-import type { ClientPresence, Gateway, GatewayPayload } from './types/types.ts';
+import type { ClientPresence, Gateway, GatewayPayload, Intent } from './types/types.ts';
 import { HttpError } from "./errors/errors.ts";
-import { Shard, ShardManager } from "./models/models.ts";
+import { ClientUser, ShardManager } from "./models/models.ts";
 
 interface ClientOptions {
     logging?: (DescordLoggerOptions|false)
 }
 
 export default class Client {
-    #httpBase: string;
-    #wsBase: string;
-    #cdnBase: string;
+    readonly #httpBase: string;
+    readonly #wsBase: string;
+    readonly #cdnBase: string;
     #token?: string;
+
+    isReady: boolean;
+    user?: ClientUser;
 
     #shardCount: number;
     #shardManger: ShardManager;
 
     #eventManager: List<string, (...params: any[]) => void>;
 
-    #loggerOptions: (DescordLoggerOptions|false);
+    readonly #loggerOptions: (DescordLoggerOptions|false);
     #logger?: DescordLogger;
 
     constructor(options?: ClientOptions) {
@@ -35,6 +38,8 @@ export default class Client {
 
         this.#eventManager = new List();
 
+        this.isReady = false;
+        
         this.#shardCount = 1;
         this.#shardManger = new ShardManager(this);
     }
@@ -52,6 +57,7 @@ export default class Client {
     }
 
     raw(rawListener: (d: GatewayPayload) => void) { this.#eventManager.set('raw', rawListener); }
+    ready(readyListener: () => void) { this.#eventManager.set('ready', readyListener); }
     
     execute(event: string, ...params: any[]) { if (this.#eventManager.has(event)) this.#eventManager.get(event)(...params); }
 
@@ -60,7 +66,7 @@ export default class Client {
             shard.ws.send(typeof data === 'string' ? data : JSON.stringify(data));
     }
 
-    async start(token: string, options?: { presence?: ClientPresence }) {
+    async start(token: string, options?: { presence?: ClientPresence, intents?: Intent[] }) {
         if (this.#loggerOptions !== false) {
             this.#logger = new DescordLogger();
             await this.#logger.init(this.#loggerOptions);
@@ -85,12 +91,13 @@ export default class Client {
         }
 
         this.#token = token;
+        this.#shardCount = gateway.shards;
 
         this.log('DEBUG', `Trying to log in using the provided token. Creating ${this.#shardCount} shards.`);
 
         let shardId = 0;
         while (shardId < this.#shardCount) {
-            this.#shardManger.initialize(this.#wsBase, shardId, this.#shardCount, options);
+            await this.#shardManger.initialize(this.#wsBase, shardId, this.#shardCount, options);
             shardId++;
         }
     }

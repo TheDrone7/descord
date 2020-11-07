@@ -1,10 +1,11 @@
-import Client from "../client.ts";
-import { User } from './models.ts';
+import Client from '../client.ts';
+import { List } from '../util/util.ts';
+import { User, MemberRoles } from './models.ts';
 
-export default class GuildMember extends User {
+export class Member extends User {
     user?: User;
     nickname: string | null;
-    roles: any[];
+    roles: MemberRoles;
     joinedAt: Date;
     boostingSince?: Date;
     isDeafened: boolean;
@@ -14,7 +15,7 @@ export default class GuildMember extends User {
         super(client, member.user);
         this.user = member.user ? new User(client, member.user) : undefined;
         this.nickname = member.nick;
-        this.roles = member.roles;
+        this.roles = new MemberRoles(...member.roles);
         this.joinedAt = new Date(member.joined_at);
         this.boostingSince = member.premium_since ? new Date(member.premium_since) : undefined;
         this.isDeafened = member.deaf;
@@ -24,4 +25,7 @@ export default class GuildMember extends User {
     get joinedTimestamp() {
         return this.joinedAt.getTime();
     }
+}
+
+export class GuildMembers extends List<string, Member> {
 }

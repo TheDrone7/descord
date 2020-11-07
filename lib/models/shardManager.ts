@@ -1,7 +1,7 @@
 import Shard from './shard.ts';
 import { List } from '../util/util.ts';
 import Client from '../client.ts';
-import { ClientPresence } from "../types/data.ts";
+import { ClientPresence, Intent } from '../types/types.ts';
 
 export default class ShardManager extends List<string, Shard> {
     #client: Client;
@@ -11,8 +11,8 @@ export default class ShardManager extends List<string, Shard> {
         this.#client = client;
     }
 
-    async initialize(url: string, id: number, total: number, options?: { presence?: ClientPresence }) {
-        let newShard = new Shard(this.#client, url, {shard: [id, total], intent: ['GUILDS'], presence: options?.presence});
+    async initialize(url: string, id: number, total: number, options?: { presence?: ClientPresence, intents?: Intent[] }) {
+        let newShard = new Shard(this.#client, url, {shard: [id, total], intent: options?.intents || ['GUILDS'], presence: options?.presence});
         this.set(id, newShard);
     }
 }

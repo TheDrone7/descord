@@ -1,18 +1,29 @@
+import { UserData } from "./modelData.ts";
+
 export interface SessionStartLimit {
-    total: number,
-    remaining: number,
-    reset_after: number
+  total: number,
+  remaining: number,
+  reset_after: number
 }
 
 export interface Gateway {
-    url: string,
-    shards: number,
-    session_start_limit: SessionStartLimit
+  url: string,
+  shards: number,
+  session_start_limit: SessionStartLimit
 }
 
 export interface GatewayPayload {
-    op: number,
-    d: any,
-    s?: number,
-    t?: string
+  op: number,
+  d: any,
+  s?: number,
+  t?: string
+}
+
+export interface ReadyPayload {
+  v: number;
+  user: UserData;
+  private_channels: [];
+  guilds: any[];
+  session_id: string;
+  shard?: [number, number]
 }
