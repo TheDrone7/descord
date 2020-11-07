@@ -1,0 +1,10 @@
+{
+    "name": "descord",
+    "description": "A discord API wrapper written using TypeScript for deno.",
+    "homepage": "https://github.com/TheDrone7/descord",
+    "files": [
+    "./**/*.ts",
+    "README.md"
+    ],
+    "entry": "./mod.ts"
+}
