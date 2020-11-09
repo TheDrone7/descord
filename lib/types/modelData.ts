@@ -1,18 +1,71 @@
+import { Presence } from './types.ts';
+
 export interface UserData {
     id: string;
     username?: string;
     discriminator?: string;
-    avatar?: string|null;
+    avatar?: string | null;
     bot?: boolean;
     system?: boolean;
     mfa_enabled?: boolean;
     locale?: string;
     flags?: number;
-    premium_type: 0|1|2;
+    premium_type: 0 | 1 | 2;
+}
+
+export interface Overwrite {
+    id: string;
+    type: 0 | 1;
+    allow: string;
+    deny: string;
 }
 
 export interface ChannelData {
+    id: string;
+    type: number;
+    guild_id?: string;
+    position?: number;
+    permission_overwrites?: Overwrite[];
+    name?: string;
+    topic?: string | null;
+    nsfw?: boolean;
+    last_message_id?: string | null;
+    bitrate?: number;
+    user_limit?: number;
+    rate_limit_per_user?: number;
+    recipients?: UserData[];
+    icon?: string | null;
+    owner_id?: string;
+    application_id?: string;
+    parent_id?: string | null;
+    last_pin_timestamp?: string | null;
+}
 
+export interface EmojiData {
+    id: string;
+    name: string;
+    roles?: string[];
+    user?: UserData;
+    require_colons?: boolean;
+    managed?: boolean;
+    animated?: boolean;
+    available?: boolean;
+}
+
+export interface RoleData {
+}
+
+export interface VoiceStateData {
+}
+
+export interface GuildMemberData {
+    user?: UserData;
+    nick: string | null;
+    roles: string[];
+    joined_at: string;
+    premium_since: string | null;
+    deaf: boolean;
+    mute: boolean;
 }
 
 export interface GuildData {
@@ -31,8 +84,8 @@ export interface GuildData {
     verification_level?: number;
     default_message_notifications?: number;
     explicit_content_filter?: number;
-    roles?: any[];
-    emojis?: any[];
+    roles?: RoleData[];
+    emojis?: EmojiData[];
     features?: ('INVITE_SPLASH' | 'VIP_REGIONS' | 'VANITY_URL' | 'VERIFIED' | 'PARTNERED' | 'COMMUNITY' | 'COMMERCE' | 'NEWS' | 'DISCOVERABLE' | 'FEATURABLE' | 'ANIMATED_ICON' | 'BANNER' | 'WELCOME_SCREEN_ENABLED')[];
     mfa_level?: number;
     application_id?: string;
@@ -42,10 +95,10 @@ export interface GuildData {
     joined_at?: string;
     large?: boolean;
     member_count?: number;
-    voice_states?: any[];
-    members?: any[];
-    channels?: any[];
-    presences?: any[];
+    voice_states?: VoiceStateData[];
+    members?: GuildMemberData[];
+    channels?: ChannelData[];
+    presences?: Presence[];
     max_presences?: number;
     max_members?: number;
     vanity_url_code?: string;
@@ -58,4 +111,36 @@ export interface GuildData {
     max_video_channel_users?: number;
     approximate_member_count?: number;
     approximate_presence_count?: number;
+}
+
+export interface GuildIntegrations {
+    id: string;
+    name: string;
+    type: string;
+    enabled: boolean;
+    syncing: boolean;
+    role_id: boolean;
+    enable_emoticons?: boolean;
+    expire_behavior: number;
+    expire_grace_period: number;
+    user?: UserData;
+    account: IntegrationAccountData;
+    synced_at: string;
+    subscriber_count: number;
+    revoked: boolean;
+    application?: ApplicationData;
+}
+
+export interface IntegrationAccountData {
+    id: string;
+    name: string;
+}
+
+export interface ApplicationData {
+    id: string;
+    name: string;
+    icon: string|null;
+    description: string;
+    summary: string;
+    bot?: UserData;
 }

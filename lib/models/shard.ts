@@ -103,8 +103,6 @@ export default class Shard {
             }
             break;
           case 'GUILD_CREATE':
-            if (raw.d.id === '436813926735413248')
-              await Deno.writeTextFile('./guilds.json', JSON.stringify(raw.d));
             break;
         }
     }

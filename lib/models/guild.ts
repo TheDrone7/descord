@@ -1,18 +1,18 @@
-import Client from "../client.ts";
+import Client from '../client.ts';
 import {
-  Member,
-  GuildMembers,
   Channel,
   GuildChannels,
-  GuildRoles,
   GuildEmojis,
-  GuildVoiceStates,
+  GuildMembers,
   GuildPresences,
-  Emoji, UserPresence
+  GuildRoles,
+  GuildVoiceStates,
+  Member
 } from './models.ts';
 import { GuildData } from '../types/modelData.ts';
+import List from '../util/list.ts';
 
-export default class Guild {
+export class Guild {
   readonly client: Client;
 
   readonly id: string;
@@ -74,11 +74,11 @@ export default class Guild {
       this.banner = guildData.banner;
       this.boostCount = guildData.premium_subscription_count;
       this.boostLevel = guildData.premium_tier;
-      if (guildData.channels) this.channels = new GuildChannels(...guildData.channels.map(c => this.newChannel(c)));
+      if (guildData.channels) this.channels = new GuildChannels(client, ...guildData.channels);
       this.defaultMessageNotifications = guildData.default_message_notifications === 0 ? 'ALL_MESSAGES' : 'ONLY_MENTIONS';
       this.description = guildData.description;
       this.discoverySplash = guildData.discovery_splash;
-      if (guildData.emojis) this.emojis = new GuildEmojis(...guildData.emojis.map(e => new Emoji(this.client, e)));
+      if (guildData.emojis) this.emojis = new GuildEmojis(client, ...guildData.emojis);
       this.explicitContentFilter = (['DISABLED', 'MEMBERS_WITHOUT_ROLES', 'ALL_MEMBERS'] as const)[guildData.explicit_content_filter || 0];
       this.features = guildData.features;
       this.icon = guildData.icon;
@@ -88,15 +88,42 @@ export default class Guild {
       this.maxPresences = guildData.max_presences;
       this.maxVideoChannelUsers = guildData.max_video_channel_users;
       this.memberCount = guildData.member_count;
-      if (guildData.members) this.members = new GuildMembers(...guildData.members.map(m => new Member(this.client, m)));
+      if (guildData.members) this.members = new GuildMembers(client, ...guildData.members);
       this.mfaEnabled = Boolean(guildData.mfa_level);
       this.name = guildData.name;
       this.ownerId = guildData.owner_id;
       this.owner = this.members?.get(this.ownerId);
       this.preferredLocale = guildData.preferred_locale;
-      this.presences = new GuildPresences(...guildData.presences.map(p => new UserPresence(this.client, p)));
+      if (guildData.presences) this.presences = new GuildPresences(client, ...guildData.presences);
     }
   }
 
-  private newChannel(c: any): Channel { return new Channel(this.client, c); }
+  get joinedTimestamp() {
+    return this.joinedAt?.getTime();
+  }
+
+  get iconUrl() {
+    return this.icon ? `${this.client.cdnBase}icons/${this.id}/${this.icon}.${this.icon.startsWith('a_' ? 'gif' : 'png')}` : null;
+  }
+
+  get splashUrl() {
+    return this.splash ? `${this.client.cdnBase}splashes/${this.id}/${this.splash}.png` : null;
+  }
+
+  get discoverySplashUrl() {
+    return this.discoverySplash ? `${this.client.cdnBase}discovery-splashes/${this.id}/${this.discoverySplash}.png` : null;
+  }
+
+  get bannerUrl() {
+    return this.banner ? `${this.client.cdnBase}banners/${this.id}/${this.banner}.png` : null;
+  }
+}
+
+export class GuildList extends List<string, Guild> {
+  client: Client;
+
+  constructor(client: Client, ...guilds: Guild[]) {
+    super(...guilds);
+    this.client = client;
+  }
 }

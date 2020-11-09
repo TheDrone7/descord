@@ -1,4 +1,4 @@
-import { UserData } from './modelData.ts';
+import User from '../models/user.ts';
 
 export type Intent = 'GUILDS' | 'GUILD_MEMBERS' | 'GUILD_BANS' | 'GUILD_EMOJIS' | 'GUILD_INTEGRATIONS' | 'GUILD_WEBHOOKS' | 'GUILD_INVITES' | 'GUILD_VOICE_STATES' | 'GUILD_PRESENCES' | 'GUILD_MESSAGES' | 'GUILD_MESSAGE_REACTIONS' | 'GUILD_MESSAGE_TYPING' | 'DIRECT_MESSAGES' | 'DIRECT_MESSAGE_REACTIONS' | 'DIRECT_MESSAGE_TYPING';
 export type ActivityType = 'PLAYING' | 'STREAMING' | 'LISTENING' | 'CUSTOM' | 'COMPETING';
@@ -38,9 +38,9 @@ export interface ClientPresence {
 }
 
 export interface Presence {
-    user: UserData
-    since?: number | null;
-    activities?: Activity[] | null;
-    status: PresenceStatus;
-    afk?: boolean;
+  user: User
+  since?: number | null;
+  activities?: Activity[] | null;
+  status: PresenceStatus;
+  afk?: boolean;
 }
