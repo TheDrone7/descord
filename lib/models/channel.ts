@@ -41,6 +41,9 @@ export class TextChannel extends Channel {
     this.lastMessageId = channelData.last_message_id || null;
     this.lastPinAt = (typeof channelData.last_pin_timestamp === 'string') ? new Date(channelData.last_pin_timestamp) : null;
   }
+  get guild() {
+    return this.client.guilds.get(this.guildId);
+  }
 }
 
 export class NewsChannel extends TextChannel {
@@ -68,6 +71,10 @@ export class VoiceChannel extends Channel {
     this.nsfw = channelData.nsfw || false;
     this.bitrate = channelData.bitrate || 64000;
     this.userLimit = channelData.user_limit || 0;
+  }
+
+  get guild() {
+    return this.client.guilds.get(this.guildId);
   }
 }
 
@@ -121,6 +128,10 @@ export class ChannelCategory extends Channel {
     this.position = channelData.position || 0;
     this.guildId = channelData.guild_id!;
   }
+
+  get guild() {
+    return this.client.guilds.get(this.guildId);
+  }
 }
 
 export class GuildStore extends Channel {
@@ -138,6 +149,10 @@ export class GuildStore extends Channel {
     this.permissionOverwrites = channelData.permission_overwrites || [];
     this.nsfw = channelData.nsfw || false;
     this.parentId = channelData.parent_id || null;
+  }
+
+  get guild() {
+    return this.client.guilds.get(this.guildId);
   }
 }
 

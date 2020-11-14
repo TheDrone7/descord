@@ -78,7 +78,7 @@ export class Guild {
       this.defaultMessageNotifications = guildData.default_message_notifications === 0 ? 'ALL_MESSAGES' : 'ONLY_MENTIONS';
       this.description = guildData.description;
       this.discoverySplash = guildData.discovery_splash;
-      if (guildData.emojis) this.emojis = new GuildEmojis(client, ...guildData.emojis);
+      if (guildData.emojis) this.emojis = new GuildEmojis(client, guildData.id, ...guildData.emojis);
       this.explicitContentFilter = (['DISABLED', 'MEMBERS_WITHOUT_ROLES', 'ALL_MEMBERS'] as const)[guildData.explicit_content_filter || 0];
       this.features = guildData.features;
       this.icon = guildData.icon;
@@ -88,12 +88,13 @@ export class Guild {
       this.maxPresences = guildData.max_presences;
       this.maxVideoChannelUsers = guildData.max_video_channel_users;
       this.memberCount = guildData.member_count;
-      if (guildData.members) this.members = new GuildMembers(client, ...guildData.members);
+      if (guildData.members) this.members = new GuildMembers(client, guildData.id, ...guildData.members);
       this.mfaEnabled = Boolean(guildData.mfa_level);
       this.name = guildData.name;
       this.ownerId = guildData.owner_id;
       this.owner = this.members?.get(this.ownerId);
       this.preferredLocale = guildData.preferred_locale;
+      this.roles = new GuildRoles(...(guildData.roles || []));
       if (guildData.presences) this.presences = new GuildPresences(client, ...guildData.presences);
     }
   }

@@ -1,5 +1,5 @@
 import Client from '../client.ts';
-import { ClientPresence, Presence, UserData, UserFlag } from '../types/types.ts';
+import { ClientPresence, Presence, UserData } from '../types/types.ts';
 
 const UserFlags = ['None', 'Discord Employee', 'Partnered Server Owner', 'HypeSquad Events', 'Bug Hunter Level 1', 'House Bravery', 'House Brilliance', 'House Balance', 'Early Supporter', 'Team User', 'System', 'Bug Hunter Level 2', 'Verified Bot', 'Early Verified Bot Developer'] as const;
 const PremiumTypes = ['None', 'Nitro Classic', 'Nitro'] as const;
@@ -14,7 +14,7 @@ export default class User {
   system?: boolean;
   mfaEnabled?: boolean;
   locale?: string;
-  flags?: UserFlag[];
+  flags?: (typeof UserFlags[number])[];
   presence?: ClientPresence | Presence;
   premium: typeof PremiumTypes[number];
 

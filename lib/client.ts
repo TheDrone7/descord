@@ -1,12 +1,12 @@
-import type { LevelName } from "https://deno.land/std@0.74.0/log/mod.ts";
-import { DescordLogger, List, parseNum } from './util/util.ts';
+import type { LevelName } from 'https://deno.land/std@0.74.0/log/mod.ts';
 import type { DescordLoggerOptions } from './util/util.ts';
+import { DescordLogger, List, parseNum } from './util/util.ts';
 import type { ClientPresence, Gateway, GatewayPayload, Intent } from './types/types.ts';
-import { HttpError } from "./errors/errors.ts";
-import { ClientUser, ShardManager } from "./models/models.ts";
+import { HttpError } from './errors/errors.ts';
+import { Channel, ClientUser, Emoji, GuildList, ShardManager, User } from './models/models.ts';
 
 interface ClientOptions {
-    logging?: (DescordLoggerOptions|false)
+    logging?: (DescordLoggerOptions | false)
 }
 
 export default class Client {
@@ -23,7 +23,12 @@ export default class Client {
 
     #eventManager: List<string, (...params: any[]) => void>;
 
-    readonly #loggerOptions: (DescordLoggerOptions|false);
+    users: List<string, User>;
+    channels: List<string, Channel>;
+    guilds: GuildList;
+    emojis: List<string, Emoji>;
+
+    readonly #loggerOptions: (DescordLoggerOptions | false);
     #logger?: DescordLogger;
 
     constructor(options?: ClientOptions) {
@@ -39,9 +44,14 @@ export default class Client {
         this.#eventManager = new List();
 
         this.isReady = false;
-        
+
         this.#shardCount = 1;
         this.#shardManger = new ShardManager(this);
+
+        this.users = new List();
+        this.channels = new List();
+        this.guilds = new GuildList(this);
+        this.emojis = new List();
     }
 
     get token() { return this.#token!; }

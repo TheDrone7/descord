@@ -1,4 +1,4 @@
-import { Presence } from './types.ts';
+import { Activity, Presence, PresenceStatus } from './types.ts';
 
 export interface UserData {
     id: string;
@@ -10,7 +10,7 @@ export interface UserData {
     mfa_enabled?: boolean;
     locale?: string;
     flags?: number;
-    premium_type: 0 | 1 | 2;
+    premium_type?: 0 | 1 | 2;
 }
 
 export interface Overwrite {
@@ -53,13 +53,33 @@ export interface EmojiData {
 }
 
 export interface RoleData {
+    id: string;
+    name: string;
+    color: number;
+    hoist: boolean;
+    position: number;
+    permissions: string;
+    managed: boolean;
+    mentionable: boolean;
 }
 
 export interface VoiceStateData {
+    guild_id?: string;
+    channel_id: string|null;
+    user_id: string;
+    member?: GuildMemberData;
+    session_id: string;
+    deaf: boolean;
+    mute: boolean;
+    self_deaf: boolean;
+    self_mute: boolean;
+    self_stream?: boolean;
+    self_video: boolean;
+    suppress: boolean;
 }
 
 export interface GuildMemberData {
-    user?: UserData;
+    user: UserData;
     nick: string | null;
     roles: string[];
     joined_at: string;
@@ -98,7 +118,7 @@ export interface GuildData {
     voice_states?: VoiceStateData[];
     members?: GuildMemberData[];
     channels?: ChannelData[];
-    presences?: Presence[];
+    presences?: PresenceUpdate[];
     max_presences?: number;
     max_members?: number;
     vanity_url_code?: string;
@@ -136,10 +156,22 @@ export interface IntegrationAccountData {
     name: string;
 }
 
+export interface PresenceUpdate {
+    user: UserData;
+    guild_id: string;
+    status: PresenceStatus;
+    activities: Activity[];
+    client_status: {
+        desktop?: PresenceStatus;
+        mobile?: PresenceStatus;
+        web?: PresenceStatus;
+    };
+}
+
 export interface ApplicationData {
     id: string;
     name: string;
-    icon: string|null;
+    icon: string | null;
     description: string;
     summary: string;
     bot?: UserData;

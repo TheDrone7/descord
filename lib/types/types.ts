@@ -10,4 +10,17 @@ export type {
   ClientPresence,
   UserFlag
 } from './data.ts';
-export type { UserData, GuildData, ChannelData, Overwrite, EmojiData } from './modelData.ts';
+export type {
+  UserData,
+  GuildData,
+  ChannelData,
+  Overwrite,
+  EmojiData,
+  PresenceUpdate,
+  GuildMemberData,
+  RoleData,
+  ApplicationData,
+  GuildIntegrations,
+  IntegrationAccountData,
+  VoiceStateData
+} from './modelData.ts';
