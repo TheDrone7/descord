@@ -28,7 +28,7 @@ export class Member extends User {
   get displayName() { return this.nickname !== null ? this.nickname : this.username; }
   get joinedTimestamp() { return this.joinedAt.getTime(); }
   get guild() { return this.client.guilds.get(this.guildId); }
-  get roles() {   return new MemberRoles(this.guild.roles.filter((r: Role) => this.roleIds.includes(r.id))); }
+  get roles() {   return new MemberRoles(this.client, this.guildId, this.guild.roles.filter((r: Role) => this.roleIds.includes(r.id))); }
 }
 
 export class GuildMembers extends List<string, Member> {

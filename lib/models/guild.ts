@@ -94,7 +94,7 @@ export class Guild {
       this.ownerId = guildData.owner_id;
       this.owner = this.members?.get(this.ownerId);
       this.preferredLocale = guildData.preferred_locale;
-      this.roles = new GuildRoles(...(guildData.roles || []));
+      this.roles = new GuildRoles(client, guildData.id, ...(guildData.roles || []));
       if (guildData.presences) this.presences = new GuildPresences(client, ...guildData.presences);
     }
   }

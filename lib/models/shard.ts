@@ -1,6 +1,6 @@
 import Client from '../client.ts';
-import { ClientPresence, GatewayPayload, Hello, Intent, ReadyPayload } from '../types/types.ts';
-import { ClientUser } from "./models.ts";
+import { ClientPresence, GatewayPayload, GuildData, Hello, Intent, ReadyPayload } from '../types/types.ts';
+import { ClientUser, Guild, Member } from './models.ts';
 
 
 const intents = ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS', 'GUILD_INVITES', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING'];
@@ -20,6 +20,7 @@ export default class Shard {
   #sequence: number;
   #heartbeat: number;
   #ready: boolean;
+  #login: boolean;
 
   client: Client;
 
@@ -31,6 +32,7 @@ export default class Shard {
     this.#session = 'null';
     this.#sequence = -1;
     this.#ready = false;
+    this.#login = false;
 
     this.ws = new WebSocket(url);
 
@@ -67,7 +69,7 @@ export default class Shard {
         break;
 
       case 11:
-        if (!this.#ready) {
+        if (!this.#login) {
           this.ws.send(JSON.stringify({
             op: 2,
             d: {
@@ -94,15 +96,32 @@ export default class Shard {
       case 0:
         switch (raw.t) {
           case 'READY':
-            this.#ready = true;
+            this.#login = true;
             this.client.log('DEBUG', `Ready event received for shard ${this.#options.shard[0] + 1} of ${this.#options.shard[1]}`);
             let readyData = raw.d as ReadyPayload;
             if (this.#options.shard[0] === 0) {
               this.client.user = new ClientUser(this.client, readyData.user);
               this.#session = readyData.session_id;
             }
+            readyData.guilds.forEach(g => this.client.guilds.set(g.id, new Guild(this.client, g)));
             break;
           case 'GUILD_CREATE':
+            let guildData = raw.d as GuildData;
+            let newGuild = new Guild(this.client, guildData);
+            this.client.log('DEBUG', `Guild Create event received for guild with ID ${guildData.id}.`);
+            this.client.guilds.set(guildData.id, newGuild);
+            newGuild.members!.forEach((m: Member) => {
+              this.client.users.set(m.user.id, m.user);
+            });
+            if (!this.client.isReady) {
+              if (this.client.guilds.every(g => g.available)) {
+                this.#ready = true;
+                this.client.isReady = true;
+                this.client.execute('ready');
+              }
+            } else {
+              this.client.execute('guildCreate', newGuild);
+            }
             break;
         }
     }

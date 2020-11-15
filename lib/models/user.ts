@@ -35,7 +35,7 @@ export default class User {
     get avatarUrl() { return this.client.cdnBase + this.avatar !== null ? `avatars/${this.id}/${this.avatar}.${this.avatar!.startsWith('a_') ? 'gif' : 'png'}` : `embed/avatars/${parseInt(this.discriminator || "5") % 5}.png`; }
     get createdTimestamp() { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
     get createdDate() { return new Date(this.createdTimestamp); }
-    get tag() { return `${this.username}#${this.discriminator}.`}
+    get tag() { return `${this.username}#${this.discriminator}`}
 
     toString() { return `<@${this.id}>`; }
 }

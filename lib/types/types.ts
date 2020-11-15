@@ -7,8 +7,7 @@ export type {
   Activity,
   ClientActivity,
   Presence,
-  ClientPresence,
-  UserFlag
+  ClientPresence
 } from './data.ts';
 export type {
   UserData,

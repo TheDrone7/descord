@@ -17,8 +17,7 @@ export default class List<T, V> extends Map {
 
     equals(other: List<T, V>) {
         let temp = this.array().filter((g) => other.has(this.findKey((v: V) => v === g)));
-        if (temp.length === this.size) return true;
-        else return false;
+        return temp.length === this.size;
     }
 
     every(fn: (v: V) => boolean, thisArg?: any) {
@@ -42,8 +41,7 @@ export default class List<T, V> extends Map {
     }
 
     keyArray(): T[] { return [...this.keys()]; }
-    mapArray(fn: (v: V) => any, thisArg?: any): V[] { return this.array().map(fn, thisArg); }
-    mapList(fn: (v: V) => any, thisArg?: any): List<T, V> { return new List(...this.array().map(fn, thisArg));}
+    map(fn: (v: V) => any, thisArg?: any): any[] { return this.array().map(fn, thisArg); }
     reduce(fn: (acc: any, cur: V) => any, initial?: any) { this.array().reduce(fn, initial); }
     some(fn: (v: V) => boolean) { for (const value of this.values()) if (fn(value)) return true; return false; }
 }
