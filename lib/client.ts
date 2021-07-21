@@ -1,9 +1,9 @@
 import type { LevelName } from 'https://deno.land/std@0.74.0/log/mod.ts';
 import type { DescordLoggerOptions } from './util/util.ts';
 import { DescordLogger, List, parseNum } from './util/util.ts';
-import type { ClientPresence, Gateway, GatewayPayload, Intent } from './types/types.ts';
 import { HttpError } from './errors/errors.ts';
 import { Channel, ClientUser, Emoji, Guild, GuildList, ShardManager, User } from './models/models.ts';
+import { GatewayPayload, Intent, ClientPresence, Gateway } from './types/index.ts';
 
 interface ClientOptions {
   logging?: (DescordLoggerOptions | false)
@@ -37,8 +37,8 @@ export default class Client {
       logLevel: 'INFO'
     } : options.logging;
 
-    this.#httpBase = 'https://discord.com/api/v8';
-    this.#wsBase = 'wss://gateway.discord.gg/?v=8&encoding=json';
+    this.#httpBase = 'https://discord.com/api/v9';
+    this.#wsBase = 'wss://gateway.discord.gg/?v=9&encoding=json';
     this.#cdnBase = 'https://cdn.discordapp.com/';
 
     this.#eventManager = new List();
@@ -81,7 +81,7 @@ export default class Client {
     if (this.#loggerOptions !== false) {
       this.#logger = new DescordLogger();
       await this.#logger.init(this.#loggerOptions);
-    }
+    } 
 
     let gatewayResponse = await fetch(`${this.#httpBase}/gateway/bot`, {
       method: 'GET',
@@ -102,7 +102,7 @@ export default class Client {
     }
 
     this.#token = token;
-    this.#shardCount = gateway.shards;
+      this.#shardCount = gateway.shards;
 
     this.log('DEBUG', `Trying to log in using the provided token. Creating ${this.#shardCount} shards.`);
 

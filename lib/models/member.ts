@@ -1,11 +1,12 @@
 import Client from '../client.ts';
 import { List } from '../util/util.ts';
 import { MemberRoles, Role, User } from './models.ts';
-import { GuildMemberData } from '../types/modelData.ts';
+import { GuildMemberData } from '../types/index.ts';
 
-export class Member extends User {
-  user: User;
-  nickname: string | null;
+export class Member {
+  client: Client;
+  user?: User;
+  nickname?: string | null;
   roleIds: string[];
   joinedAt: Date;
   boostingSince?: Date;
@@ -14,9 +15,9 @@ export class Member extends User {
   private readonly guildId: string;
 
   constructor(client: Client, guildId: string, member: GuildMemberData) {
-    super(client, member.user);
+    this.client = client;
     this.guildId = guildId;
-    this.user = new User(client, member.user);
+    if (member.user) this.user =  new User(client, member.user);
     this.nickname = member.nick;
     this.roleIds = member.roles || [];
     this.joinedAt = new Date(member.joined_at);
@@ -25,7 +26,7 @@ export class Member extends User {
     this.isMuted = member.mute;
   }
 
-  get displayName() { return this.nickname !== null ? this.nickname : this.username; }
+  get displayName() { return this.nickname !== null ? this.nickname : this.user?.username; }
   get joinedTimestamp() { return this.joinedAt.getTime(); }
   get guild() { return this.client.guilds.get(this.guildId); }
   get roles() {   return new MemberRoles(this.client, this.guildId, this.guild.roles.filter((r: Role) => this.roleIds.includes(r.id))); }

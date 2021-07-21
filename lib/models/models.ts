@@ -20,5 +20,6 @@ export { Role, GuildRoles, MemberRoles } from './role.ts';
 export { Emoji, GuildEmojis } from './emoji.ts';
 export { VoiceState, GuildVoiceStates } from './voiceState.ts';
 export { Guild, GuildList } from './guild.ts';
+export { Webhook } from './webhook.ts';
 
 export { Shard, ShardManager, User, ClientUser };

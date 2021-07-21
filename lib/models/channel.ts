@@ -1,16 +1,16 @@
 import { List } from '../util/util.ts';
 import Client from '../client.ts';
-import { ChannelData, Overwrite } from '../types/modelData.ts';
+import { ChannelData, ChannelOverwrite, ChannelType } from '../types/index.ts';
 import User from './user.ts';
 
 export class Channel {
   readonly client: Client;
   id: string;
-  type: 'TEXT'|'DM'|'VOICE'|'GROUP'|'CATEGORY'|'NEWS'|'STORE';
+  type: string;
   constructor(client: Client, channelData: ChannelData) {
     this.client = client;
     this.id = channelData.id;
-    this.type = (['TEXT','DM','VOICE','GROUP','CATEGORY','NEWS','STORE'] as const)[channelData.type];
+    this.type = ChannelType[channelData.type];
   }
 
   get createdTimestamp() { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
@@ -21,7 +21,7 @@ export class TextChannel extends Channel {
   guildId: string;
   position: number;
   name: string;
-  permissionOverwrites: Overwrite[];
+  permissionOverwrites: ChannelOverwrite[];
   rateLimitPerUser: number;
   nsfw: boolean;
   topic: string;
@@ -56,7 +56,7 @@ export class VoiceChannel extends Channel {
   guildId: string;
   position: number;
   name: string;
-  permissionOverwrites: Overwrite[];
+  permissionOverwrites: ChannelOverwrite[];
   parentId: string|null;
   nsfw: boolean;
   bitrate: number;
@@ -114,7 +114,7 @@ export class GroupDMChannel extends Channel {
 
 export class ChannelCategory extends Channel {
   name: string;
-  permissionOverwrites: Overwrite[];
+  permissionOverwrites: ChannelOverwrite[];
   parentId: string|null;
   nsfw: boolean;
   position: number;
@@ -138,7 +138,7 @@ export class GuildStore extends Channel {
   guildId: string;
   name: string;
   position: number;
-  permissionOverwrites: Overwrite[];
+  permissionOverwrites: ChannelOverwrite[];
   nsfw: boolean;
   parentId: string|null;
   constructor(client: Client, channelData: ChannelData) {

@@ -1,4 +1,4 @@
-import { UserData } from "./modelData.ts";
+import { UserData } from "./models/index.ts";
 
 export interface SessionStartLimit {
   total: number,

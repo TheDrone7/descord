@@ -1,6 +1,6 @@
 import { List } from '../util/util.ts';
 import Client from '../client.ts';
-import { Overwrite, RoleData } from '../types/types.ts';
+import { RoleData } from '../types/index.ts';
 
 export class Role {
   client: Client;

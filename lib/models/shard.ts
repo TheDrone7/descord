@@ -1,5 +1,5 @@
 import Client from '../client.ts';
-import { ClientPresence, GatewayPayload, GuildData, Hello, Intent, ReadyPayload } from '../types/types.ts';
+import { ClientPresence, GatewayPayload, GuildData, Hello, Intent, ReadyPayload } from '../types/index.ts';
 import { ClientUser, Guild, Member } from './models.ts';
 
 
@@ -111,7 +111,7 @@ export default class Shard {
             this.client.log('DEBUG', `Guild Create event received for guild with ID ${guildData.id}.`);
             this.client.guilds.set(guildData.id, newGuild);
             newGuild.members!.forEach((m: Member) => {
-              this.client.users.set(m.user.id, m.user);
+              this.client.users.set(m.user?.id, m.user);
             });
             if (!this.client.isReady) {
               if (this.client.guilds.every(g => g.available)) {

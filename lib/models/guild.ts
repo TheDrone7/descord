@@ -9,7 +9,7 @@ import {
   GuildVoiceStates,
   Member
 } from './models.ts';
-import { GuildData } from '../types/modelData.ts';
+import { GuildData } from '../types/index.ts';
 import List from '../util/list.ts';
 
 export class Guild {
@@ -18,13 +18,13 @@ export class Guild {
   readonly id: string;
   readonly available: boolean;
   name?: string;
-  icon?: string;
-  splash?: string;
-  discoverySplash?: string;
+  icon?: string|null;
+  splash?: string|null;
+  discoverySplash?: string|null;
   owner?: Member;
   ownerId?: string;
   region?: string;
-  afkChannelId?: string;
+  afkChannelId?: string|null;
   afkTimeout?: number;
   widgetEnabled?: boolean;
   widgetChannelId?: string;
@@ -34,9 +34,9 @@ export class Guild {
   explicitContentFilter?: 'DISABLED' | 'MEMBERS_WITHOUT_ROLES' | 'ALL_MEMBERS';
   roles?: GuildRoles;
   emojis?: GuildEmojis;
-  features?: ('INVITE_SPLASH' | 'VIP_REGIONS' | 'VANITY_URL' | 'VERIFIED' | 'PARTNERED' | 'COMMUNITY' | 'COMMERCE' | 'NEWS' | 'DISCOVERABLE' | 'FEATURABLE' | 'ANIMATED_ICON' | 'BANNER' | 'WELCOME_SCREEN_ENABLED')[];
+  features?: string[];
   mfaEnabled?: boolean;
-  applicationId?: string;
+  applicationId?: string|null;
   systemChannelId?: string;
   systemChannelFlags?: ('SUPPRESS_JOIN_NOTIFICATIONS' | 'SUPPRESS_PREMIUM_SUBSCRIPTIONS')[];
   rulesChannelId?: string;
@@ -47,11 +47,11 @@ export class Guild {
   members?: GuildMembers;
   channels?: GuildChannels;
   presences?: GuildPresences;
-  maxPresences?: number;
+  maxPresences?: number|null;
   maxMembers?: number;
   vanityUrlCode?: string;
-  description?: string;
-  banner?: string;
+  description?: string|null;
+  banner?: string|null;
   boostLevel?: number;
   boostCount?: number;
   preferredLocale?: string;

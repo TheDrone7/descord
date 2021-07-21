@@ -1,6 +1,6 @@
 import { List } from "../util/util.ts";
 import Client from '../client.ts';
-import { VoiceStateData } from '../types/types.ts';
+import { VoiceStateData } from '../types/index.ts';
 import { Member } from './models.ts';
 
 export class VoiceState {

@@ -1,9 +1,9 @@
 import Client from '../client.ts';
-import { ClientActivity, ClientPresence, PresenceStatus, UserData } from '../types/types.ts';
+import { ClientActivity, ClientPresence, PresenceStatus, UserData } from '../types/index.ts';
 import User from './user.ts';
 
 export default class ClientUser extends User {
-    presence?: ClientPresence;
+    declare presence?: ClientPresence;
 
     constructor(client: Client, userData: UserData) { super(client, userData); }
 

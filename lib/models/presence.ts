@@ -1,6 +1,6 @@
 import { List } from '../util/util.ts';
 import Client from '../client.ts';
-import { Activity, PresenceStatus, PresenceUpdate } from '../types/types.ts';
+import { Activity, PresenceStatus, PresenceUpdate } from '../types/index.ts';
 import { User } from './models.ts';
 
 export class UserPresence {

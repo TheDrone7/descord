@@ -1,13 +1,13 @@
 import { List } from '../util/util.ts';
 import Client from '../client.ts';
-import { EmojiData } from '../types/modelData.ts';
+import { EmojiData } from '../types/index.ts';
 import { GuildRoles, Role } from './role.ts';
 import User from './user.ts';
 
 export class Emoji {
   client: Client;
-  name: string;
-  id: string;
+  name: string|null;
+  id: string|null;
   roleIds: string[];
   user: User | null;
   requireColons: boolean;
