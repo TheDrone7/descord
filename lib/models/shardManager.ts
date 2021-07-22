@@ -1,10 +1,10 @@
-import Shard from './shard.ts';
+import { Shard } from './shard.ts';
 import { List } from '../util/util.ts';
 import Client from '../client.ts';
 import { ClientPresence, Intent } from '../types/index.ts';
 
-export default class ShardManager extends List<string, Shard> {
-  #client: Client;
+export class ShardManager extends List<string, Shard> {
+  readonly #client: Client;
 
   constructor(client: Client) {
     super();

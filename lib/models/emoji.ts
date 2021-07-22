@@ -2,7 +2,7 @@ import { List } from '../util/util.ts';
 import Client from '../client.ts';
 import { EmojiData } from '../types/index.ts';
 import { GuildRoles, Role } from './role.ts';
-import User from './user.ts';
+import { User } from './user.ts';
 
 export class Emoji {
   client: Client;

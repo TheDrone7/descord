@@ -5,14 +5,14 @@ export type PresenceStatus = 'ONLINE' | 'DND' | 'IDLE' | 'INVISIBLE' | 'OFFLINE'
 export interface Hello { heartbeat_interval: number; }
 
 export interface ClientActivity {
-    name: string;
-    type: ActivityType;
-    url?: string;
+  name: string;
+  type: ActivityType;
+  url?: string;
 }
 
 export interface ClientPresence {
-    since?: number | null;
-    activities?: ClientActivity[] | null;
-    status: PresenceStatus;
-    afk?: boolean;
+  since?: number | null;
+  activities?: ClientActivity[] | null;
+  status: PresenceStatus;
+  afk?: boolean;
 }

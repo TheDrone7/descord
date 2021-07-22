@@ -4,7 +4,7 @@ import { ClientPresence, Presence, UserData } from '../types/index.ts';
 const UserFlags = ['None', 'Discord Employee', 'Partnered Server Owner', 'HypeSquad Events', 'Bug Hunter Level 1', 'House Bravery', 'House Brilliance', 'House Balance', 'Early Supporter', 'Team User', 'System', 'Bug Hunter Level 2', 'Verified Bot', 'Early Verified Bot Developer'] as const;
 const PremiumTypes = ['None', 'Nitro Classic', 'Nitro'] as const;
 
-export default class User {
+export class User {
   client: Client;
   id: string;
   username?: string;

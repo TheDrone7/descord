@@ -1,10 +1,11 @@
 import { UserData } from './user.ts';
+import { ApplicationData } from './application.ts';
 
 export interface IntegrationData {
   id: string;
   name: string;
   type: string;
-  enabled: boolean;
+  enabled?: boolean;
   syncing?: boolean;
   role_id?: string;
   enable_emoticons?: boolean;
@@ -15,12 +16,5 @@ export interface IntegrationData {
   synced_at?: string;
   subscriber_count?: number;
   revoked?: boolean;
-  application?: {
-    id: string;
-    name: string;
-    icon: string|null;
-    description: string;
-    summary: string;
-    bot?: UserData;
-  }
+  application?: ApplicationData
 }

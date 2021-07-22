@@ -12,7 +12,7 @@ interface LoginOptions {
   presence?: ClientPresence
 }
 
-export default class Shard {
+export class Shard {
   #options: LoginOptions
   ws: WebSocket;
 

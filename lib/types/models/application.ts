@@ -22,4 +22,4 @@ export interface ApplicationData {
   slug?: string;
   cover_image?: string;
   flags?: number;
-};
+}
