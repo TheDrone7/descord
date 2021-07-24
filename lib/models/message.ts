@@ -1,5 +1,5 @@
 import { Member, User } from './models.ts';
-import { MessageData } from '../types';
+import { MessageData } from '../types/index.ts';
 import Client from '../client.ts';
 
 export class Message {

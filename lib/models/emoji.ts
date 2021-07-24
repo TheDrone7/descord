@@ -1,7 +1,7 @@
 import { List } from '../util/util.ts';
 import Client from '../client.ts';
 import { EmojiData } from '../types/index.ts';
-import { GuildRoles, Role } from './role.ts';
+import { Role } from './role.ts';
 import { User } from './user.ts';
 
 export class Emoji {
@@ -9,20 +9,20 @@ export class Emoji {
   name: string|null;
   id: string|null;
   roleIds: string[];
-  user: User | null;
+  user?: User;
   requireColons: boolean;
   available: boolean;
   animated: boolean;
   managed: boolean;
-  private readonly guildId: string;
+  private readonly guildId?: string;
 
-  constructor(client: Client, guildId: string, emojiData: EmojiData) {
+  constructor(client: Client, guildId: string|null, emojiData: EmojiData) {
     this.client = client;
     this.id = emojiData.id;
     this.name = emojiData.name;
-    this.guildId = guildId;
+    this.guildId = (typeof guildId === 'string') ? guildId : undefined;
     this.roleIds = emojiData.roles || [];
-    this.user = emojiData.user ? new User(client, emojiData.user) : null;
+    this.user = emojiData.user ? new User(client, emojiData.user) : undefined;
     this.requireColons = emojiData.require_colons || true;
     this.managed = emojiData.managed || false;
     this.animated = emojiData.animated || false;
@@ -30,11 +30,11 @@ export class Emoji {
   }
 
   get guild() {
-    return this.client.guilds.get(this.guildId);
+    return this.guildId ? this.client.guilds.get(this.guildId) : undefined;
   }
 
   get roles() {
-    return this.client.guilds.get(this.guildId).roles.filter((r: Role) => (this.roleIds || []).includes(r.id))
+    return this.guildId ? this.guild.roles.filter((r: Role) => (this.roleIds || []).includes(r.id)) : undefined;
   }
 }
 

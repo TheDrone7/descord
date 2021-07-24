@@ -1,14 +1,5 @@
 import Client from '../client.ts';
-import {
-  Channel,
-  GuildChannels,
-  GuildEmojis,
-  GuildMembers,
-  GuildPresences,
-  GuildRoles,
-  GuildVoiceStates,
-  Member
-} from './models.ts';
+import { Channel, GuildChannels, GuildEmojis, GuildMembers, GuildPresences, GuildRoles, GuildVoiceStates, Member } from './models.ts';
 import { GuildData } from '../types/index.ts';
 import List from '../util/list.ts';
 

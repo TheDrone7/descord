@@ -2,7 +2,7 @@ import type { LevelName } from 'https://deno.land/std@0.74.0/log/mod.ts';
 import type { DescordLoggerOptions } from './util/util.ts';
 import { DescordLogger, List, parseNum } from './util/util.ts';
 import { HttpError } from './errors/errors.ts';
-import { Channel, ClientUser, Emoji, Guild, GuildList, ShardManager, User } from './models/models.ts';
+import { Channel, ClientUser, Emoji, Guild, GuildList, ShardManager, User, Message } from './models/models.ts';
 import { GatewayPayload, Intent, ClientPresence, Gateway } from './types/index.ts';
 
 interface ClientOptions {
@@ -27,9 +27,11 @@ export default class Client {
   channels: List<string, Channel>;
   guilds: GuildList;
   emojis: List<string, Emoji>;
+  messages: List<string, Message>;
 
   readonly #loggerOptions: (DescordLoggerOptions | false);
   #logger?: DescordLogger;
+
 
   constructor(options?: ClientOptions) {
     this.#loggerOptions = options?.logging === undefined ? {
@@ -52,6 +54,7 @@ export default class Client {
     this.channels = new List();
     this.guilds = new GuildList(this);
     this.emojis = new List();
+    this.messages = new List();
   }
 
   get token() { return this.#token!; }
