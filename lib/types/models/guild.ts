@@ -12,11 +12,6 @@ export enum MFALevel {'NONE', 'ELEVATED'}
 export enum VerificationLevel { 'NONE', 'LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH'}
 export enum GuildNSFWLevel { 'DEFAULT', 'EXPLICIT', 'SAFE', 'AGE_RESTRICTED'}
 export enum PremiumTier { 'NONE', 'TIER_1', 'TIER_2', 'TIER_3'}
-export enum SystemChannelFlags {
-  'SUPPRESS_JOIN_NOTIFICATIONS' = 1 << 0,
-  'SUPPRESS_PREMIUM_SUBSCRIPTIONS' = 1 << 1,
-  'SUPPRESS_GUILD_REMINDER_NOTIFICATIONS' = 1 << 2
-}
 
 export interface WelcomeScreenChannels {
   channel_id: string;
@@ -51,7 +46,7 @@ export interface GuildData {
   mfa_level?: MFALevel;
   application_id?: string|null;
   system_channel_id?: string|null;
-  system_channel_flags?: SystemChannelFlags;
+  system_channel_flags?: number;
   rules_channel_id?: string|null;
   joined_at?: string;
   large?: boolean;

@@ -7,7 +7,7 @@ export type {
   ClientActivity,
   ClientPresence
 } from './data.ts';
-export { PremiumType, ChannelType, InviteTargetType, StickerFormatType, PremiumTier, MessageComponentType, MessageType, MessageActivityType, ButtonStyle, GuildNSFWLevel, MFALevel, VerificationLevel, ExplicitContentFilterLevel, SystemChannelFlags, DefaultMessageNotificationLevel, StagePrivacyLevel, VideoQualityMode, AuditLogEvent } from './models/index.ts';
+export { PremiumType, ChannelType, InviteTargetType, StickerFormatType, PremiumTier, MessageComponentType, MessageType, MessageActivityType, ButtonStyle, GuildNSFWLevel, MFALevel, VerificationLevel, ExplicitContentFilterLevel, DefaultMessageNotificationLevel, StagePrivacyLevel, VideoQualityMode, AuditLogEvent } from './models/index.ts';
 export type {
   AuditLogEntryData,
   AuditData,

@@ -20,7 +20,7 @@ export class Emoji {
     this.client = client;
     this.id = emojiData.id;
     this.name = emojiData.name;
-    this.guildId = (typeof guildId === 'string') ? guildId : undefined;
+    this.guildId = guildId || undefined;
     this.roleIds = emojiData.roles || [];
     this.user = emojiData.user ? new User(client, emojiData.user) : undefined;
     this.requireColons = emojiData.require_colons || true;

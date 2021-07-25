@@ -10,7 +10,7 @@ export type { EmojiData } from './emoji.ts'
 export { ChannelType, VideoQualityMode } from './channel.ts';
 export type { ThreadMetadataData, ThreadMemberData, ChannelData, ChannelOverwrite } from './channel.ts';
 export { GuildNSFWLevel, MFALevel, DefaultMessageNotificationLevel, VerificationLevel, PremiumTier, ExplicitContentFilterLevel } from './guild.ts';
-export type { GuildData, SystemChannelFlags, WelcomeScreenChannels, WelcomeScreenData } from './guild.ts';
+export type { GuildData, WelcomeScreenChannels, WelcomeScreenData } from './guild.ts';
 export type { GuildMemberData } from './member.ts';
 export type { PresenceUpdate, Presence, Activity } from './presence.ts';
 export type { RoleData, RoleTagData } from './role.ts';
