@@ -30,4 +30,7 @@ export class GuildTemplate {
     this.serializedSourceGuild = new Guild(client, data.serialized_source_guild);
     this.isDirty = data.is_dirty || undefined;
   }
+
+  get createdTimestamp() { return this.createdAt.getTime(); }
+  get updatedTimestamp() { return this.updatedAt.getTime(); }
 }
