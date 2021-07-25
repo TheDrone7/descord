@@ -5,7 +5,9 @@ export type {
   ActivityType,
   PresenceStatus,
   ClientActivity,
-  ClientPresence
+  ClientPresence,
+  Permissions,
+  Permission
 } from './data.ts';
 export { PremiumType, ChannelType, InviteTargetType, StickerFormatType, PremiumTier, MessageComponentType, MessageType, MessageActivityType, ButtonStyle, GuildNSFWLevel, MFALevel, VerificationLevel, ExplicitContentFilterLevel, DefaultMessageNotificationLevel, StagePrivacyLevel, VideoQualityMode, AuditLogEvent } from './models/index.ts';
 export type {
