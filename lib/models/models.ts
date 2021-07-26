@@ -17,8 +17,8 @@ export { GuildTemplate } from './guildTemplate.ts';
 export { Invite, StageInstanceInvite } from './invite.ts';
 export { Member, GuildMembers } from './member.ts';
 export { Message, ChannelMessages, MessageInteraction } from './message.ts';
-
 export { UserPresence, GuildPresences } from './presence.ts';
+export { VoiceState, VoiceRegion, GuildVoiceStates } from './voice.ts';
 export { Role, GuildRoles, MemberRoles } from './role.ts';
-export { VoiceState, GuildVoiceStates } from './voiceState.ts';
+
 export { Webhook } from './webhook.ts';
