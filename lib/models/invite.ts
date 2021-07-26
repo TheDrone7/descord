@@ -1,5 +1,5 @@
+import { InviteData, InviteStageInstanceData, InviteTargetType } from '../types/index.ts';
 import Client from '../client.ts';
-import { InviteData, InviteStageInstanceData, InviteTargetType } from '../types';
 import { Guild } from './guild.ts';
 import { Channel } from './channel.ts';
 import { User } from './user.ts';

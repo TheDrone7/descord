@@ -6,8 +6,8 @@ import { User } from './user.ts';
 
 export class Emoji {
   client: Client;
-  name: string|null;
-  id: string|null;
+  name?: string;
+  id?: string;
   roleIds: string[];
   user?: User;
   requireColons: boolean;
@@ -18,8 +18,8 @@ export class Emoji {
 
   constructor(client: Client, guildId: string|null, emojiData: EmojiData) {
     this.client = client;
-    this.id = emojiData.id;
-    this.name = emojiData.name;
+    this.id = emojiData.id || undefined;
+    this.name = emojiData.name || undefined;
     this.guildId = guildId || undefined;
     this.roleIds = emojiData.roles || [];
     this.user = emojiData.user ? new User(client, emojiData.user) : undefined;

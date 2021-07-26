@@ -1,7 +1,7 @@
+import { GuildMemberData, Permission, Permissions } from '../types/index.ts';
 import Client from '../client.ts';
 import { List } from '../util/util.ts';
 import { MemberRoles, Role, User } from './models.ts';
-import { GuildMemberData, Permission, Permissions } from '../types/index.ts';
 
 export class Member {
   client: Client;
@@ -14,7 +14,7 @@ export class Member {
   isMuted: boolean;
   pending?: boolean;
   permissions: Permission[];
-  private readonly guildId: string;
+  guildId: string;
 
   constructor(client: Client, guildId: string, member: GuildMemberData) {
     this.client = client;

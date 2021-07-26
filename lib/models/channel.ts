@@ -1,8 +1,7 @@
-import { List } from '../util/util.ts';
-import Client from '../client.ts';
 import { ChannelData, ChannelOverwrite, ChannelType } from '../types/index.ts';
+import Client from '../client.ts';
+import { List } from '../util/util.ts';
 import { User } from './user.ts';
-import { Member } from './member.ts';
 
 export class Channel {
   readonly client: Client;

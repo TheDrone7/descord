@@ -1,6 +1,6 @@
 import { ApplicationData, ApplicationFlag } from '../types/index.ts';
-import { User } from './user.ts';
 import Client from '../client.ts';
+import { User } from './user.ts';
 import { Team } from './team.ts';
 
 export class Application {
@@ -13,14 +13,14 @@ export class Application {
   rpcOrigins?: string[];
   public: boolean;
   requiredCodeGrant: boolean;
-  termsOfServiceURL?: string;
-  privacyPolicyURL?: string;
+  termsOfServiceUrl?: string;
+  privacyPolicyUrl?: string;
   owner?: User;
   summary: string;
   verifyKey: string;
   team?: Team;
   guildId?: string;
-  primarySKUID?: string;
+  primarySkuID?: string;
   slug?: string;
   coverImage?: string;
   flags?: ApplicationFlag[];
@@ -34,14 +34,14 @@ export class Application {
     this.rpcOrigins = appData.rpc_origins;
     this.public = appData.bot_public;
     this.requiredCodeGrant = appData.bot_require_code_grant;
-    this.termsOfServiceURL = appData.terms_of_service_url;
-    this.privacyPolicyURL = appData.privacy_policy_url;
+    this.termsOfServiceUrl = appData.terms_of_service_url;
+    this.privacyPolicyUrl = appData.privacy_policy_url;
     if (appData.owner) this.owner = new User(client, appData.owner);
     this.summary = appData.summary;
     this.verifyKey = appData.verify_key;
     if (appData.team !== null) this.team = new Team(client, appData.team);
     this.guildId = appData.guild_id;
-    this.primarySKUID = appData.primary_sku_id;
+    this.primarySkuID = appData.primary_sku_id;
     this.slug = appData.slug;
     this.coverImage = appData.cover_image;
     this.flags = [];
@@ -56,8 +56,8 @@ export class Application {
     }
   }
 
-  get iconURL() { return this.icon === null ? null : this.client.cdnBase + `app-icons/${this.id}/${this.icon}.png`; }
-  get coverImageURL() { return this.coverImage === undefined ? undefined : this.client.cdnBase + `app-icons/${this.id}/${this.coverImage}.png`; }
+  get iconUrl() { return this.icon === null ? null : this.client.cdnBase + `app-icons/${this.id}/${this.icon}.png`; }
+  get coverImageUrl() { return this.coverImage === undefined ? undefined : this.client.cdnBase + `app-icons/${this.id}/${this.coverImage}.png`; }
 
   get createdTimestamp() { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
   get createdAt() { return new Date(this.createdTimestamp); }

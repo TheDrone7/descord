@@ -1,11 +1,11 @@
-import Client from '../client.ts';
-import { GuildChannels, GuildEmojis, GuildMembers, GuildPresences, GuildRoles, GuildVoiceStates } from './models.ts';
 import {
   DefaultMessageNotificationLevel,
   ExplicitContentFilterLevel,
   GuildData, GuildNSFWLevel, PremiumTier,
   VerificationLevel
 } from '../types/index.ts';
+import Client from '../client.ts';
+import { GuildChannels, GuildEmojis, GuildMembers, GuildPresences, GuildRoles, GuildVoiceStates } from './models.ts';
 import List from '../util/list.ts';
 import { StageInstance } from './stageInstance.ts';
 

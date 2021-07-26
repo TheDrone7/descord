@@ -1,5 +1,5 @@
-import Client from '../client.ts';
 import { GuildTemplateData } from '../types/index.ts';
+import Client from '../client.ts';
 import { User } from './user.ts';
 import { Guild } from './guild.ts';
 

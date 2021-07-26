@@ -1,7 +1,7 @@
-import { Webhook } from './webhook.ts';
-import { User } from './user.ts';
 import { AuditData, AuditLogChangeData, AuditLogEntryData, AuditLogEvent, OptionalAuditEntryData } from '../types/index.ts';
 import Client from '../client.ts';
+import { Webhook } from './webhook.ts';
+import { User } from './user.ts';
 import { Integration } from './integration.ts';
 
 export class AuditLogChange {
@@ -42,13 +42,16 @@ export class OptionalAuditEntry {
     this.type = data.type;
     this.roleName = data.role_name;
   }
+
+  get channel() { this.channelID ? this.client.channels.get(this.channelID) : undefined; }
+  get message() { this.messageID ? this.client.messages.get(this.messageID) : undefined; }
 }
 
 export class AuditLogEntry {
   client: Client;
-  targetId?: string;
+  targetID?: string;
   changes: AuditLogChange[];
-  userId?: string;
+  userID?: string;
   id: string;
   actionType: string;
   options?: OptionalAuditEntry;
@@ -56,13 +59,16 @@ export class AuditLogEntry {
 
   constructor(client: Client, auditLog: AuditLogEntryData) {
     this.client = client;
-    if (auditLog.target_id !== null) this.targetId = auditLog.target_id;
+    this.targetID = auditLog.target_id || undefined;
     this.changes = [];
-    if (auditLog.user_id !== null) this.userId = auditLog.user_id;
+    this.userID = auditLog.user_id || undefined;
     this.id = auditLog.id;
     this.actionType = AuditLogEvent[auditLog.action_type];
     this.reason = auditLog.reason;
+    this.options = auditLog.options ? new OptionalAuditEntry(client, auditLog.options) : undefined;
   }
+
+  get user() { return this.userID ? this.client.users.get(this.userID) : undefined; }
 }
 
 export class Audit {

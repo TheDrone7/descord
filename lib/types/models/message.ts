@@ -3,6 +3,9 @@ import { GuildMemberData } from './member.ts';
 import { ApplicationData } from './application.ts';
 import { ChannelData, ChannelType } from './channel.ts';
 import { EmojiData } from './emoji.ts';
+import { MessageComponentData } from './component.ts';
+import { EmbedData } from './embed.ts';
+import Client from '../../client.ts';
 
 export type MessageFlag = 'CROSSPOSTED' | 'IS_CROSSPOST' | 'SUPPRESS_EMBEDS' | 'SOURCE_MESSAGE_DELETED' | 'URGENT' | 'HAS_THREAD' | 'EPHEMERAL' | 'LOADING';
 
@@ -26,67 +29,6 @@ export interface AttachmentData {
   proxy_url: string;
   height?: number|null;
   width?: number|null;
-}
-
-export interface EmbedFooterData {
-  text: string;
-  icon_url?: string;
-  proxy_icon_url?: string;
-}
-
-export interface EmbedImageData {
-  url?: string;
-  proxy_url?: string;
-  height?: number;
-  width?: number;
-}
-
-export interface EmbedThumbnailData {
-  url?: string;
-  proxy_url?: string;
-  height?: number;
-  width?: number;
-}
-
-export interface EmbedVideoData {
-  url?: string;
-  proxy_url?: string;
-  height?: number;
-  width?: number;
-}
-
-export interface EmbedProviderData {
-  name?: string;
-  url?: string;
-}
-
-export interface EmbedAuthorData {
-  name?: string;
-  url?: string;
-  icon_url?: string;
-  proxy_icon_url?: string;
-}
-
-export interface EmbedFieldData {
-  name: string;
-  value: string;
-  inline?: boolean;
-}
-
-export interface EmbedData {
-  title?: string;
-  type?: string;
-  description?: string;
-  url?: string;
-  timestamp?: string;
-  color?: number;
-  footer?: EmbedFooterData;
-  image?: EmbedImageData;
-  thumbnail?: EmbedThumbnailData;
-  video?: EmbedVideoData;
-  provider?: EmbedProviderData;
-  author: EmbedAuthorData;
-  fields: EmbedFieldData[];
 }
 
 export interface MessageReactionData {
@@ -159,50 +101,17 @@ export interface AllowedMentionsData {
   replied_user?: boolean;
 }
 
-export enum MessageComponentType {
-  'Action Row' = 1,
-  'Button',
-  'Select Menu'
-}
-
-export enum ButtonStyle {
-  'Primary' = 1,
-  'Secondary',
-  'Success',
-  'Danger',
-  'Link'
-}
-
-export interface SelectOptions {
-  label: string;
-  value: string;
-  description?: string;
-  emoji?: EmojiData;
-  default?: boolean;
-}
-
-export interface MessageComponentData {
-  type: MessageComponentType;
-  custom_id?: string;
-  disabled?: boolean;
-  style?: ButtonStyle;
-  label?: string;
-  emoji?: EmojiData;
-  url?: string;
-  options?: SelectOptions[];
-  placeholder?: string;
-  min_values?: number;
-  max_values?: number;
-  components?: MessageComponentData[];
+export enum InteractionType {
+  'PING'= 1,
+  'APPLICATION COMMAND',
+  'MESSAGE COMPONENT'
 }
 
 export interface MessageInteractionData {
-  tts?: boolean;
-  content?: string;
-  embeds?: EmbedData[];
-  allowed_mentions?: AllowedMentionsData;
-  flags: number;
-  components: MessageComponentData[];
+  id: string;
+  type: InteractionType;
+  name: string;
+  user: UserData;
 }
 
 export interface MessageData {
@@ -233,7 +142,7 @@ export interface MessageData {
   flags?: number;
   referenced_message?: MessageData|null;
   interaction?: MessageInteractionData;
-  thread: ChannelData;
-  components: MessageComponentData[];
-  sticker_items: MessageStickerData[];
+  thread?: ChannelData;
+  components?: MessageComponentData[];
+  sticker_items?: MessageStickerData[];
 }

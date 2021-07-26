@@ -9,7 +9,26 @@ export type {
   Permissions,
   Permission
 } from './data.ts';
-export { PremiumType, ChannelType, InviteTargetType, StickerFormatType, PremiumTier, MessageComponentType, MessageType, MessageActivityType, ButtonStyle, GuildNSFWLevel, MFALevel, VerificationLevel, ExplicitContentFilterLevel, DefaultMessageNotificationLevel, StagePrivacyLevel, VideoQualityMode, AuditLogEvent } from './models/index.ts';
+export {
+  PremiumType,
+  ChannelType,
+  InviteTargetType,
+  StickerFormatType,
+  PremiumTier,
+  MessageComponentType,
+  MessageType,
+  MessageActivityType,
+  ButtonStyle,
+  GuildNSFWLevel,
+  MFALevel,
+  VerificationLevel,
+  ExplicitContentFilterLevel,
+  DefaultMessageNotificationLevel,
+  StagePrivacyLevel,
+  VideoQualityMode,
+  AuditLogEvent,
+  InteractionType
+} from './models/index.ts';
 export type {
   AuditLogEntryData,
   AuditData,
@@ -63,5 +82,7 @@ export type {
   EmbedData,
   MessageComponentData,
   VoiceRegionData,
-  SelectOptions
+  SelectOptionsData,
+  WelcomeScreenData,
+  WelcomeScreenChannels
 } from './models/index.ts';
