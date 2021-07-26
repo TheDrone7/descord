@@ -5,6 +5,7 @@ export type { UserFlags, UserData } from './user.ts';
 export { AuditLogEvent } from './audit.ts';
 export type { AuditData, AuditLogEntryData, AuditLogChangeData, OptionalAuditEntryData } from './audit.ts';
 export type { IntegrationData } from './integration.ts';
+export { WebhookType } from './webhook.ts';
 export type { WebhookData } from './webhook.ts';
 export type { EmojiData } from './emoji.ts'
 export { ChannelType, VideoQualityMode } from './channel.ts';

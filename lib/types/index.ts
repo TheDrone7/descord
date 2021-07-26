@@ -27,7 +27,8 @@ export {
   StagePrivacyLevel,
   VideoQualityMode,
   AuditLogEvent,
-  InteractionType
+  InteractionType,
+  WebhookType
 } from './models/index.ts';
 export type {
   AuditLogEntryData,
