@@ -43,8 +43,8 @@ export class OptionalAuditEntry {
     this.roleName = data.role_name;
   }
 
-  get channel() { this.channelID ? this.client.channels.get(this.channelID) : undefined; }
-  get message() { this.messageID ? this.client.messages.get(this.messageID) : undefined; }
+  get channel() { return this.channelID ? this.client.channels.get(this.channelID) : undefined; }
+  get message() { return this.messageID ? this.client.messages.get(this.messageID) : undefined; }
 }
 
 export class AuditLogEntry {

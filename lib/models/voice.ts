@@ -6,7 +6,7 @@ import { Member } from './models.ts';
 export class VoiceState {
   client: Client;
   guildID: string;
-  channelID: string;
+  channelID?: string;
   userID: string;
   member?: Member;
   sessionID: string;
@@ -24,7 +24,7 @@ export class VoiceState {
     this.client = client;
     this.channelID = voiceState.channel_id || undefined;
     this.userID = voiceState.user_id;
-    this.member = voiceState.member ? new Member(client, guildId, voiceState.member) : undefined;
+    this.member = voiceState.member ? new Member(client, voiceState.guild_id || guildId!, voiceState.member) : undefined;
     this.sessionID = voiceState.session_id;
     this.deaf = voiceState.deaf;
     this.mute = voiceState.mute;
@@ -57,7 +57,7 @@ export class VoiceRegion {
   }
 }
 
-export class GuildVoiceStates extends List<string, Voice> {
+export class GuildVoiceStates extends List<string, VoiceState> {
   client: Client;
   constructor(client: Client, ...voiceStates: VoiceStateData[]) {
     super(...voiceStates.map(v => new VoiceState(client, v)));

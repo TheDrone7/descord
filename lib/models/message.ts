@@ -44,7 +44,7 @@ class MessageReaction {
     this.client = client;
     this.count = data.count;
     this.me = data.me;
-    this.emoji = new Emoji(data.emoji);
+    this.emoji = new Emoji(client, null, data.emoji);
   }
 }
 
@@ -108,7 +108,7 @@ export class Message {
   tts: boolean;
   mentionEveryone: boolean;
   mentions: {
-    members: List<string, Member>;
+    members: List<string, User>;
     roles: List<string, Role>;
     channels: List<string, Channel>;
   };
@@ -144,13 +144,13 @@ export class Message {
     this.mentionEveryone = message.mention_everyone;
     this.mentions = {
       members: new List(...message.mentions.map(u => new User(client, u))),
-      roles: new List(...this.guild!.roles?.filter(r => message.mention_roles.indexOf(r.id) > -1)),
-      channels: new List(...this.guild!.channels?.filter(c => message.mention_channels.indexOf(c.id) > -1))
+      roles: new List(...this.guild!.roles?.filter((r: Role) => message.mention_roles.indexOf(r.id) > -1)),
+      channels: new List(...this.guild!.channels?.filter((c: Channel) => message.mention_channels.some(ch => ch.id === c.id)))
     };
     this.attachments = new List(...message.attachments.map(a => new Attachment(client, a)));
     this.embeds = message.embeds.map(e => new Embed(client, e));
-    this.reactions = message.reactions?.map(r => new MessageReaction(client, r));
-    this.nonce = message.nonce.toString();
+    this.reactions = message.reactions?.map(r => new MessageReaction(client, r)) || [];
+    this.nonce = message.nonce?.toString();
     this.pinned = message.pinned;
     this.webhookID = message.webhook_id;
     this.type = MessageType[message.type];
@@ -159,7 +159,7 @@ export class Message {
     this.applicationID = message.application_id;
     this.messageReference = message.message_reference ? new MessageReference(client, message.message_reference) : undefined;
     this.flags = message.flags ? [] : undefined;
-    this.referencedMessage = message.referenced_message ? new Message(message.referenced_message) : undefined;
+    this.referencedMessage = message.referenced_message ? new Message(client, message.referenced_message) : undefined;
     this.interactions = message.interaction ? new MessageInteraction(client, message.interaction) : undefined;
     this.thread = message.thread ? new Thread(client, message.thread) : undefined;
     this.components = message.components?.map(c => new MessageComponent(client, c));
@@ -168,6 +168,7 @@ export class Message {
 
   get createdTimestamp() { return this.createdAt.getTime(); }
   get editedTimestamp() { return this.editedAt?.getTime(); }
+  get guild() { return this.client.guilds.get(this.guildID); }
 }
 
 export class MessageInteraction {

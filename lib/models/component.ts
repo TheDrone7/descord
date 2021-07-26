@@ -50,10 +50,10 @@ export class Button extends MessageComponent {
     super(client, data);
     this.customID = data.custom_id;
     this.disabled = data.disabled;
-    this.style = ButtonStyle[data.style];
+    this.style = ButtonStyle[data.style!];
     this.label = data.label;
     this.url = data.url;
-    this.emoji = data.emoji ? new Emoji(client, data.emoji) : undefined;
+    this.emoji = data.emoji ? new Emoji(client, null, data.emoji) : undefined;
   }
 }
 
@@ -87,7 +87,7 @@ export class SelectOption {
     this.label = data.label;
     this.value = data.value;
     this.description = data.description;
-    this.emoji = data.emoji ? new Emoji(client, data.emoji) : undefined;
+    this.emoji = data.emoji ? new Emoji(client, null, data.emoji) : undefined;
     this.default = data.default;
   }
 }

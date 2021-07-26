@@ -28,8 +28,8 @@ export class Webhook {
     this.name = data.name || undefined;
     this.avatar = data.avatar || undefined;
     this.token = data.token;
-    this.applicationID = data.application_id;
-    this.sourceGuild = data.source_guild ? new Guild(data.source_guild) : undefined;
-    this.sourceChannel = data.source_channel ? new Channel(data.source_channel) : undefined;
+    this.applicationID = data.application_id || undefined;
+    this.sourceGuild = data.source_guild ? new Guild(client, data.source_guild) : undefined;
+    this.sourceChannel = data.source_channel ? new Channel(client, data.source_channel) : undefined;
   }
 }

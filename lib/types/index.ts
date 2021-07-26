@@ -6,9 +6,9 @@ export type {
   PresenceStatus,
   ClientActivity,
   ClientPresence,
-  Permissions,
   Permission
 } from './data.ts';
+export { Permissions } from './data.ts';
 export {
   PremiumType,
   ChannelType,

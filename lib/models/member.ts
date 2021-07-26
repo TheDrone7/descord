@@ -13,7 +13,7 @@ export class Member {
   isDeafened: boolean;
   isMuted: boolean;
   pending?: boolean;
-  permissions: Permission[];
+  permissions: string[];
   guildId: string;
 
   constructor(client: Client, guildId: string, member: GuildMemberData) {
@@ -31,9 +31,9 @@ export class Member {
 
     if (member.permissions) {
       const permissionsBit = parseInt(member.permissions);
-      for (let bits in Object.keys(Permissions)) {
+      for (const bits of Object.keys(Permissions)) {
         let bit = parseInt(bits);
-        if ((permissionsBit & bit) === bit) this.permissions.push(Permissions[bits]);
+        if ((permissionsBit & bit) === bit) this.permissions.push(Object.values(Permissions)[Object.keys(Permissions).indexOf(bits)]);
       }
     }
   }

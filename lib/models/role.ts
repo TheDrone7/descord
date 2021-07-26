@@ -26,7 +26,7 @@ export class Role {
   permissions: string;
   managed: boolean;
   mentionable: boolean;
-  tags?: RoleTag[];
+  tags?: RoleTag;
   constructor(client: Client, guildId: string, role: RoleData) {
     this.client = client;
     this.guildID = guildId;
@@ -38,7 +38,7 @@ export class Role {
     this.permissions = role.permissions;
     this.managed = role.managed;
     this.mentionable = role.mentionable;
-    this.tags = role.tags?.map(t => new RoleTag(client, t));
+    this.tags = role.tags ? new RoleTag(client, role.tags) : undefined;
   }
 
   get createdTimestamp() { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }

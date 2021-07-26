@@ -27,18 +27,18 @@ export class Invite {
   guild?: Guild;
   channel: Channel;
   inviter?: User;
-  targetType: string;
+  targetType?: string;
   targetUser?: User;
   targetApplication?: Application;
   approximatePresenceCount?: number;
   approximateMemberCount?: number;
   expiresAt?: Date;
-  stageInstance: StageInstanceInvite;
+  stageInstance?: StageInstanceInvite;
   uses?: number;
   maxUses?: number;
   maxAge?: number;
   temporary?: boolean;
-  createdAt: Date;
+  createdAt?: Date;
   constructor(client: Client, data: InviteData) {
     this.client = client;
     this.code = data.code;

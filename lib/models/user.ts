@@ -30,14 +30,14 @@ export class User {
   locale?: string;
   flags?: UserFlags[];
   presence?: ClientPresence | Presence;
-  premium: 'NONE' | 'NITRO CLASSIC' | 'NITRO';
+  premium: string;
 
   constructor(client: Client, userData: UserData) {
     this.client = client;
     this.id = userData.id;
     this.username = userData.username;
     this.discriminator = userData.discriminator;
-    this.avatar = userData.avatar;
+    this.avatar = userData.avatar || undefined;
     this.bot = userData.bot;
     this.system = userData.system;
     this.mfaEnabled = userData.mfa_enabled;
@@ -45,9 +45,20 @@ export class User {
 
     if (userData.flags) {
       this.flags = [];
-      for (const flag in Object.keys(UserFlagsList))
-        if ((userData.flags & UserFlagsList[flag]) === UserFlagsList[flag])
-          this.flags.push(flag);
+      if ((userData.flags & 0) === 0) this.flags.push('NONE');
+      if ((userData.flags & (1 << 0)) === (1 << 0)) this.flags.push('DISCORD EMPLOYEE');
+      if ((userData.flags & (1 << 1)) === (1 << 1)) this.flags.push('PARTNERED SERVER OWNER');
+      if ((userData.flags & (1 << 2)) === (1 << 2)) this.flags.push('HYPESQUAD EVENTS');
+      if ((userData.flags & (1 << 3)) === (1 << 3)) this.flags.push('BUG HUNTER LEVEL 1');
+      if ((userData.flags & (1 << 6)) === (1 << 6)) this.flags.push('HOUSE BRAVERY');
+      if ((userData.flags & (1 << 7)) === (1 << 7)) this.flags.push('HOUSE BRILLIANCE');
+      if ((userData.flags & (1 << 8)) === (1 << 8)) this.flags.push('HOUSE BALANCE');
+      if ((userData.flags & (1 << 9)) === (1 << 9)) this.flags.push('EARLY SUPPORTER');
+      if ((userData.flags & (1 << 10)) === (1 << 10)) this.flags.push('TEAM USER');
+      if ((userData.flags & (1 << 14)) === (1 << 14)) this.flags.push('BUG HUNTER LEVEL 2');
+      if ((userData.flags & (1 << 16)) === (1 << 16)) this.flags.push('VERIFIED BOT');
+      if ((userData.flags & (1 << 17)) === (1 << 17)) this.flags.push('EARLY VERIFIED BOT DEVELOPER');
+      if ((userData.flags & (1 << 18)) === (1 << 18)) this.flags.push('DISCORD CERTIFIED MODERATOR');
     }
     this.premium = PremiumType[userData.premium_type || 0];
   }

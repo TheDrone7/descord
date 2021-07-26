@@ -7,7 +7,7 @@ export interface RoleData {
   permissions: string;
   managed: boolean;
   mentionable: boolean;
-  tags?: RoleTagData[];
+  tags?: RoleTagData;
 }
 
 export interface RoleTagData {

@@ -24,7 +24,7 @@ export class UserPresence {
     this.clientStatus = p.client_status;
   }
 
-  get guild() { return this.client.guilds.get(this.guildId) }
+  get guild() { return this.client.guilds.get(this.guildID) }
 }
 
 export class GuildPresences extends List<string, UserPresence> {

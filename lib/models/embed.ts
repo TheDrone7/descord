@@ -15,7 +15,7 @@ export class Embed {
   thumbnail?: { url?: string; proxyURL?: string; height?: number; width?: number; };
   video?: { url?: string; proxyURL?: string; height?: number; width?: number; };
   provider?: { name?: string; url?: string; };
-  author: { name?: string; url?: string; iconURL?: string; proxyIconURL?: string; };
+  author?: { name?: string; url?: string; iconURL?: string; proxyIconURL?: string; };
   fields: { name: string; value: string; inline?: boolean; }[];
   constructor(client: Client, data: EmbedData) {
     this.client = client;
