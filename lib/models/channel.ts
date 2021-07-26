@@ -250,29 +250,31 @@ class StageChannel extends VoiceChannel {
   }
 }
 
+export const newChannel = (client: Client, c: ChannelData): Channel => {
+  switch(c.type) {
+    case 2:
+      return new VoiceChannel(client, c);
+    case 13:
+      return new StageChannel(client, c);
+    case 4:
+      return new ChannelCategory(client, c);
+    case 5:
+      return new NewsChannel(client, c);
+    case 6:
+      return new GuildStore(client, c);
+    case 10:
+    case 11:
+    case 12:
+      return new Thread(client, c);
+    default:
+      return new TextChannel(client, c);
+  }
+}
+
 export class GuildChannels extends List<string, Channel> {
   client: Client;
   constructor(client: Client, ...channels: ChannelData[]) {
-    let channelObjects = channels.map(c => {
-      switch(c.type) {
-        case 2:
-          return new VoiceChannel(client, c);
-        case 13:
-          return new StageChannel(client, c);
-        case 4:
-          return new ChannelCategory(client, c);
-        case 5:
-          return new NewsChannel(client, c);
-        case 6:
-          return new GuildStore(client, c);
-        case 10:
-        case 11:
-        case 12:
-          return new Thread(client, c);
-        default:
-          return new TextChannel(client, c);
-      }
-    });
+    let channelObjects = channels.map(c => newChannel(client, c));
     super(...channelObjects);
     this.client = client;
   }

@@ -9,7 +9,7 @@ export { Audit, AuditLogEntry, AuditLogChange, OptionalAuditEntry } from './audi
 export { Integration } from './integration.ts';
 export { MessageComponent, SelectMenu, Button, ActionRow, SelectOption } from './component.ts';
 export { Embed } from './embed.ts';
-export { Channel, TextChannel, NewsChannel, ChannelCategory, GroupDMChannel, VoiceChannel, DMChannel, GuildChannels, GuildStore, Thread } from './channel.ts';
+export { Channel, TextChannel, NewsChannel, ChannelCategory, GroupDMChannel, VoiceChannel, DMChannel, GuildChannels, GuildStore, Thread, newChannel } from './channel.ts';
 export { Emoji, GuildEmojis } from './emoji.ts';
 export { StageInstance } from './stageInstance.ts';
 export { Guild, GuildList } from './guild.ts';
@@ -20,5 +20,4 @@ export { Message, ChannelMessages, MessageInteraction } from './message.ts';
 export { UserPresence, GuildPresences } from './presence.ts';
 export { VoiceState, VoiceRegion, GuildVoiceStates } from './voice.ts';
 export { Role, GuildRoles, MemberRoles } from './role.ts';
-
 export { Webhook } from './webhook.ts';

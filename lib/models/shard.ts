@@ -1,6 +1,6 @@
 import Client from '../client.ts';
-import { ClientPresence, GatewayPayload, GuildData, Hello, Intent, ReadyPayload } from '../types/index.ts';
-import { ClientUser, Guild, Member } from './models.ts';
+import { ChannelData, ClientPresence, GatewayPayload, GuildData, Hello, Intent, ReadyPayload } from '../types/index.ts';
+import { Channel, ClientUser, Emoji, Guild, Member, newChannel } from './models.ts';
 
 
 const intents = ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS', 'GUILD_INVITES', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING'];
@@ -110,9 +110,9 @@ export class Shard {
             let newGuild = new Guild(this.client, guildData);
             this.client.log('DEBUG', `Guild Create event received for guild with ID ${guildData.id}.`);
             this.client.guilds.set(guildData.id, newGuild);
-            newGuild.members!.forEach((m: Member) => {
-              this.client.users.set(m.user?.id, m.user);
-            });
+            newGuild.members!.forEach((m: Member) => {this.client.users.set(m.user?.id, m.user);});
+            newGuild.channels?.forEach((c: Channel) => {this.client.channels.set(c.id, c);});
+            newGuild.emojis?.forEach((e: Emoji) => {this.client.emojis.set(e.id, e);});
             if (!this.client.isReady) {
               if (this.client.guilds.every(g => g.available)) {
                 this.#ready = true;
@@ -122,6 +122,31 @@ export class Shard {
             } else {
               this.client.execute('guildCreate', newGuild);
             }
+            break;
+          case 'CHANNEL_CREATE':
+            let newChannelData = raw.d as ChannelData;
+            let createdChannel = newChannel(this.client, newChannelData);
+            this.client.log('DEBUG', `New channel created with ID ${createdChannel.id}.`);
+            if (newChannelData.guild_id) this.client.guilds.get(newChannelData.guild_id).channels?.set(createdChannel.id, createdChannel);
+            this.client.channels.set(createdChannel.id, createdChannel);
+            this.client.execute('channelCreate', createdChannel);
+            break;
+          case 'CHANNEL_UPDATE':
+            let updatedChannelData = raw.d as ChannelData;
+            this.client.log('DEBUG', `Channel with ID ${updatedChannelData.id} was updated.`);
+            let oldChannel = this.client.channels.get(updatedChannelData.id);
+            let updatedChannel = newChannel(this.client, updatedChannelData);
+            if (updatedChannelData.guild_id) this.client.guilds.get(updatedChannelData.guild_id).channels?.set(updatedChannel.id, updatedChannel);
+            this.client.channels.set(updatedChannel.id, updatedChannel);
+            this.client.execute('channelUpdate', oldChannel, updatedChannel);
+            break;
+          case 'CHANNEL_DELETE':
+            let deletedChannel = raw.d as ChannelData;
+            this.client.log('DEBUG', `Channel with ID ${deletedChannel.id} was deleted.`);
+            let cachedChannel = this.client.channels.get(deletedChannel.id);
+            if (deletedChannel.guild_id) this.client.guilds.get(deletedChannel.guild_id).channels?.delete(deletedChannel.id);
+            this.client.channels.delete(deletedChannel.id);
+            this.client.execute('channelDelete', cachedChannel);
             break;
         }
     }
