@@ -53,7 +53,7 @@ class DescordLogger {
   }
 
   log(level: log.LevelName, ...args: any[]) {
-    let msg = args.map(x => (typeof x === 'object') ? JSON.stringify(x) : x.toString()).join(' ');
+    let msg = args.map(x => (typeof x === 'object') ? JSON.stringify(x, null, 2) : x.toString()).join(' ');
     let array = msg.split('\n');
     for (let message of array) {
       switch (level) {

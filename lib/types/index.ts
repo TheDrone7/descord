@@ -6,7 +6,8 @@ export type {
   PresenceStatus,
   ClientActivity,
   ClientPresence,
-  Permission
+  Permission,
+  ChannelPinsUpdateData
 } from './data.ts';
 export { Permissions } from './data.ts';
 export {
