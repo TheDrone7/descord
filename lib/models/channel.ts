@@ -1,4 +1,4 @@
-import { ChannelData, ChannelOverwrite, ChannelType, ThreadMemberData } from '../types/index.ts';
+import { ChannelData, ChannelOverwrite, ChannelType } from '../types/index.ts';
 import Client from '../client.ts';
 import { List } from '../util/util.ts';
 import { User } from './user.ts';
@@ -211,7 +211,7 @@ export class Thread extends Channel {
   autoArchiveDuration: number;
   archivedAt?: Date;
   locked?: boolean;
-  members: List<string, ThreadMemberData>
+  members: List<string, ThreadMember>
   me?: { user: ClientUser; joinedAt: Date; flags: number; };
 
   constructor(client: Client, channelData: ChannelData) {

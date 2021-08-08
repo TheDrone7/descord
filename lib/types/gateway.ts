@@ -1,4 +1,4 @@
-import { UserData } from "./models/index.ts";
+import { ThreadMemberData, UserData } from './models/index.ts';
 
 export interface SessionStartLimit {
   total: number,
@@ -26,4 +26,12 @@ export interface ReadyPayload {
   guilds: any[];
   session_id: string;
   shard?: [number, number]
+}
+
+export interface ThreadMembersPayload {
+  id: string;
+  guild_id: string;
+  member_count: number;
+  added_members?: ThreadMemberData[];
+  removed_member_ids?: string[];
 }

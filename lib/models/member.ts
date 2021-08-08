@@ -46,6 +46,7 @@ export class Member {
 
 export class ThreadMember {
   client: Client;
+  userID: string;
   presence?: UserPresence;
   member: Member;
   joinedAt: Date;
@@ -53,6 +54,7 @@ export class ThreadMember {
   flags: number;
   constructor(client: Client, guildID: string, data: ThreadMemberData) {
     this.client = client;
+    this.userID = data.user_id;
     this.presence = data.presence ? new UserPresence(client, data.presence) : undefined;
     this.member = new Member(client, guildID, data.member);
     this.joinedAt = new Date(data.join_timestamp);
@@ -60,9 +62,8 @@ export class ThreadMember {
     this.flags = data.flags;
   }
 
-  get thread(): Thread|undefined {
-    return this.client.channels.get(this.threadID);
-  }
+  get thread(): Thread|undefined { return this.client.channels.get(this.threadID); }
+  get user(): User|undefined { return this.client.users.get(this.userID); }
 }
 
 export class GuildMembers extends List<string, Member> {

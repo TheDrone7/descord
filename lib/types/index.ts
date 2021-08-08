@@ -1,4 +1,4 @@
-export type { Gateway, SessionStartLimit, GatewayPayload, ReadyPayload } from './gateway.ts';
+export type { Gateway, SessionStartLimit, GatewayPayload, ReadyPayload, ThreadMembersPayload } from './gateway.ts';
 export type {
   Hello,
   Intent,
