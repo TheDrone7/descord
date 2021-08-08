@@ -1,12 +1,12 @@
-import { GatewayPayload, GuildData } from '../../types';
-import { Guild } from '../guild.ts';
 import Client from '../../client.ts';
+import { GatewayPayload, GuildData } from '../../types/index.ts';
+import { Guild } from '../guild.ts';
 
 export default async (client: Client, raw: GatewayPayload) => {
-  let guildData = raw.d as GuildData;
+  const guildData = raw.d as GuildData;
   client.log('DEBUG', `Guild Delete event received for guild with ID ${guildData.id}.`);
-  if (guildData.unavailable) {
-    let guild = new Guild(client, guildData);
+  if (!guildData.unavailable) {
+    const guild = new Guild(client, guildData);
     client.guilds.set(guild.id, guild);
   }
   else {

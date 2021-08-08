@@ -1,4 +1,5 @@
 import { UserData } from './user.ts';
+import { PresenceUpdate } from './presence.ts';
 
 export interface GuildMemberData {
   user?: UserData;
@@ -10,4 +11,14 @@ export interface GuildMemberData {
   mute: boolean;
   pending?: boolean;
   permissions?: string;
+  hoisted_role?: string;
+}
+
+export interface ThreadMemberData {
+  user_id: string;
+  presence: PresenceUpdate|null;
+  member: GuildMemberData;
+  join_timestamp: string;
+  id: string;
+  flags: number;
 }

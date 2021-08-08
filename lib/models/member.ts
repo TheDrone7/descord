@@ -1,7 +1,7 @@
-import { GuildMemberData, Permission, Permissions } from '../types/index.ts';
+import { GuildMemberData, Permission, Permissions, PresenceUpdate, ThreadMemberData } from '../types/index.ts';
 import Client from '../client.ts';
 import { List } from '../util/util.ts';
-import { MemberRoles, Role, User } from './models.ts';
+import { Guild, MemberRoles, Role, Thread, User, UserPresence } from './models.ts';
 
 export class Member {
   client: Client;
@@ -38,10 +38,31 @@ export class Member {
     }
   }
 
-  get displayName() { return this.nickname !== null ? this.nickname : this.user?.username; }
-  get joinedTimestamp() { return this.joinedAt.getTime(); }
-  get guild() { return this.client.guilds.get(this.guildId); }
-  get roles() { return new MemberRoles(this.client, this.guildId, this.guild.roles.filter((r: Role) => this.roleIds.includes(r.id))); }
+  get displayName(): string|undefined { return this.nickname !== null ? this.nickname : this.user?.username; }
+  get joinedTimestamp(): number { return this.joinedAt.getTime(); }
+  get guild(): Guild { return this.client.guilds.get(this.guildId); }
+  get roles(): MemberRoles { return new MemberRoles(this.client, this.guildId, ...this.guild.roles!.filter((r: Role) => this.roleIds.includes(r.id)).array()); }
+}
+
+export class ThreadMember {
+  client: Client;
+  presence?: UserPresence;
+  member: Member;
+  joinedAt: Date;
+  threadID: string;
+  flags: number;
+  constructor(client: Client, guildID: string, data: ThreadMemberData) {
+    this.client = client;
+    this.presence = data.presence ? new UserPresence(client, data.presence) : undefined;
+    this.member = new Member(client, guildID, data.member);
+    this.joinedAt = new Date(data.join_timestamp);
+    this.threadID = data.id;
+    this.flags = data.flags;
+  }
+
+  get thread(): Thread|undefined {
+    return this.client.channels.get(this.threadID);
+  }
 }
 
 export class GuildMembers extends List<string, Member> {

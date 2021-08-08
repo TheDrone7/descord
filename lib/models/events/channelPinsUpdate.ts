@@ -1,10 +1,10 @@
 import Client from '../../client.ts';
-import { ChannelPinsUpdateData, GatewayPayload } from '../../types';
+import { ChannelPinsUpdateData, GatewayPayload } from '../../types/index.ts';
 import { TextChannel } from '../channel.ts';
 
 export default async (client: Client, raw: GatewayPayload) => {
-  let channelPinsData = raw.d as ChannelPinsUpdateData;
-  let channel = client.channels.get(channelPinsData.channel_id) as TextChannel;
+  const channelPinsData = raw.d as ChannelPinsUpdateData;
+  const channel = client.channels.get(channelPinsData.channel_id) as TextChannel;
   client.log('DEBUG', `Channel with ID ${channel.id}'s pinned messages were updated.`);
   channel.lastPinAt = channelPinsData.last_pin_timestamp ? new Date(channelPinsData.last_pin_timestamp) : undefined;
   client.channels.set(channel.id, channel);

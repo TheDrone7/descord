@@ -3,6 +3,7 @@ import Client from '../client.ts';
 import { EmojiData } from '../types/index.ts';
 import { Role } from './role.ts';
 import { User } from './user.ts';
+import { Guild } from './guild.ts';
 
 export class Emoji {
   client: Client;
@@ -29,12 +30,12 @@ export class Emoji {
     this.available = emojiData.available || true;
   }
 
-  get guild() {
+  get guild(): Guild|undefined {
     return this.guildId ? this.client.guilds.get(this.guildId) : undefined;
   }
 
-  get roles() {
-    return this.guildId ? this.guild.roles.filter((r: Role) => (this.roleIds || []).includes(r.id)) : undefined;
+  get roles(): List<string, Role>|undefined {
+    return this.guild ? this.guild.roles!.filter((r: Role) => (this.roleIds || []).includes(r.id)) : undefined;
   }
 }
 

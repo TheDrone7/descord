@@ -3,6 +3,8 @@ import Client from '../client.ts';
 import { Webhook } from './webhook.ts';
 import { User } from './user.ts';
 import { Integration } from './integration.ts';
+import { Channel } from './channel.ts';
+import { Message } from './message.ts';
 
 export class AuditLogChange {
   client: Client;
@@ -43,8 +45,8 @@ export class OptionalAuditEntry {
     this.roleName = data.role_name;
   }
 
-  get channel() { return this.channelID ? this.client.channels.get(this.channelID) : undefined; }
-  get message() { return this.messageID ? this.client.messages.get(this.messageID) : undefined; }
+  get channel(): Channel|undefined { return this.channelID ? this.client.channels.get(this.channelID) : undefined; }
+  get message(): Message|undefined { return this.messageID ? this.client.messages.get(this.messageID) : undefined; }
 }
 
 export class AuditLogEntry {
@@ -68,7 +70,7 @@ export class AuditLogEntry {
     this.options = auditLog.options ? new OptionalAuditEntry(client, auditLog.options) : undefined;
   }
 
-  get user() { return this.userID ? this.client.users.get(this.userID) : undefined; }
+  get user(): User|undefined { return this.userID ? this.client.users.get(this.userID) : undefined; }
 }
 
 export class Audit {

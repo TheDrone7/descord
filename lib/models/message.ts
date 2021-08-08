@@ -6,7 +6,7 @@ import {
   MessageReactionData, MessageReferenceData, MessageStickerData, MessageType, StickerFormatType
 } from '../types/index.ts';
 import Client from '../client.ts';
-import { Application, Channel, Emoji, Member, Role, User } from './models.ts';
+import { Application, Channel, Emoji, Guild, Member, Role, User } from './models.ts';
 import List from '../util/list.ts';
 import { Thread } from './channel.ts';
 import { MessageComponent } from './component.ts';
@@ -75,9 +75,9 @@ class MessageReference {
     this.failIfNotExists = data.fail_if_not_exists;
   }
 
-  get message() { return this.messageID ? this.client.messages.get(this.messageID) : undefined; }
-  get channel() { return this.channelID ? this.client.channels.get(this.channelID) : undefined; }
-  get guild() { return this.guildID ? this.client.guilds.get(this.guildID) : undefined; }
+  get message(): Message|undefined { return this.messageID ? this.client.messages.get(this.messageID) : undefined; }
+  get channel(): Channel|undefined { return this.channelID ? this.client.channels.get(this.channelID) : undefined; }
+  get guild(): Guild|undefined { return this.guildID ? this.client.guilds.get(this.guildID) : undefined; }
 }
 
 class MessageSticker {
@@ -144,8 +144,8 @@ export class Message {
     this.mentionEveryone = message.mention_everyone;
     this.mentions = {
       members: new List(...message.mentions.map(u => new User(client, u))),
-      roles: new List(...this.guild!.roles?.filter((r: Role) => message.mention_roles.indexOf(r.id) > -1)),
-      channels: new List(...this.guild!.channels?.filter((c: Channel) => message.mention_channels.some(ch => ch.id === c.id)))
+      roles: new List(...this.guild!.roles!.filter((r: Role) => message.mention_roles.some(role => r.id === role)).array()),
+      channels: new List(...this.guild!.channels!.filter((c: Channel) => message.mention_channels.some(ch => ch.id === c.id)).array())
     };
     this.attachments = new List(...message.attachments.map(a => new Attachment(client, a)));
     this.embeds = message.embeds.map(e => new Embed(client, e));
@@ -166,9 +166,9 @@ export class Message {
     this.stickers = message.sticker_items?.map(s => new MessageSticker(client, s));
   }
 
-  get createdTimestamp() { return this.createdAt.getTime(); }
-  get editedTimestamp() { return this.editedAt?.getTime(); }
-  get guild() { return this.client.guilds.get(this.guildID); }
+  get createdTimestamp(): number { return this.createdAt.getTime(); }
+  get editedTimestamp(): number|undefined { return this.editedAt?.getTime(); }
+  get guild(): Guild { return this.client.guilds.get(this.guildID); }
 }
 
 export class MessageInteraction {

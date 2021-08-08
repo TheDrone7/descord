@@ -1,4 +1,5 @@
 import { UserData } from './user.ts';
+import { ThreadMemberData } from './member.ts';
 
 export enum ChannelType {
   'GUILD_TEXT',
@@ -20,13 +21,6 @@ export interface ThreadMetadataData {
   auto_archive_duration: number;
   archive_timestamp: string;
   locked?: boolean;
-}
-
-export interface ThreadMemberData {
-  id?: string;
-  user_id?: string;
-  join_timestamp: string;
-  flags: number;
 }
 
 export interface ChannelData {

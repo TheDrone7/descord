@@ -1,7 +1,7 @@
 import { Activity, PresenceStatus, PresenceUpdate } from '../types/index.ts';
 import Client from '../client.ts';
 import { List } from '../util/util.ts';
-import { User } from './models.ts';
+import { Guild, User } from './models.ts';
 
 export class UserPresence {
   client: Client;
@@ -24,7 +24,7 @@ export class UserPresence {
     this.clientStatus = p.client_status;
   }
 
-  get guild() { return this.client.guilds.get(this.guildID) }
+  get guild(): Guild { return this.client.guilds.get(this.guildID) }
 }
 
 export class GuildPresences extends List<string, UserPresence> {

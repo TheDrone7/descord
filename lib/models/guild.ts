@@ -5,7 +5,16 @@ import {
   VerificationLevel
 } from '../types/index.ts';
 import Client from '../client.ts';
-import { GuildChannels, GuildEmojis, GuildMembers, GuildPresences, GuildRoles, GuildVoiceStates } from './models.ts';
+import {
+  Channel,
+  GuildChannels,
+  GuildEmojis,
+  GuildMembers,
+  GuildPresences,
+  GuildRoles,
+  GuildVoiceStates,
+  Member, VoiceChannel
+} from './models.ts';
 import List from '../util/list.ts';
 import { StageInstance } from './stageInstance.ts';
 
@@ -130,27 +139,27 @@ export class Guild {
     }
   }
 
-  get joinedTimestamp() { return this.joinedAt?.getTime(); }
-  get owner() { return this.members?.get(this.ownerID); }
-  get afkChannel() { return this.channels?.get(this.afkChannelID); }
-  get widgetChannel() { return this.channels?.get(this.widgetChannelID); }
-  get systemChannel() { return this.channels?.get(this.systemChannelID); }
-  get rulesChannel() { return this.channels?.get(this.rulesChannelID); }
-  get vanityUrl() { return this.vanityUrlCode ? `https://discord.gg/${this.vanityUrlCode}` : undefined; }
+  get joinedTimestamp(): number|undefined { return this.joinedAt?.getTime(); }
+  get owner(): Member|undefined { return this.members?.get(this.ownerID); }
+  get afkChannel(): VoiceChannel|undefined { return this.channels?.get(this.afkChannelID); }
+  get widgetChannel(): Channel|undefined { return this.channels?.get(this.widgetChannelID); }
+  get systemChannel(): Channel|undefined { return this.channels?.get(this.systemChannelID); }
+  get rulesChannel(): Channel|undefined { return this.channels?.get(this.rulesChannelID); }
+  get vanityUrl(): string|undefined { return this.vanityUrlCode ? `https://discord.gg/${this.vanityUrlCode}` : undefined; }
 
-  get iconUrl() {
+  get iconUrl(): string|undefined {
     return this.icon ? `${this.client.cdnBase}icons/${this.id}/${this.icon}.${this.icon.startsWith('a_' ? 'gif' : 'png')}` : undefined;
   }
 
-  get splashUrl() {
+  get splashUrl(): string|undefined {
     return this.splash ? `${this.client.cdnBase}splashes/${this.id}/${this.splash}.png` : undefined;
   }
 
-  get discoverySplashUrl() {
+  get discoverySplashUrl(): string|undefined {
     return this.discoverySplash ? `${this.client.cdnBase}discovery-splashes/${this.id}/${this.discoverySplash}.png` : undefined;
   }
 
-  get bannerUrl() {
+  get bannerUrl(): string|undefined {
     return this.banner ? `${this.client.cdnBase}banners/${this.id}/${this.banner}.png` : undefined;
   }
 }

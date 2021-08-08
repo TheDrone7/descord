@@ -54,7 +54,7 @@ export class Shard {
     }
 
     this.ws.onerror = (error: Event) => {
-      client.logError('ERROR', new Error(error.toString()));
+      client.logError('ERROR', new Error(JSON.stringify(error, null, 2)));
     }
 
     this.ws.onmessage = async (event: MessageEvent) => {
@@ -132,7 +132,8 @@ export class Shard {
             }
             break;
           default:
-            await handler(this, this.client, raw);
+            if (this.client.isReady)
+              await handler(this, this.client, raw);
         }
     }
   }

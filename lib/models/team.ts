@@ -36,8 +36,8 @@ export class Team {
     this.ownerID = team.owner_user_id;
   }
 
-  get iconURL() {
-    return this.icon === null ? null : this.client.cdnBase + `team-icons/${this.id}/${this.icon}.png`;
+  get iconURL(): string|undefined {
+    return this.icon === null ? undefined : this.client.cdnBase + `team-icons/${this.id}/${this.icon}.png`;
   }
 
   get owner(): TeamMember {

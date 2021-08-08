@@ -1,6 +1,7 @@
 import { RoleData, RoleTagData } from '../types/index.ts';
 import Client from '../client.ts';
 import { List } from '../util/util.ts';
+import { Guild } from './guild.ts';
 
 export class RoleTag {
   client: Client;
@@ -41,10 +42,10 @@ export class Role {
     this.tags = role.tags ? new RoleTag(client, role.tags) : undefined;
   }
 
-  get createdTimestamp() { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
-  get createdAt() { return new Date(this.createdTimestamp); }
+  get createdTimestamp(): number { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
+  get createdAt(): Date { return new Date(this.createdTimestamp); }
 
-  get guild() { return this.client.guilds.get(this.guildID); }
+  get guild(): Guild { return this.client.guilds.get(this.guildID); }
 }
 
 export class GuildRoles extends List<string, Role>{
@@ -56,18 +57,18 @@ export class GuildRoles extends List<string, Role>{
     this.guildID = guildId;
   }
 
-  get guild() { return this.client.guilds.get(this.guildID); }
+  get guild(): Guild { return this.client.guilds.get(this.guildID); }
 }
 
 export class MemberRoles extends List<string, Role> {
 
   client: Client;
   guildID: string;
-  constructor(client: Client, guildId: string, ...roleData: RoleData[]) {
-    super(...roleData.map(r => new Role(client, guildId, r)));
+  constructor(client: Client, guildId: string, ...roleData: Role[]) {
+    super(...roleData);
     this.client = client;
     this.guildID = guildId;
   }
 
-  get guild() { return this.client.guilds.get(this.guildID); }
+  get guild(): Guild { return this.client.guilds.get(this.guildID); }
 }

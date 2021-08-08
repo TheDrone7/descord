@@ -59,6 +59,6 @@ export class Invite {
     this.createdAt = data.created_at ? new Date(data.created_at) : undefined;
   }
 
-  expireTimestamp() { return this.expiresAt?.getTime(); }
-  createdTimestamp() { return this.createdAt?.getTime(); }
+  expireTimestamp(): number|undefined { return this.expiresAt?.getTime(); }
+  createdTimestamp(): number|undefined { return this.createdAt?.getTime(); }
 }

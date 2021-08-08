@@ -56,9 +56,9 @@ export class Application {
     }
   }
 
-  get iconUrl() { return this.icon === null ? null : this.client.cdnBase + `app-icons/${this.id}/${this.icon}.png`; }
-  get coverImageUrl() { return this.coverImage === undefined ? undefined : this.client.cdnBase + `app-icons/${this.id}/${this.coverImage}.png`; }
+  get iconUrl(): string|undefined { return this.icon === null ? undefined : this.client.cdnBase + `app-icons/${this.id}/${this.icon}.png`; }
+  get coverImageUrl(): string|undefined { return this.coverImage === undefined ? undefined : this.client.cdnBase + `app-icons/${this.id}/${this.coverImage}.png`; }
 
-  get createdTimestamp() { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
-  get createdAt() { return new Date(this.createdTimestamp); }
+  get createdTimestamp(): number { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
+  get createdAt(): Date { return new Date(this.createdTimestamp); }
 }

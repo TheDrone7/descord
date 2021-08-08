@@ -1,13 +1,13 @@
-import { GatewayPayload, GuildData } from '../../types';
+import Client from '../../client.ts';
+import { GatewayPayload, GuildData } from '../../types/index.ts';
 import { Guild } from '../guild.ts';
 import { Member } from '../member.ts';
 import { Channel } from '../channel.ts';
 import { Emoji } from '../emoji.ts';
-import Client from '../../client.ts';
 
 export default async (client: Client, raw: GatewayPayload) => {
-  let guildData = raw.d as GuildData;
-  let guild = new Guild(client, guildData);
+  const guildData = raw.d as GuildData;
+  const guild = new Guild(client, guildData);
   client.log('DEBUG', `Guild Update event received for guild with ID ${guild.id}.`);
   client.guilds.set(guild.id, guild);
   guild.members!.forEach((m: Member) => {client.users.set(m.user?.id, m.user);});

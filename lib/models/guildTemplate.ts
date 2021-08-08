@@ -31,6 +31,6 @@ export class GuildTemplate {
     this.isDirty = data.is_dirty || undefined;
   }
 
-  get createdTimestamp() { return this.createdAt.getTime(); }
-  get updatedTimestamp() { return this.updatedAt.getTime(); }
+  get createdTimestamp(): number|undefined { return this.createdAt.getTime(); }
+  get updatedTimestamp(): number|undefined { return this.updatedAt.getTime(); }
 }

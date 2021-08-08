@@ -63,10 +63,10 @@ export class User {
     this.premium = PremiumType[userData.premium_type || 0];
   }
 
-  get avatarRLl() { return this.client.cdnBase + this.avatar !== null ? `avatars/${this.id}/${this.avatar}.${this.avatar!.startsWith('a_') ? 'gif' : 'png'}` : `embed/avatars/${parseInt(this.discriminator || "5") % 5}.png`; }
-  get createdTimestamp() { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
-  get createdDate() { return new Date(this.createdTimestamp); }
-  get tag() { return `${this.username}#${this.discriminator}`}
+  get avatarRLl(): string { return this.client.cdnBase + this.avatar !== null ? `avatars/${this.id}/${this.avatar}.${this.avatar!.startsWith('a_') ? 'gif' : 'png'}` : `embed/avatars/${parseInt(this.discriminator || "5") % 5}.png`; }
+  get createdTimestamp(): number { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
+  get createdDate(): Date { return new Date(this.createdTimestamp); }
+  get tag(): string { return `${this.username}#${this.discriminator}`}
 
   toString() { return `<@${this.id}>`; }
 }

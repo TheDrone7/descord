@@ -1,7 +1,11 @@
-import { ChannelData, ChannelOverwrite, ChannelType } from '../types/index.ts';
+import { ChannelData, ChannelOverwrite, ChannelType, ThreadMemberData } from '../types/index.ts';
 import Client from '../client.ts';
 import { List } from '../util/util.ts';
 import { User } from './user.ts';
+import { ClientUser } from './clientUser.ts';
+import { Guild } from './guild.ts';
+import { Message } from './message.ts';
+import { Member, ThreadMember } from './member.ts';
 
 export class Channel {
   readonly client: Client;
@@ -13,8 +17,8 @@ export class Channel {
     this.type = ChannelType[channelData.type];
   }
 
-  get createdTimestamp() { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
-  get createdAt() { return new Date(this.createdTimestamp); }
+  get createdTimestamp(): number { return parseInt(((BigInt(this.id) >> 22n) + 1420070400000n).toString()); }
+  get createdAt(): Date { return new Date(this.createdTimestamp); }
 }
 
 export class TextChannel extends Channel {
@@ -43,16 +47,16 @@ export class TextChannel extends Channel {
     this.defaultAutoArchiveDuration = channelData.default_auto_archive_duration || 60;
     this.lastPinAt = channelData.last_pin_timestamp ? new Date(channelData.last_pin_timestamp) : undefined;
   }
-  get guild() {
+  get guild(): Guild {
     return this.client.guilds.get(this.guildID);
   }
-  get lastMessage() {
+  get lastMessage(): Message|undefined {
     return this.lastMessageID ? this.client.messages.get(this.lastMessageID) : undefined;
   }
-  get lastPinTimestamp() {
+  get lastPinTimestamp(): number|undefined {
     return this.lastPinAt ? this.lastPinAt.getTime() : undefined;
   }
-  get parent() {
+  get parent(): Channel|undefined {
     return this.parentID ? this.guild.channels?.get(this.parentID) : undefined;
   }
 }
@@ -86,10 +90,10 @@ export class VoiceChannel extends Channel {
     this.rtcRegion = channelData.rtc_region || undefined;
   }
 
-  get guild() {
+  get guild(): Guild {
     return this.client.guilds.get(this.guildID);
   }
-  get parent() {
+  get parent(): Channel {
     return this.parentID ? this.guild.channels?.get(this.parentID) : undefined;
   }
 }
@@ -132,13 +136,13 @@ export class GroupDMChannel extends Channel {
     this.applicationID = channelData.application_id;
   }
 
-  get owner() {
+  get owner(): User {
     return this.recipients.get(this.ownerID);
   }
-  get lastMessage() {
+  get lastMessage(): Message|undefined {
     return this.lastMessageID ? this.client.messages.get(this.lastMessageID) : undefined;
   }
-  get lastPinTimestamp() {
+  get lastPinTimestamp(): number|undefined {
     return this.lastPinAt ? this.lastPinAt.getTime() : undefined;
   }
 }
@@ -160,10 +164,10 @@ export class ChannelCategory extends Channel {
     this.guildID = channelData.guild_id!;
   }
 
-  get guild() {
+  get guild(): Guild {
     return this.client.guilds.get(this.guildID);
   }
-  get parent() {
+  get parent(): Channel|undefined {
     return this.parentID ? this.guild.channels?.get(this.parentID) : undefined;
   }
 }
@@ -185,10 +189,10 @@ export class GuildStore extends Channel {
     this.parentID = channelData.parent_id || undefined;
   }
 
-  get guild() {
+  get guild(): Guild {
     return this.client.guilds.get(this.guildID);
   }
-  get parent() {
+  get parent(): Channel|undefined {
     return this.parentID ? this.guild.channels?.get(this.parentID) : undefined;
   }
 }
@@ -206,7 +210,9 @@ export class Thread extends Channel {
   archived: boolean;
   autoArchiveDuration: number;
   archivedAt?: Date;
-  locked?:boolean;
+  locked?: boolean;
+  members: List<string, ThreadMemberData>
+  me?: { user: ClientUser; joinedAt: Date; flags: number; };
 
   constructor(client: Client, channelData: ChannelData) {
     super(client, channelData);
@@ -223,22 +229,26 @@ export class Thread extends Channel {
     this.autoArchiveDuration = channelData.thread_metadata!.auto_archive_duration;
     this.archivedAt = channelData.thread_metadata?.archive_timestamp ? new Date(channelData.thread_metadata!.archive_timestamp) : undefined;
     this.locked = channelData.thread_metadata?.locked;
+    this.members = new List()
+
+    if (channelData.member && channelData.member.user_id === client.user!.id)
+      this.me = { user: client.user!, joinedAt: new Date(channelData.member.join_timestamp), flags: channelData.member.flags };
   }
 
-  get guild() {
+  get guild(): Guild {
     return this.client.guilds.get(this.guildID);
   }
-  get lastMessage() {
+  get lastMessage(): Message|undefined {
     return this.lastMessageID ? this.client.messages.get(this.lastMessageID) : undefined;
   }
-  get lastPinTimestamp() {
+  get lastPinTimestamp(): number|undefined {
     return this.lastPinAt ? this.lastPinAt.getTime() : undefined;
   }
-  get parent() {
+  get parent(): Channel|undefined {
     return this.parentID ? this.guild.channels?.get(this.parentID) : undefined;
   }
-  get owner() {
-    return this.guild.members?.get(this.ownerID);
+  get owner(): ThreadMember|Member|undefined {
+    return this.members.has(this.ownerID) ? this.members.get(this.ownerID) : this.guild.members?.get(this.ownerID);
   }
 }
 
