@@ -2,7 +2,7 @@ import Client from '../../client.ts';
 import { ChannelData, GatewayPayload } from '../../types/index.ts';
 import { Thread } from '../channel.ts';
 
-export default async (client: Client, raw: GatewayPayload) => {
+export default (client: Client, raw: GatewayPayload) => {
   const threadData = raw.d as ChannelData;
   const oldThread = client.channels.get(threadData.id) as Thread;
   const thread = new Thread(client, threadData);

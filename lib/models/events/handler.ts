@@ -11,40 +11,49 @@ import threadCreate from './threadCreate.ts';
 import threadUpdate from './threadUpdate.ts';
 import threadDelete from './threadDelete.ts';
 import threadMembersUpdate from './threadMembersUpdate.ts';
+import guildBanAdd from './guildBanAdd.ts';
+import guildBanRemove from './guildBanRemove.ts';
 
 export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
   switch (raw.t!) {
     case 'GUILD_UPDATE':
-      await guildUpdate(client, raw);
+      guildUpdate(client, raw);
       break;
     case 'GUILD_DELETE':
-      await guildDelete(client, raw);
+      guildDelete(client, raw);
       break;
     case 'CHANNEL_CREATE':
-      await channelCreate(client, raw);
+      channelCreate(client, raw);
       break;
     case 'CHANNEL_UPDATE':
-      await channelUpdate(client, raw);
+      channelUpdate(client, raw);
       break;
     case 'CHANNEL_DELETE':
-      await channelDelete(client, raw);
+      channelDelete(client, raw);
       break;
     case 'CHANNEL_PINS_UPDATE':
-      await channelPinsUpdate(client, raw);
+      channelPinsUpdate(client, raw);
       break;
     case 'THREAD_CREATE':
-      await threadCreate(client, raw);
+      threadCreate(client, raw);
       break;
     case 'THREAD_UPDATE':
-      await threadUpdate(client, raw);
+      threadUpdate(client, raw);
       break;
     case 'THREAD_DELETE':
-      await threadDelete(client, raw);
+      threadDelete(client, raw);
       break;
     case 'THREAD_LIST_SYNC':
       client.log('DEBUG', raw.d);
       break;
     case 'THREAD_MEMBERS_UPDATE':
-      await threadMembersUpdate(client, raw);
+      threadMembersUpdate(client, raw);
+      break;
+    case 'GUILD_BAN_ADD':
+      guildBanAdd(client, raw);
+      break;
+    case 'GUILD_BAN_REMOVE':
+      guildBanRemove(client, raw);
+      break;
   }
 };

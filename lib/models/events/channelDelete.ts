@@ -1,7 +1,7 @@
 import Client from '../../client.ts';
 import { ChannelData, GatewayPayload } from '../../types/index.ts';
 
-export default async (client: Client, raw: GatewayPayload) => {
+export default (client: Client, raw: GatewayPayload) => {
   const channel = raw.d as ChannelData;
   const cachedChannel = client.channels.get(channel.id);
   client.log('DEBUG', `Channel Delete event received for channel with ID ${channel.id}.`);

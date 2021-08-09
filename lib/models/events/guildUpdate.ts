@@ -5,7 +5,7 @@ import { Member } from '../member.ts';
 import { Channel } from '../channel.ts';
 import { Emoji } from '../emoji.ts';
 
-export default async (client: Client, raw: GatewayPayload) => {
+export default (client: Client, raw: GatewayPayload) => {
   const guildData = raw.d as GuildData;
   const guild = new Guild(client, guildData);
   client.log('DEBUG', `Guild Update event received for guild with ID ${guild.id}.`);

@@ -2,7 +2,7 @@ import Client from '../../client.ts';
 import { ChannelData, GatewayPayload } from '../../types/index.ts';
 import { newChannel } from '../channel.ts';
 
-export default async (client: Client, raw: GatewayPayload) => {
+export default (client: Client, raw: GatewayPayload) => {
   const channelData = raw.d as ChannelData;
   const oldChannel = client.channels.get(channelData.id);
   const channel = newChannel(client, channelData);
