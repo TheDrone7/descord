@@ -37,6 +37,10 @@ export class Emoji {
   get roles(): List<string, Role>|undefined {
     return this.guild ? this.guild.roles!.filter((r: Role) => (this.roleIds || []).includes(r.id)) : undefined;
   }
+
+  get url(): string|undefined {
+    return this.id ? `${this.client.cdnBase}emojis/${this.id}.${this.animated ? 'gif' : 'png'}` : undefined;
+  }
 }
 
 export class GuildEmojis extends List<string, Emoji> {

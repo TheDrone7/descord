@@ -5,7 +5,7 @@ import { ChannelData, ChannelType } from './channel.ts';
 import { EmojiData } from './emoji.ts';
 import { MessageComponentData } from './component.ts';
 import { EmbedData } from './embed.ts';
-import Client from '../../client.ts';
+import { StickerItemData } from './sticker.ts';
 
 export type MessageFlag = 'CROSSPOSTED' | 'IS_CROSSPOST' | 'SUPPRESS_EMBEDS' | 'SOURCE_MESSAGE_DELETED' | 'URGENT' | 'HAS_THREAD' | 'EPHEMERAL' | 'LOADING';
 
@@ -55,7 +55,6 @@ export interface MessageReferenceData {
   guild_id?: string;
   fail_if_not_exists?: boolean;
 }
-export interface StickerData {}
 
 export enum MessageType {
   'DEFAULT',
@@ -80,18 +79,6 @@ export enum MessageType {
   'APPLICATION_COMMAND',
   'THREAD_STARTER_MESSAGE',
   'GUILD_INVITE_REMINDER'
-}
-
-export enum StickerFormatType {
-  PNG = 1,
-  APNG,
-  LOTTIE
-}
-
-export interface MessageStickerData {
-  id: string;
-  name: string;
-  format_type: StickerFormatType;
 }
 
 export interface AllowedMentionsData {
@@ -144,5 +131,6 @@ export interface MessageData {
   interaction?: MessageInteractionData;
   thread?: ChannelData;
   components?: MessageComponentData[];
-  sticker_items?: MessageStickerData[];
+  sticker_items?: StickerItemData[];
+
 }

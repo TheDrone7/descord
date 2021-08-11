@@ -5,6 +5,7 @@ import { GuildMemberData } from './member.ts';
 import { ChannelData } from './channel.ts';
 import { PresenceUpdate } from './presence.ts';
 import { StageInstanceData } from './stageInstance.ts';
+import { StickerData } from './sticker.ts';
 
 export enum DefaultMessageNotificationLevel {'ALL_MESSAGES', 'ONLY_MENTIONS'}
 export enum ExplicitContentFilterLevel {'DISABLED', 'MEMBER_WITHOUT_ROLES', 'ALL_MEMBERS'}
@@ -71,4 +72,5 @@ export interface GuildData {
   welcome_screen?: WelcomeScreenData;
   nsfw_level?: GuildNSFWLevel;
   stage_instances?: StageInstanceData[];
+  stickers?: StickerData[];
 }

@@ -13,6 +13,8 @@ import threadDelete from './threadDelete.ts';
 import threadMembersUpdate from './threadMembersUpdate.ts';
 import guildBanAdd from './guildBanAdd.ts';
 import guildBanRemove from './guildBanRemove.ts';
+import guildEmojisUpdate from './guildEmojisUpdate.ts';
+import guildStickersUpdate from './guildStickersUpdate.ts';
 
 export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
   switch (raw.t!) {
@@ -54,6 +56,12 @@ export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
       break;
     case 'GUILD_BAN_REMOVE':
       guildBanRemove(client, raw);
+      break;
+    case 'GUILD_EMOJIS_UPDATE':
+      guildEmojisUpdate(client, raw);
+      break;
+    case 'GUILD_STICKERS_UPDATE':
+      guildStickersUpdate(client, raw);
       break;
   }
 };
