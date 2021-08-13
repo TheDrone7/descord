@@ -4,6 +4,7 @@ import { DescordLogger, List, parseNum } from './util/util.ts';
 import { HttpError } from './errors/errors.ts';
 import { Channel, ClientUser, Emoji, Guild, GuildList, ShardManager, User, Message } from './models/models.ts';
 import { GatewayPayload, Intent, ClientPresence, Gateway } from './types/index.ts';
+import { Sticker } from './models/sticker.ts';
 
 interface ClientOptions {
   logging?: (DescordLoggerOptions | false)
@@ -27,6 +28,7 @@ export default class Client {
   channels: List<string, Channel>;
   guilds: GuildList;
   emojis: List<string, Emoji>;
+  stickers: List<string, Sticker>;
   messages: List<string, Message>;
 
   readonly #loggerOptions: (DescordLoggerOptions | false);
@@ -54,6 +56,7 @@ export default class Client {
     this.channels = new List();
     this.guilds = new GuildList(this);
     this.emojis = new List();
+    this.stickers = new List();
     this.messages = new List();
   }
 

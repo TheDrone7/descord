@@ -3,7 +3,7 @@ import {
   MessageActivityData,
   MessageActivityType,
   MessageData, MessageInteractionData,
-  MessageReactionData, MessageReferenceData, MessageStickerData, MessageType, StickerFormatType
+  MessageReactionData, MessageReferenceData, MessageType
 } from '../types/index.ts';
 import Client from '../client.ts';
 import { Application, Channel, Emoji, Guild, Member, Role, User } from './models.ts';
@@ -11,6 +11,7 @@ import List from '../util/list.ts';
 import { Thread } from './channel.ts';
 import { MessageComponent } from './component.ts';
 import { Embed } from './embed.ts';
+import { StickerItem } from './sticker.ts';
 
 class Attachment {
   client: Client;
@@ -80,20 +81,6 @@ class MessageReference {
   get guild(): Guild|undefined { return this.guildID ? this.client.guilds.get(this.guildID) : undefined; }
 }
 
-class MessageSticker {
-  client: Client;
-  id: string;
-  name: string;
-  format: string;
-
-  constructor(client: Client, data: MessageStickerData) {
-    this.client = client;
-    this.id = data.id;
-    this.name = data.name;
-    this.format = StickerFormatType[data.format_type];
-  }
-}
-
 export class Message {
   client: Client;
 
@@ -128,7 +115,7 @@ export class Message {
   interactions?: MessageInteraction;
   thread?: Thread;
   components?: MessageComponent[];
-  stickers?: MessageSticker[];
+  stickers?: StickerItem[];
 
   constructor(client: Client, message: MessageData) {
     this.client = client;
@@ -163,7 +150,7 @@ export class Message {
     this.interactions = message.interaction ? new MessageInteraction(client, message.interaction) : undefined;
     this.thread = message.thread ? new Thread(client, message.thread) : undefined;
     this.components = message.components?.map(c => new MessageComponent(client, c));
-    this.stickers = message.sticker_items?.map(s => new MessageSticker(client, s));
+    this.stickers = message.sticker_items?.map(s => new StickerItem(client, s));
   }
 
   get createdTimestamp(): number { return this.createdAt.getTime(); }

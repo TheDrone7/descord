@@ -21,7 +21,7 @@ export type { InviteData, InviteStageInstanceData } from './invite.ts';
 export { StagePrivacyLevel } from './stageInstance.ts';
 export type { StageInstanceData } from './stageInstance.ts';
 export type { VoiceStateData, VoiceRegionData } from './voice.ts';
-export { MessageActivityType, MessageType, StickerFormatType, InteractionType } from './message.ts';
+export { MessageActivityType, MessageType, InteractionType } from './message.ts';
 export { MessageComponentType, ButtonStyle } from './component.ts';
 export type {
   EmbedAuthorData,
@@ -42,9 +42,9 @@ export type {
   MessageFlag,
   MessageReactionData,
   MessageReferenceData,
-  MessageStickerData,
-  StickerData,
   UserMentionData,
   MessageInteractionData,
 } from './message.ts';
 export type { MessageComponentData, SelectOptionsData } from './component.ts';
+export type { StickerData, StickerItemData, StickerPackData } from './sticker.ts';
+export { StickerFormat, StickerType } from './sticker.ts';

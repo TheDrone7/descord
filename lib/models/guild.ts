@@ -17,6 +17,7 @@ import {
 } from './models.ts';
 import List from '../util/list.ts';
 import { StageInstance } from './stageInstance.ts';
+import { GuildStickers } from './sticker.ts';
 
 export class Guild {
   readonly client: Client;
@@ -71,7 +72,8 @@ export class Guild {
     })[];
   };
   nsfwLevel?: string;
-  stageInstances?: StageInstance[]
+  stageInstances?: StageInstance[];
+  stickers?: GuildStickers;
 
   constructor(client: Client, guildData: GuildData) {
     this.client = client;
@@ -130,6 +132,7 @@ export class Guild {
 
       this.nsfwLevel = guildData.nsfw_level ? GuildNSFWLevel[guildData.nsfw_level] : undefined;
       this.stageInstances = guildData.stage_instances?.map(i => new StageInstance(client, i));
+      this.stickers = new GuildStickers(client, ...(guildData.stickers || []));
 
       if (guildData.system_channel_flags) {
         if ((guildData.system_channel_flags & (1 << 0)) === (1 << 0)) this.systemChannelFlags?.push('SUPPRESS_JOIN_NOTIFICATIONS');

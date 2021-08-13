@@ -14,7 +14,6 @@ export {
   PremiumType,
   ChannelType,
   InviteTargetType,
-  StickerFormatType,
   PremiumTier,
   MessageComponentType,
   MessageType,
@@ -29,7 +28,9 @@ export {
   VideoQualityMode,
   AuditLogEvent,
   InteractionType,
-  WebhookType
+  WebhookType,
+  StickerFormat,
+  StickerType
 } from './models/index.ts';
 export type {
   AuditLogEntryData,
@@ -67,7 +68,6 @@ export type {
   EmbedAuthorData,
   UserMentionData,
   StickerData,
-  MessageStickerData,
   MessageReferenceData,
   MessageReactionData,
   MessageInteractionData,
@@ -86,5 +86,7 @@ export type {
   VoiceRegionData,
   SelectOptionsData,
   WelcomeScreenData,
-  WelcomeScreenChannels
+  WelcomeScreenChannels,
+  StickerPackData,
+  StickerItemData,
 } from './models/index.ts';

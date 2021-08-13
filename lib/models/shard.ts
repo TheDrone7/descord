@@ -7,7 +7,7 @@ import {
   Intent,
   ReadyPayload
 } from '../types/index.ts';
-import { Channel, ClientUser, Emoji, Guild, Member } from './models.ts';
+import { Channel, ClientUser, Emoji, Guild, Member, Sticker } from './models.ts';
 import handler from './events/handler.ts';
 
 
@@ -118,9 +118,10 @@ export class Shard {
             let newGuild = new Guild(this.client, guildData);
             this.client.log('DEBUG', `Guild Create event received for guild with ID ${guildData.id}.`);
             this.client.guilds.set(guildData.id, newGuild);
-            newGuild.members!.forEach((m: Member) => {this.client.users.set(m.user?.id, m.user);});
-            newGuild.channels?.forEach((c: Channel) => {this.client.channels.set(c.id, c);});
-            newGuild.emojis?.forEach((e: Emoji) => {this.client.emojis.set(e.id, e);});
+            newGuild.members!.forEach((m: Member) => { this.client.users.set(m.user?.id, m.user); });
+            newGuild.channels?.forEach((c: Channel) => { this.client.channels.set(c.id, c); });
+            newGuild.emojis?.forEach((e: Emoji) => { this.client.emojis.set(e.id, e); });
+            newGuild.stickers?.forEach((s: Sticker) => { this.client.stickers.set(s.id, s); })
             if (!this.client.isReady) {
               if (this.client.guilds.every(g => g.available)) {
                 this.#ready = true;
