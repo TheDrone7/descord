@@ -15,6 +15,9 @@ import guildBanAdd from './guildBanAdd.ts';
 import guildBanRemove from './guildBanRemove.ts';
 import guildEmojisUpdate from './guildEmojisUpdate.ts';
 import guildStickersUpdate from './guildStickersUpdate.ts';
+import guildIntegrationsUpdate from './guildIntegrationsUpdate.ts';
+import guildMemberAdd from './guildMemberAdd.ts';
+import guildMemberRemove from './guildMemberRemove.ts';
 
 export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
   switch (raw.t!) {
@@ -62,6 +65,15 @@ export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
       break;
     case 'GUILD_STICKERS_UPDATE':
       guildStickersUpdate(client, raw);
+      break;
+    case 'GUILD_INTEGRATIONS_UPDATE':
+      guildIntegrationsUpdate(client, raw);
+      break;
+    case 'GUILD_MEMBER_ADD':
+      guildMemberAdd(client, raw);
+      break;
+    case 'GUILD_MEMBER_REMOVE':
+      guildMemberRemove(client, raw);
       break;
   }
 };
