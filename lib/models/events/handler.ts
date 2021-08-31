@@ -23,6 +23,9 @@ import guildMembersChunk from './guildMembersChunk.ts';
 import guildRoleCreate from './guildRoleCreate.ts';
 import guildRoleUpdate from './guildRoleUpdate.ts';
 import guildRoleDelete from './guildRoleDelete.ts';
+import integrationCreate from './integrationCreate.ts';
+import integrationUpdate from './integrationUpdate.ts';
+import integrationDelete from './integrationDelete.ts';
 
 export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
   switch (raw.t!) {
@@ -94,6 +97,15 @@ export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
       break;
     case 'GUILD_ROLE_DELETE':
       guildRoleDelete(client, raw);
+      break;
+    case 'INTEGRATION_CREATE':
+      integrationCreate(client, raw);
+      break;
+    case 'INTEGRATION_UPDATE':
+      integrationUpdate(client, raw);
+      break;
+    case 'INTEGRATION_DELETE':
+      integrationDelete(client, raw);
       break;
   }
 };

@@ -12,7 +12,7 @@ import {
   GuildMembers,
   GuildPresences,
   GuildRoles,
-  GuildVoiceStates,
+  GuildVoiceStates, Integration,
   Member, VoiceChannel
 } from './models.ts';
 import List from '../util/list.ts';
@@ -74,6 +74,7 @@ export class Guild {
   nsfwLevel?: string;
   stageInstances?: StageInstance[];
   stickers?: GuildStickers;
+  integrations?: List<string, Integration>
 
   constructor(client: Client, guildData: GuildData) {
     this.client = client;
@@ -119,6 +120,7 @@ export class Guild {
       this.maxVideoChannelUsers = guildData.max_video_channel_users;
       this.approximateMemberCount = guildData.approximate_member_count;
       this.approximatePresenceCount = guildData.approximate_presence_count;
+      this.integrations = new List();
 
       this.welcomeScreen = {
         description: guildData.welcome_screen?.description || undefined,
