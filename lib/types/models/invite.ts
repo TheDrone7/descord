@@ -19,7 +19,9 @@ export interface InviteStageInstanceData {
 export interface InviteData {
   code: string;
   guild?: GuildData;
-  channel: ChannelData;
+  guild_id?: string;
+  channel?: ChannelData;
+  channel_id?: string;
   inviter?: UserData;
   target_type?: InviteTargetType;
   target_user?: UserData;

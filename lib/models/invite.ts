@@ -42,8 +42,8 @@ export class Invite {
   constructor(client: Client, data: InviteData) {
     this.client = client;
     this.code = data.code;
-    this.guild = data.guild ? new Guild(client, data.guild) : undefined;
-    this.channel = new Channel(client, data.channel);
+    this.guild = data.guild_id ? client.guilds.get(data.guild_id) : (data.guild ? new Guild(client, data.guild) : undefined);
+    this.channel = data.channel_id ? client.channels.get(data.channel_id) : new Channel(client, data.channel!);
     this.inviter = data.inviter ? new User(client, data.inviter) : undefined;
     this.targetType = data.target_type ? InviteTargetType[data.target_type] : undefined;
     this.targetUser = data.target_user ? new User(client, data.target_user) : undefined;

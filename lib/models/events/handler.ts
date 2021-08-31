@@ -26,6 +26,8 @@ import guildRoleDelete from './guildRoleDelete.ts';
 import integrationCreate from './integrationCreate.ts';
 import integrationUpdate from './integrationUpdate.ts';
 import integrationDelete from './integrationDelete.ts';
+import inviteCreate from './inviteCreate.ts';
+import inviteDelete from './inviteDelete.ts';
 
 export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
   switch (raw.t!) {
@@ -106,6 +108,12 @@ export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
       break;
     case 'INTEGRATION_DELETE':
       integrationDelete(client, raw);
+      break;
+    case 'INVITE_CREATE':
+      inviteCreate(client, raw);
+      break;
+    case 'INVITE_DELETE':
+      inviteDelete(client, raw);
       break;
   }
 };
