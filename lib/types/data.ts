@@ -1,3 +1,5 @@
+import { GuildMemberData, PresenceUpdate } from './models';
+
 export type Intent = 'GUILDS' | 'GUILD_MEMBERS' | 'GUILD_BANS' | 'GUILD_EMOJIS' | 'GUILD_INTEGRATIONS' | 'GUILD_WEBHOOKS' | 'GUILD_INVITES' | 'GUILD_VOICE_STATES' | 'GUILD_PRESENCES' | 'GUILD_MESSAGES' | 'GUILD_MESSAGE_REACTIONS' | 'GUILD_MESSAGE_TYPING' | 'DIRECT_MESSAGES' | 'DIRECT_MESSAGE_REACTIONS' | 'DIRECT_MESSAGE_TYPING';
 export type ActivityType = 'PLAYING' | 'STREAMING' | 'LISTENING' | 'CUSTOM' | 'COMPETING';
 export type PresenceStatus = 'ONLINE' | 'DND' | 'IDLE' | 'INVISIBLE' | 'OFFLINE';
@@ -61,4 +63,14 @@ export interface ChannelPinsUpdateData {
   guild_id?: string;
   channel_id: string;
   last_pin_timestamp?: string|null;
+}
+
+export interface GuildMembersChunkData {
+  guild_id: string;
+  members: GuildMemberData[];
+  chunk_index: number;
+  chunk_count: number;
+  not_found?: any[];
+  presences?: PresenceUpdate[];
+  nonce?: string;
 }

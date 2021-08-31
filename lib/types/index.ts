@@ -7,7 +7,8 @@ export type {
   ClientActivity,
   ClientPresence,
   Permission,
-  ChannelPinsUpdateData
+  ChannelPinsUpdateData,
+  GuildMembersChunkData
 } from './data.ts';
 export { Permissions } from './data.ts';
 export {

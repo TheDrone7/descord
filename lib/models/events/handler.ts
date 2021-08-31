@@ -19,6 +19,10 @@ import guildIntegrationsUpdate from './guildIntegrationsUpdate.ts';
 import guildMemberAdd from './guildMemberAdd.ts';
 import guildMemberRemove from './guildMemberRemove.ts';
 import guildMemberUpdate from './guildMemberUpdate.ts';
+import guildMembersChunk from './guildMembersChunk.ts';
+import guildRoleCreate from './guildRoleCreate.ts';
+import guildRoleUpdate from './guildRoleUpdate.ts';
+import guildRoleDelete from './guildRoleDelete.ts';
 
 export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
   switch (raw.t!) {
@@ -78,6 +82,18 @@ export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
       break;
     case 'GUILD_MEMBER_UPDATE':
       guildMemberUpdate(client, raw);
+      break;
+    case 'GUILD_MEMBERS_CHUNK':
+      guildMembersChunk(client, raw);
+      break;
+    case 'GUILD_ROLE_CREATE':
+      guildRoleCreate(client, raw);
+      break;
+    case 'GUILD_ROLE_UPDATE':
+      guildRoleUpdate(client, raw);
+      break;
+    case 'GUILD_ROLE_DELETE':
+      guildRoleDelete(client, raw);
       break;
   }
 };
