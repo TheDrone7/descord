@@ -1,5 +1,6 @@
-import * as log from "https://deno.land/std@0.74.0/log/mod.ts";
-import type { LogRecord } from "https://deno.land/std@0.74.0/log/logger.ts";
+import * as log from "https://deno.land/std@0.113.0/log/mod.ts";
+import type { LogRecord } from "https://deno.land/std@0.113.0/log/logger.ts";
+import type { FileHandler } from "https://deno.land/std@0.113.0/log/handlers.ts";
 
 class CustomHandler extends log.handlers.BaseHandler {}
 
@@ -77,6 +78,9 @@ class DescordLogger {
           break;
       }
     }
+    
+    const fileHandler = this.#logger?.handlers.find(handle => handle instanceof log.handlers.FileHandler) as FileHandler;
+    if (fileHandler) fileHandler.flush();
   }
 };
 

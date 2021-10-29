@@ -131,8 +131,8 @@ export class Message {
     this.mentionEveryone = message.mention_everyone;
     this.mentions = {
       members: new List(...message.mentions.map(u => new User(client, u))),
-      roles: new List(...this.guild!.roles!.filter((r: Role) => message.mention_roles.some(role => r.id === role)).array()),
-      channels: new List(...this.guild!.channels!.filter((c: Channel) => message.mention_channels.some(ch => ch.id === c.id)).array())
+      roles: new List(...this.guild!.roles!.filter((r: Role) => message.mention_roles?.some(role => r.id === role)).array()),
+      channels: new List(...this.guild!.channels!.filter((c: Channel) => message.mention_channels?.some(ch => ch.id === c.id)).array())
     };
     this.attachments = new List(...message.attachments.map(a => new Attachment(client, a)));
     this.embeds = message.embeds.map(e => new Embed(client, e));
@@ -156,6 +156,7 @@ export class Message {
   get createdTimestamp(): number { return this.createdAt.getTime(); }
   get editedTimestamp(): number|undefined { return this.editedAt?.getTime(); }
   get guild(): Guild { return this.client.guilds.get(this.guildID); }
+  get channel(): Channel { return this.client.channels.get(this.channelID); }
 }
 
 export class MessageInteraction {

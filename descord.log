@@ -1,0 +1,54 @@
+[10/30/2021, 03:37:54] DEBUG    :: Gateway data successfully fetched.
+[10/30/2021, 03:37:54] DEBUG    :: Trying to log in using the provided token. Creating 1 shards.
+[10/30/2021, 03:37:55] DEBUG    :: Connected shard 1 of 1.
+[10/30/2021, 03:37:56] DEBUG    :: Ready event received for shard 1 of 1
+[10/30/2021, 03:37:56] DEBUG    :: Guild Create event received for guild with ID 436813926735413248.
+[10/30/2021, 03:37:56] DEBUG    :: Guild Create event received for guild with ID 548404791835885600.
+[10/30/2021, 03:37:56] INFO     :: Bot is now ready with 2 guilds!
+[10/30/2021, 03:38:25] DEBUG    :: Gateway data successfully fetched.
+[10/30/2021, 03:38:25] DEBUG    :: Trying to log in using the provided token. Creating 1 shards.
+[10/30/2021, 03:38:25] DEBUG    :: Connected shard 1 of 1.
+[10/30/2021, 03:38:27] DEBUG    :: Ready event received for shard 1 of 1
+[10/30/2021, 03:38:27] DEBUG    :: Guild Create event received for guild with ID 436813926735413248.
+[10/30/2021, 03:38:27] DEBUG    :: Guild Create event received for guild with ID 548404791835885600.
+[10/30/2021, 03:38:27] INFO     :: Bot is now ready with 2 guilds!
+[10/30/2021, 03:38:49] DEBUG    :: Gateway data successfully fetched.
+[10/30/2021, 03:38:49] DEBUG    :: Trying to log in using the provided token. Creating 1 shards.
+[10/30/2021, 03:38:50] DEBUG    :: Connected shard 1 of 1.
+[10/30/2021, 03:38:51] DEBUG    :: Ready event received for shard 1 of 1
+[10/30/2021, 03:38:51] DEBUG    :: Guild Create event received for guild with ID 436813926735413248.
+[10/30/2021, 03:38:51] DEBUG    :: Guild Create event received for guild with ID 548404791835885600.
+[10/30/2021, 03:38:51] INFO     :: Bot is now ready with 2 guilds!
+[10/30/2021, 03:41:30] DEBUG    :: Gateway data successfully fetched.
+[10/30/2021, 03:41:30] DEBUG    :: Trying to log in using the provided token. Creating 1 shards.
+[10/30/2021, 03:41:30] DEBUG    :: Connected shard 1 of 1.
+[10/30/2021, 03:41:31] DEBUG    :: Ready event received for shard 1 of 1
+[10/30/2021, 03:41:31] DEBUG    :: Guild Create event received for guild with ID 436813926735413248.
+[10/30/2021, 03:41:31] DEBUG    :: Guild Create event received for guild with ID 548404791835885600.
+[10/30/2021, 03:41:31] INFO     :: Bot is now ready with 2 guilds!
+[10/30/2021, 03:42:40] DEBUG    :: Gateway data successfully fetched.
+[10/30/2021, 03:42:40] DEBUG    :: Trying to log in using the provided token. Creating 1 shards.
+[10/30/2021, 03:42:41] DEBUG    :: Connected shard 1 of 1.
+[10/30/2021, 03:42:42] DEBUG    :: Ready event received for shard 1 of 1
+[10/30/2021, 03:42:42] DEBUG    :: Guild Create event received for guild with ID 436813926735413248.
+[10/30/2021, 03:42:42] DEBUG    :: Guild Create event received for guild with ID 548404791835885600.
+[10/30/2021, 03:42:42] INFO     :: Bot is now ready with 2 guilds!
+[10/30/2021, 03:43:34] DEBUG    :: Gateway data successfully fetched.
+[10/30/2021, 03:43:34] DEBUG    :: Trying to log in using the provided token. Creating 1 shards.
+[10/30/2021, 03:43:35] DEBUG    :: Connected shard 1 of 1.
+[10/30/2021, 03:43:36] DEBUG    :: Ready event received for shard 1 of 1
+[10/30/2021, 03:44:22] DEBUG    :: Gateway data successfully fetched.
+[10/30/2021, 03:44:22] DEBUG    :: Trying to log in using the provided token. Creating 1 shards.
+[10/30/2021, 03:44:23] DEBUG    :: Connected shard 1 of 1.
+[10/30/2021, 03:44:24] DEBUG    :: Ready event received for shard 1 of 1
+[10/30/2021, 03:44:24] DEBUG    :: Guild Create event received for guild with ID 436813926735413248.
+[10/30/2021, 03:44:24] DEBUG    :: Guild Create event received for guild with ID 548404791835885600.
+[10/30/2021, 03:44:24] INFO     :: Bot is now ready with 2 guilds!
+[10/30/2021, 03:45:18] DEBUG    :: Gateway data successfully fetched.
+[10/30/2021, 03:45:18] DEBUG    :: Trying to log in using the provided token. Creating 1 shards.
+[10/30/2021, 03:45:19] DEBUG    :: Connected shard 1 of 1.
+[10/30/2021, 03:45:20] DEBUG    :: Ready event received for shard 1 of 1
+[10/30/2021, 03:45:20] DEBUG    :: Guild Create event received for guild with ID 436813926735413248.
+[10/30/2021, 03:45:20] DEBUG    :: Guild Create event received for guild with ID 548404791835885600.
+[10/30/2021, 03:45:20] INFO     :: Bot is now ready with 2 guilds!
+[10/30/2021, 03:45:24] DEBUG    :: Message with ID 903769020371705866 received in channel with ID 540108289984430091.

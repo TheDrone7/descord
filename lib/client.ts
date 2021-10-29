@@ -89,7 +89,7 @@ export default class Client {
       await this.#logger.init(this.#loggerOptions);
     } 
 
-    let gatewayResponse = await fetch(`${this.#httpBase}/gateway/bot`, {
+    const gatewayResponse = await fetch(`${this.#httpBase}/gateway/bot`, {
       method: 'GET',
       headers: { Authorization: `Bot ${token}` }
     });
@@ -100,7 +100,7 @@ export default class Client {
     }
 
     this.log('DEBUG', 'Gateway data successfully fetched.');
-    let gateway = await gatewayResponse.json() as Gateway;
+    const gateway = await gatewayResponse.json() as Gateway;
 
     if (gateway.session_start_limit.remaining < 1) {
       this.logError('CRITICAL', new Error(`You've hit your limit for ${gateway.session_start_limit.total} sessions. The limit will reset after ${parseNum(gateway.session_start_limit.reset_after)}.`));
@@ -118,4 +118,4 @@ export default class Client {
       shardId++;
     }
   }
-};
+}
