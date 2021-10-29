@@ -2,3 +2,4 @@ tests/
 .vscode/
 
 .env
+descord.log
