@@ -1,5 +1,6 @@
 tests/
 .vscode/
+.idea/
 
 .env
 descord.log
