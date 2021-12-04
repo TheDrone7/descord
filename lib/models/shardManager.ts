@@ -14,7 +14,7 @@ export class ShardManager extends List<string, Shard> {
   async initialize(url: string, id: number, total: number, options?: { presence?: ClientPresence, intents?: Intent[] }) {
     let newShard = new Shard(this.#client, url, {
       shard: [id, total],
-      intent: options?.intents || ['GUILDS'],
+      intent: options?.intents || ['NON_PRIVILEGED'],
       presence: options?.presence
     });
     this.set(id, newShard);

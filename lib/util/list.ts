@@ -1,8 +1,8 @@
 export default class List<T, V> extends Map {
   constructor(...values: V[]) {
     super();
-    for (let v of values) {
-      let value = v as any;
+    for (const v of values) {
+      const value = v as any;
       if ("id" in value) this.set(value.id, value);
     }
   }
@@ -10,13 +10,13 @@ export default class List<T, V> extends Map {
   array(): V[] { return [...this.values()]; }
   clone(): List<T, V> { return new List(...this.values()); }
   concat(...lists: List<T, V>[]): List<T, V> {
-    let temp = this.clone();
-    for (let list of lists) { list.forEach((v: V, t: T) => temp.set(t, v)); }
+    const temp = this.clone();
+    for (const list of lists) { list.forEach((v: V, t: T) => temp.set(t, v)); }
     return temp;
   }
 
   equals(other: List<T, V>) {
-    let temp = this.array().filter((g) => other.has(this.findKey((v: V) => v === g)));
+    const temp = this.array().filter((g) => other.has(this.findKey((v: V) => v === g)));
     return temp.length === this.size;
   }
 
@@ -29,13 +29,13 @@ export default class List<T, V> extends Map {
   }
 
   find(fn: (v: V) => boolean, thisArg?: any): V|null {
-    let filtered = this.array().filter(fn, thisArg);
+    const filtered = this.array().filter(fn, thisArg);
     if (filtered.length > 0) return filtered[0];
     else return null;
   }
 
   findKey(fn: (v: V) => boolean, thisArg?: any): T|null {
-    let result = this.find(fn, thisArg);
+    const result = this.find(fn, thisArg);
     for (const key of this.keys()) { if (this.get(key) === result) return key; }
     return null;
   }

@@ -11,7 +11,7 @@ import { Channel, ClientUser, Emoji, Guild, Member, Sticker } from './models.ts'
 import handler from './events/handler.ts';
 
 
-const intents = ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS', 'GUILD_INVITES', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING'];
+const intents = ['GUILDS', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS', 'GUILD_INVITES', 'GUILD_VOICE_STATES', 'GUILD_PRESENCES', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING', 'GUILD_SCHEDULED_EVENTS'];
 const activityTypes = ['PLAYING', 'STREAMING', 'LISTENING', 'CUSTOM', 'COMPETING'];
 
 interface LoginOptions {
@@ -78,11 +78,19 @@ export class Shard {
 
       case 11:
         if (!this.#login) {
+          let finalIntents: Intent[] = [];
+          if (this.#options.intent.some(i => i === 'PRIVILEGED')) {
+            finalIntents.push('GUILD_MEMBERS', 'GUILD_PRESENCES');
+          }
+          if (this.#options.intent.some(i => i === 'NON_PRIVILEGED')) {
+            finalIntents.push('GUILDS', 'GUILD_BANS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_INTEGRATIONS', 'GUILD_WEBHOOKS', 'GUILD_INVITES', 'GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_MESSAGE_TYPING', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS', 'DIRECT_MESSAGE_TYPING', 'GUILD_SCHEDULED_EVENTS');
+          }
+          finalIntents.push(...this.#options.intent.filter(i => intents.includes(i)));
           this.ws.send(JSON.stringify({
             op: 2,
             d: {
               token: this.client.token,
-              intents: this.#options.intent.map(i => 1 << intents.indexOf(i)).reduce((a, c) => a | c),
+              intents: finalIntents.map(i => 1 << intents.indexOf(i)).reduce((a, c) => a | c),
               properties: {
                 $os: 'linux',
                 $browser: 'descord',

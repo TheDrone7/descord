@@ -6,6 +6,7 @@ import { ChannelData } from './channel.ts';
 import { PresenceUpdate } from './presence.ts';
 import { StageInstanceData } from './stageInstance.ts';
 import { StickerData } from './sticker.ts';
+import { UserData } from './user.ts';
 
 export enum DefaultMessageNotificationLevel {'ALL_MESSAGES', 'ONLY_MENTIONS'}
 export enum ExplicitContentFilterLevel {'DISABLED', 'MEMBER_WITHOUT_ROLES', 'ALL_MEMBERS'}
@@ -13,6 +14,9 @@ export enum MFALevel {'NONE', 'ELEVATED'}
 export enum VerificationLevel { 'NONE', 'LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH'}
 export enum GuildNSFWLevel { 'DEFAULT', 'EXPLICIT', 'SAFE', 'AGE_RESTRICTED'}
 export enum PremiumTier { 'NONE', 'TIER_1', 'TIER_2', 'TIER_3'}
+export enum EventPrivacyLevel { 'GUILD_ONLY' = 2 }
+export enum EventStatus { 'SCHEDULED' = 1, 'ACTIVE', 'COMPLETED', 'CANCELED' }
+export enum EventEntityType { 'STAGE_INSTANCE' = 1, 'VOICE', 'EXTERNAL' }
 
 export interface WelcomeScreenChannels {
   channel_id: string;
@@ -24,6 +28,28 @@ export interface WelcomeScreenChannels {
 export interface WelcomeScreenData {
   description: string|null;
   welcome_channels?: WelcomeScreenChannels[];
+}
+
+export interface EventEntityMetadata {
+  location?: string;
+}
+
+export interface GuildScheduledEventData {
+  id: string;
+  guild_id: string;
+  channel_id: string|null;
+  creator_id: string|null;
+  name: string;
+  description?: string;
+  scheduled_start_time: string;
+  scheduled_end_time: string|null;
+  privacy_level: EventPrivacyLevel;
+  status: EventStatus;
+  entity_type: EventEntityType;
+  entity_id: string|null;
+  entity_metadata: EventEntityMetadata|null;
+  creator?: UserData;
+  user_count?: number
 }
 
 export interface GuildData {
@@ -73,4 +99,6 @@ export interface GuildData {
   nsfw_level?: GuildNSFWLevel;
   stage_instances?: StageInstanceData[];
   stickers?: StickerData[];
+  guild_scheduled_events?: GuildScheduledEventData[];
+  premium_progress_bar_enabled: boolean;
 }

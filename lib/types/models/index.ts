@@ -10,8 +10,8 @@ export type { WebhookData } from './webhook.ts';
 export type { EmojiData } from './emoji.ts'
 export { ChannelType, VideoQualityMode } from './channel.ts';
 export type { ThreadMetadataData, ChannelData, ChannelOverwrite } from './channel.ts';
-export { GuildNSFWLevel, MFALevel, DefaultMessageNotificationLevel, VerificationLevel, PremiumTier, ExplicitContentFilterLevel } from './guild.ts';
-export type { GuildData, WelcomeScreenChannels, WelcomeScreenData } from './guild.ts';
+export { GuildNSFWLevel, MFALevel, DefaultMessageNotificationLevel, VerificationLevel, PremiumTier, ExplicitContentFilterLevel, EventPrivacyLevel, EventStatus, EventEntityType } from './guild.ts';
+export type { GuildData, WelcomeScreenChannels, WelcomeScreenData, GuildScheduledEventData, EventEntityMetadata } from './guild.ts';
 export type { GuildMemberData, ThreadMemberData } from './member.ts';
 export type { PresenceUpdate, Presence, Activity } from './presence.ts';
 export type { RoleData, RoleTagData } from './role.ts';

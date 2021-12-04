@@ -29,6 +29,8 @@ import integrationDelete from './integrationDelete.ts';
 import inviteCreate from './inviteCreate.ts';
 import inviteDelete from './inviteDelete.ts';
 import message from "./message.ts";
+import messageUpdate from './messageUpdate.ts';
+import messageDelete from './messageDelete.ts';
 
 export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
   switch (raw.t!) {
@@ -118,6 +120,12 @@ export default async (shard: Shard, client: Client, raw: GatewayPayload) => {
       break;
     case 'MESSAGE_CREATE':
       message(client, raw);
+      break;
+    case 'MESSAGE_UPDATE':
+      messageUpdate(client, raw);
+      break;
+    case 'MESSAGE_DELETE':
+      messageDelete(client, raw);
       break;
   }
 };

@@ -13,7 +13,8 @@ import {
   GuildPresences,
   GuildRoles,
   GuildVoiceStates, Integration,
-  Member, VoiceChannel
+  Member, VoiceChannel,
+  GuildScheduledEvent
 } from './models.ts';
 import List from '../util/list.ts';
 import { StageInstance } from './stageInstance.ts';
@@ -74,7 +75,9 @@ export class Guild {
   nsfwLevel?: string;
   stageInstances?: StageInstance[];
   stickers?: GuildStickers;
-  integrations?: List<string, Integration>
+  integrations?: List<string, Integration>;
+  events?: List<string, GuildScheduledEvent>
+  nitroBarEnabled?: boolean;
 
   constructor(client: Client, guildData: GuildData) {
     this.client = client;
@@ -121,6 +124,8 @@ export class Guild {
       this.approximateMemberCount = guildData.approximate_member_count;
       this.approximatePresenceCount = guildData.approximate_presence_count;
       this.integrations = new List();
+      this.events = new List(...(guildData.guild_scheduled_events?.map(e => new GuildScheduledEvent(client, e)) || []));
+      this.nitroBarEnabled = guildData.premium_progress_bar_enabled;
 
       this.welcomeScreen = {
         description: guildData.welcome_screen?.description || undefined,

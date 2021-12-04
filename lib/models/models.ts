@@ -22,4 +22,5 @@ export { VoiceState, VoiceRegion, GuildVoiceStates } from './voice.ts';
 export { Role, GuildRoles, MemberRoles, RoleTag } from './role.ts';
 export { Webhook } from './webhook.ts';
 export { Sticker, StickerItem, StickerPack, GuildStickers } from './sticker.ts';
+export { GuildScheduledEvent } from './guildScheduledEvent.ts';
 

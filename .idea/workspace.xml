@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1c842be6-3306-4a7a-9814-e7df431ab64e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codestream.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/descord.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/models/events/messageDelete.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/models/events/messageUpdate.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/models/guildScheduledEvent.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/events/handler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/events/handler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/guild.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/guild.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/models.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/models.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/shard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/shard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/models/shardManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/shardManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/types/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/types/models/guild.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/models/guild.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/types/models/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/types/models/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/util/list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/util/list.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="210v1p67QdhVeafKnb7ORr5tyaD" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/tests/index.ts&#10;C:/Users/hsbha/Desktop/Projects/descord/descord.log" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/tests/index.ts" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="C:\Users\hsbha\AppData\Local\JetBrains\Toolbox\apps\WebStorm\ch-0\212.5457.55\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Deno: index.ts" type="DenoConfigurationType" nameIsGenerated="true" inputPath="$PROJECT_DIR$/tests/index.ts" programParameters="run -A">
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1c842be6-3306-4a7a-9814-e7df431ab64e" name="Changes" comment="" />
+      <created>1637090616002</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1637090616002</updated>
+      <workItem from="1637090618484" duration="29000" />
+      <workItem from="1638551558679" duration="119000" />
+      <workItem from="1638551694184" duration="1000" />
+      <workItem from="1638635726826" duration="63000" />
+      <workItem from="1638635803849" duration="3964000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
